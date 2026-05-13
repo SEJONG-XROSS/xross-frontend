@@ -1,35 +1,18 @@
-import { useAuthStore } from "@/features/auth/store/auth.store";
+import { createApiClient, setApiClient, getBaseURL } from '@xross/core';
+import { useAuthStore } from '@/features/auth/store/auth.store';
 
+// module-level 초기화 — 이 파일이 import될 때 한 번 실행
+const client = createApiClient(import.meta.env.VITE_API_BASE_URL as string, {
+  getAccessToken: () => useAuthStore.getState().accessToken,
+  onUnauthorized: () => {
+    useAuthStore.getState().clearAuth();
+    window.location.replace('/auth/login');
+  },
+});
+
+setApiClient(client);
+
+/** SSE/WebRTC 등 raw URL 구성용 (useEventStream, useAlertStream에서 사용) */
 export const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
-export async function apiFetch<T>(
-  path: string,
-  options?: RequestInit,
-): Promise<T> {
-  const token = useAuthStore.getState().accessToken;
-
-  const response = await fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options?.headers,
-    },
-  });
-
-  if (response.status === 401) {
-    useAuthStore.getState().clearAuth();
-    window.location.replace("/auth/login");
-    throw new Error("인증이 만료되었습니다. 다시 로그인해주세요.");
-  }
-
-  const body = await response.json().catch(() => ({}));
-
-  if (!response.ok) {
-    throw new Error(
-      (body as { message?: string }).message ?? "요청에 실패했습니다.",
-    );
-  }
-
-  return body as T;
-}
+export { getBaseURL };

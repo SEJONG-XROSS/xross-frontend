@@ -16,7 +16,11 @@
     "./queryKeys/pos": "./src/queryKeys/pos.ts",
     "./mappers/monitoring": "./src/mappers/monitoring.ts",
     "./mappers/pos": "./src/mappers/pos.ts",
-    "./utils/date": "./src/utils/date.ts"
+    "./utils/date": "./src/utils/date.ts",
+    "./api/client": "./src/api/client.ts",
+    "./api/auth": "./src/api/auth.api.ts",
+    "./api/monitoring": "./src/api/monitoring.api.ts",
+    "./api/pos": "./src/api/pos.api.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

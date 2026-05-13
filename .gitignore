@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+.turbo
 
 # Environment variables
 .env
@@ -30,3 +31,15 @@ dist-ssr
 
 # API spec (internal use only)
 docs/swagger.json
+
+# Expo / React Native
+apps/mobile/.expo
+apps/mobile/android
+apps/mobile/ios
+apps/mobile/*.jks
+apps/mobile/*.p8
+apps/mobile/*.p12
+apps/mobile/*.key
+apps/mobile/*.mobileprovision
+apps/mobile/*.orig.*
+apps/mobile/web-build

@@ -20,7 +20,17 @@
     "./api/client": "./src/api/client.ts",
     "./api/auth": "./src/api/auth.api.ts",
     "./api/monitoring": "./src/api/monitoring.api.ts",
-    "./api/pos": "./src/api/pos.api.ts"
+    "./api/pos": "./src/api/pos.api.ts",
+    "./hooks/useMe": "./src/hooks/useMe.ts",
+    "./hooks/useLogin": "./src/hooks/useLogin.ts",
+    "./hooks/useLogout": "./src/hooks/useLogout.ts",
+    "./hooks/useEvent": "./src/hooks/useEvent.ts",
+    "./hooks/useEvents": "./src/hooks/useEvents.ts",
+    "./hooks/useEventDetails": "./src/hooks/useEventDetails.ts",
+    "./hooks/useAlert": "./src/hooks/useAlert.ts",
+    "./hooks/useAlerts": "./src/hooks/useAlerts.ts",
+    "./hooks/usePayment": "./src/hooks/usePayment.ts",
+    "./hooks/usePosTransactions": "./src/hooks/usePosTransactions.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

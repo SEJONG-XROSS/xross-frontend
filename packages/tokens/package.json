@@ -8,8 +8,8 @@
     ".": "./src/index.ts",
     "./colors": "./src/colors.ts",
     "./shadows": "./src/shadows.ts",
-    "./spacing": "./src/spacing.ts",
-    "./typography": "./src/typography.ts"
+    "./gradients": "./src/gradients.ts",
+    "./tailwind": "./src/tailwind.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

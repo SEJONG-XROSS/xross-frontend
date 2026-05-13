@@ -26,6 +26,12 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.91.2
         version: 5.100.10(react@19.2.6)
+      '@xross/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@xross/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
       clsx:
         specifier: ^2.1.1
         version: 2.1.1

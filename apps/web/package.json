@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@xross/core": "workspace:*",
+    "@xross/tokens": "workspace:*",
     "@tailwindcss/vite": "^4.2.2",
     "@tanstack/react-query": "^5.91.2",
     "clsx": "^2.1.1",

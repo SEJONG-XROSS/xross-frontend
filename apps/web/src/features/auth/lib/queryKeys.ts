@@ -1,3 +1,1 @@
-export const authQueryKeys = {
-  me: ["auth", "me"] as const,
-};
+export { authQueryKeys } from '@xross/core/queryKeys/auth';

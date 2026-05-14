@@ -2,7 +2,7 @@
   "name": "@xross/mobile",
   "version": "0.0.1",
   "private": true,
-  "main": "expo-router/entry",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",

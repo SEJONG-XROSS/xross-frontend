@@ -14,6 +14,19 @@ config.resolver.nodeModulesPaths = [
   path.resolve(monorepoRoot, 'node_modules'),
 ];
 
+// pnpm 심링크 지원 활성화
+// expo/AppEntry.js가 apps/mobile/node_modules/expo (심링크)를 통해 접근 가능하게 함
+config.resolver.unstable_enableSymlinks = true;
+
+// expo/AppEntry.js 내부의 `../../App`은 pnpm 실제 경로 기준으로 해소되면 실패
+// → 항상 apps/mobile/App.tsx로 리디렉트
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  if (moduleName === '../../App' && context.originModulePath.includes('/node_modules/expo/AppEntry')) {
+    return { filePath: path.resolve(projectRoot, 'App.tsx'), type: 'sourceFile' };
+  }
+  return context.resolveRequest(context, moduleName, platform);
+};
+
 // ── SVG → React Native 컴포넌트 변환 ──────────────────
 config.transformer = {
   ...config.transformer,

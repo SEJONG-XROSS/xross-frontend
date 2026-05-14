@@ -6,6 +6,32 @@ export interface AuthAdapter {
   onUnauthorized(): void;
 }
 
+export interface SSEEvent {
+  data: string;
+}
+
+/** SSE 전송 계층 어댑터 — web: fetch+ReadableStream, RN: react-native-sse */
+export interface StreamAdapter {
+  open(opts: {
+    url: string;
+    headers?: Record<string, string>;
+    onMessage: (event: SSEEvent) => void;
+    onError: (error: Error) => void;
+    onOpen?: () => void;
+  }): () => void; // cleanup 함수 반환
+}
+
+let _streamAdapter: StreamAdapter | null = null;
+
+export function setStreamAdapter(adapter: StreamAdapter): void {
+  _streamAdapter = adapter;
+}
+
+export function getStreamAdapter(): StreamAdapter {
+  if (!_streamAdapter) throw new Error('[xross/core] StreamAdapter 미주입. 앱 부팅 시 setStreamAdapter()를 호출하세요.');
+  return _streamAdapter;
+}
+
 let _client: AxiosInstance | null = null;
 let _baseURL = '';
 

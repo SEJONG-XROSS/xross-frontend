@@ -1,6 +1,6 @@
 // API Client
-export { createApiClient, setApiClient, getApiClient, getBaseURL } from './api/client';
-export type { AuthAdapter } from './api/client';
+export { createApiClient, setApiClient, getApiClient, getBaseURL, setStreamAdapter, getStreamAdapter } from './api/client';
+export type { AuthAdapter, StreamAdapter, SSEEvent } from './api/client';
 
 // API Functions
 export * from './api/auth.api';

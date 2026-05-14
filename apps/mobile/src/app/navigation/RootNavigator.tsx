@@ -1,30 +1,35 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuthStore } from '@/shared/auth/store';
+import { setOnUnauthorized } from '@/shared/api/client';
+import type { RootStackParamList } from './types';
+import { AuthNavigator } from './AuthNavigator';
+import { MainNavigator } from './MainNavigator';
 
-// P6에서 실제 화면으로 교체
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function PlaceholderScreen() {
-  const { View, Text } = require('react-native');
-  return (
-    <View className="flex-1 items-center justify-center bg-monitor-bg">
-      <Text className="text-monitor-text">화면 준비 중...</Text>
-    </View>
-  );
-}
+// 푸시 딥링크 등 NavigationContainer 외부에서 imperative navigation이 필요할 때 사용
+export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
 export function RootNavigator() {
   const accessToken = useAuthStore((s) => s.accessToken);
 
+  useEffect(() => {
+    // client.ts에서 이미 clearAuth()를 호출하므로 Zustand 상태 변화로 Auth 스택 전환
+    // 이 콜백은 추가 side-effect(토스트, 로그 등)용
+    setOnUnauthorized(() => {
+      // P13 이후 토스트/알럿 연결 예정
+    });
+  }, []);
+
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {accessToken ? (
-          <Stack.Screen name="Main" component={PlaceholderScreen} />
+          <Stack.Screen name="Main" component={MainNavigator} />
         ) : (
-          <Stack.Screen name="Auth" component={PlaceholderScreen} />
+          <Stack.Screen name="Auth" component={AuthNavigator} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

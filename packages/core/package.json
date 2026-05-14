@@ -36,12 +36,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.91.2",
-    "axios": "^1.9.0",
-    "zustand": "^5.0.12"
+    "axios": "^1.9.0"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.0.0",
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@tanstack/react-query": "^5.91.2",
     "@xross/tsconfig": "workspace:*",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "zustand": "^5.0.12"
   }
 }

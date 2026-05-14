@@ -34,6 +34,9 @@ docs/swagger.json
 
 # Expo / React Native
 apps/mobile/.expo
+.expo
+# Expo CLI가 monorepo root에 auto-generate하는 파일
+/tsconfig.json
 apps/mobile/android
 apps/mobile/ios
 apps/mobile/*.jks

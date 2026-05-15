@@ -26,7 +26,8 @@ export function LoginScreen(_props: LoginScreenProps) {
     },
   });
 
-  const canSubmit = email.trim().length > 0 && password.length > 0 && !mutation.isPending;
+  const canSubmit =
+    email.trim().length > 0 && password.length > 0 && !mutation.isPending;
 
   const handleSubmit = () => {
     if (!canSubmit) return;
@@ -45,9 +46,10 @@ export function LoginScreen(_props: LoginScreenProps) {
       keyboardShouldPersistTaps="handled"
     >
       {/* ── 브랜딩 ── */}
-      <View className="items-center mb-8">
+      <View className="mb-8 items-center">
+        {/* 로고 */}
         <View
-          className="size-[60px] rounded-2xl bg-white items-center justify-center mb-4"
+          className="mb-4 size-[60px] items-center justify-center rounded-2xl bg-white"
           style={{
             shadowColor: '#000',
             shadowOpacity: 0.08,
@@ -56,24 +58,28 @@ export function LoginScreen(_props: LoginScreenProps) {
             elevation: 4,
           }}
         >
-          <Text className="text-monitor-bg text-3xl font-black">X</Text>
+          <Text className="text-3xl font-black text-monitor-bg">X</Text>
         </View>
 
-        <Text className="text-monitor-text text-[22px] font-bold tracking-tight">XROSS</Text>
-        <Text className="text-monitor-text-muted text-sm font-medium tracking-wide mt-1">
+        <Text className="text-[22px] font-bold tracking-tight text-monitor-text">
+          XROSS
+        </Text>
+        <Text className="mt-1 text-sm font-medium tracking-wide text-monitor-text-muted">
           무인점포 실시간 관제 플랫폼
         </Text>
 
-        <View className="w-full mt-5 rounded-2xl border border-monitor-border bg-monitor-card-bg px-5 py-4 items-center">
-          <Text className="text-monitor-text text-[15px] font-bold tracking-tight">
+        <View className="mt-5 w-full items-center rounded-2xl border border-monitor-border bg-monitor-card-bg px-5 py-4">
+          <Text className="text-[15px] font-bold tracking-tight text-monitor-text">
             비전 AI
-            <Text className="text-monitor-text-dim font-light">{'  |  '}</Text>
+            <Text className="font-light text-monitor-text-dim">{'  |  '}</Text>
             무게 센서
-            <Text className="text-monitor-text-dim font-light">{'  |  '}</Text>
+            <Text className="font-light text-monitor-text-dim">{'  |  '}</Text>
             POS
           </Text>
-          <Text className="text-monitor-text-muted text-[13px] leading-relaxed text-center mt-1">
-            <Text className="text-monitor-accent-blue font-semibold">3단계 교차 검증</Text>
+          <Text className="mt-1 text-center text-[13px] leading-relaxed text-monitor-text-muted">
+            <Text className="font-semibold text-monitor-accent-blue">
+              3단계 교차 검증
+            </Text>
             으로 매장을 안전하게.
           </Text>
         </View>
@@ -82,8 +88,10 @@ export function LoginScreen(_props: LoginScreenProps) {
       {/* ── 폼 ── */}
       <View className="gap-3">
         <View className="mb-2">
-          <Text className="text-monitor-text text-2xl font-medium tracking-tight">관제 로그인</Text>
-          <Text className="text-monitor-text-muted text-sm mt-1">
+          <Text className="text-2xl font-medium tracking-tight text-monitor-text">
+            관제 로그인
+          </Text>
+          <Text className="mt-1 text-sm text-monitor-text-muted">
             등록된 매장 관리자 계정으로 로그인하세요.
           </Text>
         </View>
@@ -96,7 +104,7 @@ export function LoginScreen(_props: LoginScreenProps) {
           value={email}
           onChangeText={setEmail}
           onSubmitEditing={() => passwordRef.current?.focus()}
-          blurOnSubmit={false}
+          submitBehavior="submit"
         />
 
         <TextField
@@ -111,7 +119,7 @@ export function LoginScreen(_props: LoginScreenProps) {
         />
 
         {mutation.isError && (
-          <Text className="text-event-critical text-sm">
+          <Text className="text-sm text-event-critical">
             {mutation.error?.message ?? '로그인에 실패했습니다.'}
           </Text>
         )}
@@ -119,13 +127,17 @@ export function LoginScreen(_props: LoginScreenProps) {
         <Pressable
           onPress={handleSubmit}
           disabled={!canSubmit}
-          className="h-11 rounded-[10px] bg-brand-primary items-center justify-center mt-2"
-          style={({ pressed }) => ({ opacity: pressed || !canSubmit ? 0.6 : 1 })}
+          className="mt-2 h-11 items-center justify-center rounded-[10px] bg-brand-primary"
+          style={({ pressed }) => ({
+            opacity: pressed || !canSubmit ? 0.6 : 1,
+          })}
         >
           {mutation.isPending ? (
             <ActivityIndicator color="#ffffff" size="small" />
           ) : (
-            <Text className="text-brand-on-primary text-sm font-medium">로그인</Text>
+            <Text className="text-sm font-medium text-brand-on-primary">
+              로그인
+            </Text>
           )}
         </Pressable>
       </View>

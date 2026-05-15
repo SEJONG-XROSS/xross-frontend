@@ -39,9 +39,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
             </Pressable>
           )}
         </View>
-        {error && (
-          <Text className="text-event-critical text-xs">{error}</Text>
-        )}
+        {error && <Text className="text-event-critical text-xs">{error}</Text>}
       </View>
     );
   },

@@ -2,7 +2,7 @@
   "name": "@xross/mobile",
   "version": "0.0.1",
   "private": true,
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "index.js",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -26,7 +26,7 @@
     "expo-linear-gradient": "~14.0.2",
     "expo-splash-screen": "~0.29.21",
     "expo-status-bar": "~2.0.1",
-    "nativewind": "^4.1.23",
+    "nativewind": "4.1.23",
     "react": "18.3.1",
     "react-native": "0.76.7",
     "react-native-gesture-handler": "~2.20.2",

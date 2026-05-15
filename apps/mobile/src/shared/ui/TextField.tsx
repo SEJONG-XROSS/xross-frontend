@@ -1,5 +1,6 @@
 import React, { forwardRef, useState } from 'react';
 import { View, Text, TextInput, Pressable, type TextInputProps } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 interface TextFieldProps extends Omit<TextInputProps, 'secureTextEntry'> {
   label?: string;
@@ -9,8 +10,9 @@ interface TextFieldProps extends Omit<TextInputProps, 'secureTextEntry'> {
 }
 
 export const TextField = forwardRef<TextInput, TextFieldProps>(
-  ({ label, error, password = false, emailVariant = false, ...props }, ref) => {
+  ({ label, error, password = false, emailVariant = false, value, onChangeText, ...props }, ref) => {
     const [secure, setSecure] = useState(password);
+    const hasValue = (value?.length ?? 0) > 0;
 
     const borderClass = error
       ? 'border-event-critical'
@@ -33,15 +35,38 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
             secureTextEntry={secure}
             autoCapitalize="none"
             autoCorrect={false}
+            value={value}
+            onChangeText={onChangeText}
             {...props}
           />
-          {password && (
-            <Pressable onPress={() => setSecure((v) => !v)} hitSlop={12}>
-              <Text className="text-input-icon text-xs ml-2">
-                {secure ? '보기' : '숨기기'}
-              </Text>
-            </Pressable>
-          )}
+
+          <View className="flex-row items-center gap-1 ml-1">
+            {/* clear 버튼 — 값 있을 때 표시 */}
+            {hasValue && (
+              <Pressable
+                onPress={() => onChangeText?.('')}
+                hitSlop={8}
+                className="p-1"
+              >
+                <Ionicons name="close-circle" size={16} color="#94a3b8" />
+              </Pressable>
+            )}
+
+            {/* 비밀번호 보기/숨기기 토글 */}
+            {password && (
+              <Pressable
+                onPress={() => setSecure((v) => !v)}
+                hitSlop={8}
+                className="p-1"
+              >
+                <Ionicons
+                  name={secure ? 'eye-off-outline' : 'eye-outline'}
+                  size={18}
+                  color="#94a3b8"
+                />
+              </Pressable>
+            )}
+          </View>
         </View>
         {error && <Text className="text-event-critical text-xs">{error}</Text>}
       </View>

@@ -5,27 +5,31 @@ interface TextFieldProps extends Omit<TextInputProps, 'secureTextEntry'> {
   label?: string;
   error?: string;
   password?: boolean;
+  emailVariant?: boolean;
 }
 
 export const TextField = forwardRef<TextInput, TextFieldProps>(
-  ({ label, error, password = false, ...props }, ref) => {
+  ({ label, error, password = false, emailVariant = false, ...props }, ref) => {
     const [secure, setSecure] = useState(password);
+
+    const borderClass = error
+      ? 'border-event-critical'
+      : emailVariant
+        ? 'border-input-border-email'
+        : 'border-input-border';
 
     return (
       <View className="gap-1.5">
         {label && (
-          <Text className="text-monitor-text-muted text-sm font-medium">{label}</Text>
+          <Text className="text-label text-xs font-medium uppercase tracking-wider">
+            {label}
+          </Text>
         )}
-        <View
-          className={[
-            'flex-row items-center h-12 px-4 rounded-xl border bg-monitor-card-bg',
-            error ? 'border-event-critical' : 'border-monitor-border',
-          ].join(' ')}
-        >
+        <View className={`flex-row items-center h-11 px-4 rounded-[10px] border bg-surface-elevated ${borderClass}`}>
           <TextInput
             ref={ref}
-            className="flex-1 text-monitor-text text-sm"
-            placeholderTextColor="#62748e"
+            className="flex-1 text-heading text-sm tracking-tight"
+            placeholderTextColor="#94a3b8"
             secureTextEntry={secure}
             autoCapitalize="none"
             autoCorrect={false}
@@ -33,7 +37,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
           />
           {password && (
             <Pressable onPress={() => setSecure((v) => !v)} hitSlop={12}>
-              <Text className="text-monitor-text-dim text-xs ml-2">
+              <Text className="text-input-icon text-xs ml-2">
                 {secure ? '보기' : '숨기기'}
               </Text>
             </Pressable>

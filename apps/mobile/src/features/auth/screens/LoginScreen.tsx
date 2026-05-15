@@ -12,6 +12,7 @@ import { useLogin } from '@xross/core';
 import { useAuthStore } from '@/shared/auth/store';
 import { TextField } from '@/shared/ui/TextField';
 import type { LoginScreenProps } from '@/app/navigation/types';
+import LogoSvg from '@/assets/images/logo.svg';
 
 export function LoginScreen(_props: LoginScreenProps) {
   const insets = useSafeAreaInsets();
@@ -21,7 +22,6 @@ export function LoginScreen(_props: LoginScreenProps) {
 
   const mutation = useLogin({
     onSuccess: (token, storeId) => {
-      // setAuth → accessToken 변경 → RootNavigator가 Main 스택으로 자동 전환
       useAuthStore.getState().setAuth(token, storeId);
     },
   });
@@ -36,10 +36,11 @@ export function LoginScreen(_props: LoginScreenProps) {
 
   return (
     <KeyboardAwareScrollView
-      className="flex-1 bg-monitor-bg"
+      className="flex-1 bg-surface-page"
       contentContainerStyle={{
         flexGrow: 1,
-        paddingTop: insets.top + 24,
+        justifyContent: 'center',
+        paddingTop: insets.top + 16,
         paddingBottom: insets.bottom + 24,
         paddingHorizontal: 24,
       }}
@@ -49,74 +50,83 @@ export function LoginScreen(_props: LoginScreenProps) {
       <View className="mb-8 items-center">
         {/* 로고 */}
         <View
-          className="mb-4 size-[60px] items-center justify-center rounded-2xl bg-white"
+          className="mb-4 rounded-2xl"
           style={{
-            shadowColor: '#000',
-            shadowOpacity: 0.08,
-            shadowRadius: 16,
-            shadowOffset: { width: 0, height: 2 },
-            elevation: 4,
+            shadowColor: '#155dfc',
+            shadowOpacity: 0.18,
+            shadowRadius: 14,
+            shadowOffset: { width: 0, height: 4 },
+            elevation: 6,
           }}
         >
-          <Text className="text-3xl font-black text-monitor-bg">X</Text>
+          <LogoSvg width={60} height={60} />
         </View>
 
-        <Text className="text-[22px] font-bold tracking-tight text-monitor-text">
+        <Text className="text-[22px] font-bold tracking-tight text-heading">
           XROSS
         </Text>
-        <Text className="mt-1 text-sm font-medium tracking-wide text-monitor-text-muted">
+        <Text className="mt-1 text-sm text-body">
           무인점포 실시간 관제 플랫폼
         </Text>
 
-        <View className="mt-5 w-full items-center rounded-2xl border border-monitor-border bg-monitor-card-bg px-5 py-4">
-          <Text className="text-[15px] font-bold tracking-tight text-monitor-text">
+        {/* 핵심 가치 박스 */}
+        <View className="mt-5 w-full items-center rounded-2xl border border-input-border bg-surface-elevated px-5 py-4"
+          style={{
+            shadowColor: '#000',
+            shadowOpacity: 0.04,
+            shadowRadius: 8,
+            shadowOffset: { width: 0, height: 1 },
+          }}
+        >
+          <Text className="text-[15px] font-bold tracking-tight text-heading">
             비전 AI
-            <Text className="font-light text-monitor-text-dim">{'  |  '}</Text>
+            <Text className="font-light text-body">{'  |  '}</Text>
             무게 센서
-            <Text className="font-light text-monitor-text-dim">{'  |  '}</Text>
+            <Text className="font-light text-body">{'  |  '}</Text>
             POS
           </Text>
-          <Text className="mt-1 text-center text-[13px] leading-relaxed text-monitor-text-muted">
-            <Text className="font-semibold text-monitor-accent-blue">
-              3단계 교차 검증
-            </Text>
+          <Text className="mt-1 text-center text-[13px] leading-relaxed text-body">
+            <Text className="font-semibold text-brand-primary">3단계 교차 검증</Text>
             으로 매장을 안전하게.
           </Text>
         </View>
       </View>
 
       {/* ── 폼 ── */}
-      <View className="gap-3">
-        <View className="mb-2">
-          <Text className="text-2xl font-medium tracking-tight text-monitor-text">
+      <View className="gap-5">
+        <View>
+          <Text className="text-2xl font-medium tracking-tight text-heading">
             관제 로그인
           </Text>
-          <Text className="mt-1 text-sm text-monitor-text-muted">
+          <Text className="mt-1 text-sm text-body">
             등록된 매장 관리자 계정으로 로그인하세요.
           </Text>
         </View>
 
-        <TextField
-          label="이메일"
-          placeholder="admin@store.com"
-          keyboardType="email-address"
-          returnKeyType="next"
-          value={email}
-          onChangeText={setEmail}
-          onSubmitEditing={() => passwordRef.current?.focus()}
-          submitBehavior="submit"
-        />
+        <View className="gap-4">
+          <TextField
+            label="이메일"
+            placeholder="admin@store.com"
+            keyboardType="email-address"
+            returnKeyType="next"
+            emailVariant
+            value={email}
+            onChangeText={setEmail}
+            onSubmitEditing={() => passwordRef.current?.focus()}
+            submitBehavior="submit"
+          />
 
-        <TextField
-          ref={passwordRef}
-          label="비밀번호"
-          placeholder="••••••••"
-          password
-          returnKeyType="done"
-          value={password}
-          onChangeText={setPassword}
-          onSubmitEditing={handleSubmit}
-        />
+          <TextField
+            ref={passwordRef}
+            label="비밀번호"
+            placeholder="••••••••"
+            password
+            returnKeyType="done"
+            value={password}
+            onChangeText={setPassword}
+            onSubmitEditing={handleSubmit}
+          />
+        </View>
 
         {mutation.isError && (
           <Text className="text-sm text-event-critical">
@@ -127,15 +137,15 @@ export function LoginScreen(_props: LoginScreenProps) {
         <Pressable
           onPress={handleSubmit}
           disabled={!canSubmit}
-          className="mt-2 h-11 items-center justify-center rounded-[10px] bg-brand-primary"
-          style={({ pressed }) => ({
-            opacity: pressed || !canSubmit ? 0.6 : 1,
+          className="h-11 items-center justify-center rounded-[10px] bg-brand-primary"
+          style={({ pressed }: { pressed: boolean }) => ({
+            opacity: pressed || !canSubmit ? 0.7 : 1,
           })}
         >
           {mutation.isPending ? (
             <ActivityIndicator color="#ffffff" size="small" />
           ) : (
-            <Text className="text-sm font-medium text-brand-on-primary">
+            <Text className="text-sm font-semibold text-brand-on-primary">
               로그인
             </Text>
           )}

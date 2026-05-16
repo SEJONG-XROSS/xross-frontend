@@ -11,7 +11,7 @@ import type { AlertResponse } from "@xross/core";
 
 const POLL_INTERVAL = 30_000;
 
-export function useAlertStream(date: string) {
+export function useAlertStream(date: string, enabled = true) {
   const storeId = useAuthStore((s) => s.storeId);
   const accessToken = useAuthStore((s) => s.accessToken);
   const [alerts, setAlerts] = useState<AlertResponse[]>([]);
@@ -21,7 +21,14 @@ export function useAlertStream(date: string) {
   const lastIdRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (!storeId || !accessToken) return;
+    if (!storeId || !accessToken || !enabled) {
+      // 비활성화 시 연결 정리
+      cleanupRef.current?.();
+      cleanupRef.current = null;
+      if (pollRef.current) clearInterval(pollRef.current);
+      setConnected(false);
+      return;
+    }
 
     let mounted = true;
     setAlerts([]);
@@ -149,7 +156,7 @@ export function useAlertStream(date: string) {
       cleanupRef.current = null;
       if (pollRef.current) clearInterval(pollRef.current);
     };
-  }, [storeId, accessToken, date]);
+  }, [storeId, accessToken, date, enabled]);
 
   return { alerts, connected };
 }

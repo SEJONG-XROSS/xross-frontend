@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@xross/core";
 import type { AlertResponse } from "@/features/monitoring/api/monitoring.types";
 import { getAlertSeverity } from "@/features/monitoring/lib/mappers";
 import ShieldAlertIcon from "@/assets/icons/shield-alert.svg?react";

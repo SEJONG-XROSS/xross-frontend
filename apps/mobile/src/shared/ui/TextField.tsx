@@ -1,6 +1,7 @@
 import React, { forwardRef, useState } from 'react';
 import { View, Text, TextInput, Pressable, type TextInputProps } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { cn } from '@xross/core';
 
 interface TextFieldProps extends Omit<TextInputProps, 'secureTextEntry'> {
   label?: string;
@@ -14,12 +15,6 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
     const [secure, setSecure] = useState(password);
     const hasValue = (value?.length ?? 0) > 0;
 
-    const borderClass = error
-      ? 'border-event-critical'
-      : emailVariant
-        ? 'border-input-border-email'
-        : 'border-input-border';
-
     return (
       <View className="gap-1.5">
         {label && (
@@ -27,7 +22,10 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
             {label}
           </Text>
         )}
-        <View className={`flex-row items-center h-11 px-4 rounded-[10px] border bg-surface-elevated ${borderClass}`}>
+        <View className={cn(
+          'flex-row items-center h-11 px-4 rounded-[10px] border bg-surface-elevated',
+          error ? 'border-event-critical' : emailVariant ? 'border-input-border-email' : 'border-input-border',
+        )}>
           <TextInput
             ref={ref}
             className="flex-1 text-heading text-sm tracking-tight"

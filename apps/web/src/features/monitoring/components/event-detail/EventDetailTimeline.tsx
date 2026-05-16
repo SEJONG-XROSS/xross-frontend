@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@xross/core";
 import type { LogEntry, LogEntrySource } from "@/features/monitoring/types/monitoring.types";
 import LogsIcon from "@/assets/icons/logs.svg?react";
 

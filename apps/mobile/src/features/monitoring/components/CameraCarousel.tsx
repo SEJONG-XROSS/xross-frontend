@@ -1,13 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { View, Text, FlatList, Pressable, useWindowDimensions } from 'react-native';
-import type { CameraFeed } from './CameraFeedCard';
-import { CameraFeedCard } from './CameraFeedCard';
+import React, { useRef, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  useWindowDimensions,
+} from "react-native";
+import { cn } from "@xross/core";
+import type { CameraFeed } from "./CameraFeedCard";
+import { CameraFeedCard } from "./CameraFeedCard";
 
-interface Props {
-  cameras: CameraFeed[];
-}
-
-export function CameraCarousel({ cameras }: Props) {
+export function CameraCarousel({ cameras }: { cameras: CameraFeed[] }) {
   const { width } = useWindowDimensions();
   const [idx, setIdx] = useState(0);
   const listRef = useRef<FlatList>(null);
@@ -18,13 +21,13 @@ export function CameraCarousel({ cameras }: Props) {
   const CARD_HEIGHT = 220;
 
   return (
-    <View style={{ height: CARD_HEIGHT + 40, backgroundColor: '#0f172b' }}>
-      {/* 카메라 FlatList */}
+    <View className="bg-monitor-bg" style={{ height: CARD_HEIGHT + 40 }}>
+      {/* width는 런타임 값 → style 유지 */}
       <FlatList
         ref={listRef}
         data={cameras}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: CameraFeed }) => (
           <View style={{ width, height: CARD_HEIGHT, padding: 10 }}>
             <CameraFeedCard camera={item} />
           </View>
@@ -33,39 +36,29 @@ export function CameraCarousel({ cameras }: Props) {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={(e) => {
-          const newIdx = Math.round(e.nativeEvent.contentOffset.x / width);
-          setIdx(newIdx);
+          setIdx(Math.round(e.nativeEvent.contentOffset.x / width));
         }}
         style={{ height: CARD_HEIGHT }}
       />
 
-      {/* 컨트롤 바 */}
       {count > 1 && (
-        <View style={{
-          height: 40, flexDirection: 'row', alignItems: 'center',
-          justifyContent: 'center', gap: 12,
-          backgroundColor: '#0f172b',
-        }}>
-          {/* 이전 */}
+        <View className="h-10 flex-row items-center justify-center gap-3 bg-monitor-bg">
           <Pressable
             onPress={() => {
-              const newIdx = Math.max(0, idx - 1);
-              listRef.current?.scrollToIndex({ index: newIdx, animated: true });
-              setIdx(newIdx);
+              const n = Math.max(0, idx - 1);
+              listRef.current?.scrollToIndex({ index: n, animated: true });
+              setIdx(n);
             }}
             disabled={idx === 0}
-            style={{
-              width: 28, height: 28, borderRadius: 6,
-              borderWidth: 1, borderColor: '#1d293d',
-              alignItems: 'center', justifyContent: 'center',
-              opacity: idx === 0 ? 0.3 : 1,
-            }}
+            className={cn(
+              "h-7 w-7 items-center justify-center rounded-md border border-monitor-border",
+              idx === 0 && "opacity-30",
+            )}
           >
-            <Text style={{ color: '#90a1b9', fontSize: 16 }}>‹</Text>
+            <Text className="text-base text-monitor-text-muted">‹</Text>
           </Pressable>
 
-          {/* 도트 인디케이터 */}
-          <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
+          <View className="flex-row items-center gap-[5px]">
             {cameras.map((_, i) => (
               <Pressable
                 key={i}
@@ -73,35 +66,32 @@ export function CameraCarousel({ cameras }: Props) {
                   listRef.current?.scrollToIndex({ index: i, animated: true });
                   setIdx(i);
                 }}
-                style={{
-                  height: 6,
-                  width: i === idx ? 18 : 6,
-                  borderRadius: 3,
-                  backgroundColor: i === idx ? '#51a2ff' : '#314158',
-                }}
+                className={cn(
+                  "h-1.5 rounded-full",
+                  i === idx
+                    ? "w-[18px] bg-monitor-accent-blue"
+                    : "w-1.5 bg-monitor-border-strong",
+                )}
               />
             ))}
           </View>
 
-          {/* 다음 */}
           <Pressable
             onPress={() => {
-              const newIdx = Math.min(count - 1, idx + 1);
-              listRef.current?.scrollToIndex({ index: newIdx, animated: true });
-              setIdx(newIdx);
+              const n = Math.min(count - 1, idx + 1);
+              listRef.current?.scrollToIndex({ index: n, animated: true });
+              setIdx(n);
             }}
             disabled={idx === count - 1}
-            style={{
-              width: 28, height: 28, borderRadius: 6,
-              borderWidth: 1, borderColor: '#1d293d',
-              alignItems: 'center', justifyContent: 'center',
-              opacity: idx === count - 1 ? 0.3 : 1,
-            }}
+            className={cn(
+              "h-7 w-7 items-center justify-center rounded-md border border-monitor-border",
+              idx === count - 1 && "opacity-30",
+            )}
           >
-            <Text style={{ color: '#90a1b9', fontSize: 16 }}>›</Text>
+            <Text className="text-base text-monitor-text-muted">›</Text>
           </Pressable>
 
-          <Text style={{ fontSize: 11, color: '#62748e', fontFamily: 'monospace', marginLeft: 4 }}>
+          <Text className="ml-1 font-mono text-[11px] text-monitor-text-dim">
             {idx + 1}/{count}
           </Text>
         </View>

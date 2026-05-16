@@ -1,7 +1,7 @@
 import ChartAnalyticsIcon from "@/assets/icons/chart-analytics.svg?react";
 import AnalyticsChart from "@/features/monitoring/components/AnalyticsChart";
 import type { AnalyticsDataPoint } from "@/features/monitoring/types/monitoring.types";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@xross/core";
 
 interface AnalyticsStat {
   label: string;

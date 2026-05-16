@@ -2,7 +2,7 @@ import { useState, useRef, type InputHTMLAttributes } from "react";
 import EyeIcon from "@/assets/icons/eye.svg?react";
 import EyeOffIcon from "@/assets/icons/eye-off.svg?react";
 import CircleXIcon from "@/assets/icons/circle-x.svg?react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@xross/core";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;

@@ -6,7 +6,7 @@ import { useAlert } from "@/features/monitoring/hooks/useAlert";
 import { getEvent } from "@/features/monitoring/api/monitoring.api";
 import { monitoringQueryKeys } from "@/features/monitoring/lib/queryKeys";
 import { getAlertSeverity } from "@/features/monitoring/lib/mappers";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@xross/core";
 import ShieldAlertIcon from "@/assets/icons/shield-alert.svg?react";
 import TriangleAlertIcon from "@/assets/icons/triangle-alert.svg?react";
 import LogsIcon from "@/assets/icons/logs.svg?react";

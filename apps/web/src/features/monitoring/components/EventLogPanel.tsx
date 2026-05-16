@@ -1,7 +1,7 @@
 import type { AlertResponse } from "@/features/monitoring/api/monitoring.types";
 import EventCard from "@/features/monitoring/components/EventCard";
 import LogsIcon from "@/assets/icons/logs.svg?react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@xross/core";
 
 interface EventLogPanelProps {
   alerts: AlertResponse[];

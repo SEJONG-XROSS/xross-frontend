@@ -6,42 +6,40 @@ import { getAlertSeverity } from '@xross/core';
 import type { AlertResponse } from '@xross/core';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { MonitoringStackParamList } from '@/app/navigation/types';
+import { cn } from '@xross/core';
 
 type Nav = NativeStackNavigationProp<MonitoringStackParamList>;
-
 type Severity = 'critical' | 'warning' | 'info';
 
 const SEVERITY_CONFIG: Record<Severity, {
-  borderColor: string;
-  iconBg: string;
+  borderClass: string;
+  iconBgClass: string;
   iconName: React.ComponentProps<typeof Ionicons>['name'];
-  titleColor: string;
+  titleClass: string;
 }> = {
   critical: {
-    borderColor: 'rgba(251,44,54,0.4)',
-    iconBg: '#fb2c36',
+    borderClass: 'border-[rgba(251,44,54,0.4)]',
+    iconBgClass: 'bg-[#fb2c36]',
     iconName: 'shield-outline',
-    titleColor: '#ff6467',
+    titleClass: 'text-event-critical',
   },
   warning: {
-    borderColor: 'rgba(254,154,0,0.4)',
-    iconBg: '#fe9a00',
+    borderClass: 'border-[rgba(254,154,0,0.4)]',
+    iconBgClass: 'bg-[#fe9a00]',
     iconName: 'warning-outline',
-    titleColor: '#fe9a00',
+    titleClass: 'text-event-warning',
   },
   info: {
-    borderColor: '#1d293d',
-    iconBg: '#1d293d',
+    borderClass: 'border-monitor-border',
+    iconBgClass: 'bg-monitor-border',
     iconName: 'information-circle-outline',
-    titleColor: '#90a1b9',
+    titleClass: 'text-monitor-text-muted',
   },
 };
 
 function formatTime(iso: string) {
   return new Date(iso).toLocaleTimeString('ko-KR', {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
   });
 }
 
@@ -49,40 +47,30 @@ export function EventCard({ alert }: { alert: AlertResponse }) {
   const navigation = useNavigation<Nav>();
   const severity = getAlertSeverity(alert.priority);
   const cfg = SEVERITY_CONFIG[severity];
-  const dimmed = alert.status === 'ACKNOWLEDGED';
 
   return (
     <Pressable
       onPress={() => navigation.navigate('AlertDetail', { id: alert.id })}
-      style={{
-        opacity: dimmed ? 0.5 : 1,
-        backgroundColor: '#020618',
-        borderRadius: 14,
-        borderWidth: 1,
-        borderColor: cfg.borderColor,
-        padding: 14,
-        marginBottom: 10,
-      }}
+      className={cn(
+        'bg-monitor-card-bg rounded-[14px] border p-[14px] mb-[10px]',
+        cfg.borderClass,
+        alert.status === 'ACKNOWLEDGED' && 'opacity-50',
+      )}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 10 }}>
-        <View style={{
-          width: 28, height: 28, borderRadius: 10,
-          backgroundColor: cfg.iconBg,
-          alignItems: 'center', justifyContent: 'center',
-          marginTop: 2,
-        }}>
+      <View className="flex-row items-start gap-[10px]">
+        <View className={cn('w-7 h-7 rounded-[10px] items-center justify-center mt-0.5', cfg.iconBgClass)}>
           <Ionicons name={cfg.iconName} size={14} color="#fff" />
         </View>
-        <View style={{ flex: 1, gap: 2 }}>
-          <Text style={{ fontSize: 14, fontWeight: '700', color: cfg.titleColor, letterSpacing: -0.15 }}>
+        <View className="flex-1 gap-0.5">
+          <Text className={cn('text-sm font-bold tracking-tight', cfg.titleClass)}>
             {alert.title}
           </Text>
-          <Text style={{ fontFamily: 'monospace', fontSize: 10, color: '#62748e' }}>
+          <Text className="text-[10px] text-monitor-text-dim font-mono">
             {formatTime(alert.createdAt)} • #{alert.id}
           </Text>
         </View>
       </View>
-      <Text style={{ marginTop: 10, paddingLeft: 38, fontSize: 12, color: '#90a1b9', lineHeight: 18 }}>
+      <Text className="mt-[10px] pl-[38px] text-xs text-monitor-text-muted leading-[18px]">
         {alert.message}
       </Text>
     </Pressable>

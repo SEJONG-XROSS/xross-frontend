@@ -1,5 +1,5 @@
 import logoUrl from "@/assets/images/logo.svg";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@xross/core";
 
 type BrandLogoProps = {
   className?: string;

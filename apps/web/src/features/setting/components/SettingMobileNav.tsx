@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@xross/core";
 
 import UserIcon from "@/assets/icons/user.svg?react";
 import BellIcon from "@/assets/icons/bell.svg?react";

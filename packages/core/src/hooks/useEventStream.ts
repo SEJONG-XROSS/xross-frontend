@@ -1,13 +1,24 @@
 import { useState, useEffect, useRef } from 'react';
-import { getEvents, getBaseURL, getStreamAdapter, isToday, dayBounds } from '@xross/core';
-import { useAuthStore } from '@/shared/auth/store';
-import type { EventResponse } from '@xross/core';
+import { getEvents } from '../api/monitoring.api';
+import { getBaseURL, getStreamAdapter } from '../api/client';
+import { isToday, dayBounds } from '../utils/date';
+import type { EventResponse } from '../types/monitoring-api';
 
 const POLL_INTERVAL = 60_000;
 
-export function useEventStream(date: string, enabled = true) {
-  const storeId = useAuthStore((s) => s.storeId);
-  const accessToken = useAuthStore((s) => s.accessToken);
+interface UseEventStreamOptions {
+  storeId: number | null;
+  accessToken: string | null;
+  date: string;
+  enabled?: boolean;
+}
+
+export function useEventStream({
+  storeId,
+  accessToken,
+  date,
+  enabled = true,
+}: UseEventStreamOptions) {
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [connected, setConnected] = useState(false);
   const cleanupRef = useRef<(() => void) | null>(null);
@@ -54,7 +65,6 @@ export function useEventStream(date: string, enabled = true) {
       };
     }
 
-    // 오늘: 초기 REST → SSE
     fetchFn().then((data) => {
       if (!mounted) return;
       setEvents(data);
@@ -75,18 +85,14 @@ export function useEventStream(date: string, enabled = true) {
           url,
           headers: { Authorization: `Bearer ${accessToken}` },
           onOpen: () => { if (mounted) { setConnected(true); retryDelay = 1000; } },
-          onMessage: ({ data }) => {
+          onMessage: ({ data }: { data: string }) => {
             if (!mounted) return;
             try {
               const incoming = JSON.parse(data) as EventResponse;
               lastIdRef.current = Math.max(lastIdRef.current ?? 0, incoming.id);
               setEvents((prev) => {
-                const idx = prev.findIndex((e) => e.id === incoming.id);
-                if (idx !== -1) {
-                  const next = [...prev];
-                  next[idx] = incoming;
-                  return next;
-                }
+                const idx = prev.findIndex((e: EventResponse) => e.id === incoming.id);
+                if (idx !== -1) { const next = [...prev]; next[idx] = incoming; return next; }
                 return [incoming, ...prev];
               });
             } catch { /* 파싱 실패 무시 */ }

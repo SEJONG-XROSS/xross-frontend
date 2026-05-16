@@ -9,7 +9,7 @@ import { useAlertStream } from "@/features/monitoring/hooks/useAlertStream";
 import { getTodayStr, isToday } from "@/shared/lib/date";
 import type { EventResponse } from "@/features/monitoring/api/monitoring.types";
 import type { AnalyticsDataPoint } from "@/features/monitoring/types/monitoring.types";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@xross/core";
 import ShieldIcon from "@/assets/icons/shield.svg?react";
 import LogsIcon from "@/assets/icons/logs.svg?react";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";

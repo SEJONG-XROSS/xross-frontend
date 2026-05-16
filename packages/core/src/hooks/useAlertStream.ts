@@ -1,14 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
-import { getEvents, getBaseURL, getStreamAdapter, isToday, dayBounds } from '@xross/core';
-import { useAuthStore } from '@/shared/auth/store';
-import type { EventResponse } from '@xross/core';
+import { getAlerts } from '../api/monitoring.api';
+import { getBaseURL, getStreamAdapter } from '../api/client';
+import { isToday, dayBounds } from '../utils/date';
+import type { AlertResponse } from '../types/monitoring-api';
 
-const POLL_INTERVAL = 60_000;
+const POLL_INTERVAL = 30_000;
 
-export function useEventStream(date: string, enabled = true) {
-  const storeId = useAuthStore((s) => s.storeId);
-  const accessToken = useAuthStore((s) => s.accessToken);
-  const [events, setEvents] = useState<EventResponse[]>([]);
+interface UseAlertStreamOptions {
+  storeId: number | null;
+  accessToken: string | null;
+  date: string;
+  enabled?: boolean;
+}
+
+export function useAlertStream({
+  storeId,
+  accessToken,
+  date,
+  enabled = true,
+}: UseAlertStreamOptions) {
+  const [alerts, setAlerts] = useState<AlertResponse[]>([]);
   const [connected, setConnected] = useState(false);
   const cleanupRef = useRef<(() => void) | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -24,7 +35,7 @@ export function useEventStream(date: string, enabled = true) {
     }
 
     let mounted = true;
-    setEvents([]);
+    setAlerts([]);
     setConnected(false);
     lastIdRef.current = null;
     cleanupRef.current?.();
@@ -32,16 +43,16 @@ export function useEventStream(date: string, enabled = true) {
     if (pollRef.current) clearInterval(pollRef.current);
 
     const bounds = dayBounds(date);
-    const fetchFn = () => getEvents(storeId, bounds);
+    const fetchFn = () => getAlerts(storeId, bounds);
 
     const startPolling = (interval: number) => {
       fetchFn()
-        .then((data) => { if (mounted) { setEvents(data); setConnected(true); } })
+        .then((data) => { if (mounted) { setAlerts(data); setConnected(true); } })
         .catch(() => { if (mounted) setConnected(false); });
       pollRef.current = setInterval(() => {
         if (!mounted) return;
         fetchFn()
-          .then((data) => { if (mounted) { setEvents(data); setConnected(true); } })
+          .then((data) => { if (mounted) { setAlerts(data); setConnected(true); } })
           .catch(() => { if (mounted) setConnected(false); });
       }, interval);
     };
@@ -57,13 +68,13 @@ export function useEventStream(date: string, enabled = true) {
     // 오늘: 초기 REST → SSE
     fetchFn().then((data) => {
       if (!mounted) return;
-      setEvents(data);
-      if (data.length > 0) lastIdRef.current = Math.max(...data.map((e) => e.id));
+      setAlerts(data);
+      if (data.length > 0) lastIdRef.current = Math.max(...data.map((a) => a.id));
     }).catch(() => {}).finally(() => {
       if (!mounted) return;
       const qs = new URLSearchParams({ storeId: String(storeId) });
       if (lastIdRef.current != null) qs.set('prevId', String(lastIdRef.current));
-      const url = `${getBaseURL()}/events/stream?${qs}`;
+      const url = `${getBaseURL()}/alerts/stream?${qs}`;
 
       let retryDelay = 1000;
       let retrying = true;
@@ -75,18 +86,14 @@ export function useEventStream(date: string, enabled = true) {
           url,
           headers: { Authorization: `Bearer ${accessToken}` },
           onOpen: () => { if (mounted) { setConnected(true); retryDelay = 1000; } },
-          onMessage: ({ data }) => {
+          onMessage: ({ data }: { data: string }) => {
             if (!mounted) return;
             try {
-              const incoming = JSON.parse(data) as EventResponse;
+              const incoming = JSON.parse(data) as AlertResponse;
               lastIdRef.current = Math.max(lastIdRef.current ?? 0, incoming.id);
-              setEvents((prev) => {
-                const idx = prev.findIndex((e) => e.id === incoming.id);
-                if (idx !== -1) {
-                  const next = [...prev];
-                  next[idx] = incoming;
-                  return next;
-                }
+              setAlerts((prev) => {
+                const idx = prev.findIndex((a: AlertResponse) => a.id === incoming.id);
+                if (idx !== -1) { const next = [...prev]; next[idx] = incoming; return next; }
                 return [incoming, ...prev];
               });
             } catch { /* 파싱 실패 무시 */ }
@@ -114,5 +121,5 @@ export function useEventStream(date: string, enabled = true) {
     };
   }, [storeId, accessToken, date, enabled]);
 
-  return { events, connected };
+  return { alerts, connected };
 }

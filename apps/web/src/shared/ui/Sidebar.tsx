@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@xross/core";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 
 import ShieldIcon from "@/assets/icons/shield.svg?react";

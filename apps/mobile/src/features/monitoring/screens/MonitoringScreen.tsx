@@ -13,7 +13,7 @@ import { EventLogPanel } from '../components/EventLogPanel';
 type Tab = 'monitor' | 'events';
 
 const MOCK_CAMERAS = [
-  { id: 'cam-1', name: '냉동고 1구역', isOnline: true, isRecording: true },
+  { id: 'cam-1', name: '냉동고 1구역', isOnline: true, isRecording: true, streamPath: 'camera1' },
   { id: 'cam-2', name: '스낵/주류 코너', isOnline: false, isRecording: false },
   { id: 'cam-3', name: 'POS 셀프 계산대', isOnline: false, isRecording: false },
   { id: 'cam-4', name: '입구/출구', isOnline: false, isRecording: false },

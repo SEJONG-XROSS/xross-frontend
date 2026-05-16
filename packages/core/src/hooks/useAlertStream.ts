@@ -4,7 +4,6 @@ import { getBaseURL, getStreamAdapter } from '../api/client';
 import { isToday, dayBounds } from '../utils/date';
 import type { AlertResponse } from '../types/monitoring-api';
 
-const POLL_INTERVAL = 30_000;
 
 interface UseAlertStreamOptions {
   storeId: number | null;
@@ -45,24 +44,12 @@ export function useAlertStream({
     const bounds = dayBounds(date);
     const fetchFn = () => getAlerts(storeId, bounds);
 
-    const startPolling = (interval: number) => {
+    // 과거 날짜: 데이터가 바뀌지 않으므로 단순 1회 조회
+    if (!isToday(date)) {
       fetchFn()
         .then((data) => { if (mounted) { setAlerts(data); setConnected(true); } })
         .catch(() => { if (mounted) setConnected(false); });
-      pollRef.current = setInterval(() => {
-        if (!mounted) return;
-        fetchFn()
-          .then((data) => { if (mounted) { setAlerts(data); setConnected(true); } })
-          .catch(() => { if (mounted) setConnected(false); });
-      }, interval);
-    };
-
-    if (!isToday(date)) {
-      startPolling(POLL_INTERVAL);
-      return () => {
-        mounted = false;
-        if (pollRef.current) clearInterval(pollRef.current);
-      };
+      return () => { mounted = false; };
     }
 
     // 오늘: 초기 REST → SSE

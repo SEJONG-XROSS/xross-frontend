@@ -10,12 +10,12 @@ import {
   cn,
 } from '@xross/core';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { MonitoringStackParamList } from '@/app/navigation/types';
+import type { RootStackParamList } from '@/app/navigation/types';
 import type { EventResponse, AlertPriority, AlertStatus } from '@xross/core';
 import { DetailHeader } from '../components/DetailHeader';
 import { EventTimeline } from '../components/EventTimeline';
 
-type Props = NativeStackScreenProps<MonitoringStackParamList, 'AlertDetail'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'AlertDetail'>;
 
 const PRIORITY_CONFIG: Record<AlertPriority, { label: string; bgClass: string; textClass: string; borderClass: string }> = {
   CRITICAL: { label: '긴급', bgClass: 'bg-[rgba(255,100,103,0.1)]', textClass: 'text-event-critical', borderClass: 'border-[rgba(255,100,103,0.3)]' },

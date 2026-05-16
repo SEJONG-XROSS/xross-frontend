@@ -23,6 +23,13 @@ export interface PosTransaction {
   note?: string;
 }
 
+export interface PosFilters {
+  search: string;
+  dateRange: DateRange;
+  status: StatusFilterOption;
+  payment: PaymentFilterOption;
+}
+
 export interface PosSummaryStats {
   totalCount: number;
   normalCount: number;

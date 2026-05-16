@@ -5,10 +5,10 @@ import { useNavigation } from '@react-navigation/native';
 import { getAlertSeverity } from '@xross/core';
 import type { AlertResponse } from '@xross/core';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { MonitoringStackParamList } from '@/app/navigation/types';
+import type { RootStackParamList } from '@/app/navigation/types';
 import { cn } from '@xross/core';
 
-type Nav = NativeStackNavigationProp<MonitoringStackParamList>;
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 type Severity = 'critical' | 'warning' | 'info';
 
 const SEVERITY_CONFIG: Record<Severity, {

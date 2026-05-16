@@ -221,14 +221,14 @@ function TransactionRow({ tx, isExpanded, onToggle }: TransactionRowProps) {
                 : "hover:bg-[rgba(255,255,255,0.03)]"
         }`}
       >
-        {/* 시각 / ID */}
+        {/* ID / 시각 */}
         <td className="px-4 py-[12.5px]">
           <div className="flex flex-col gap-[2px]">
-            <span className="text-monitor-text text-[13px] leading-4 font-medium">
-              {tx.time}
-            </span>
-            <span className="text-monitor-text-dim font-mono text-[11px] leading-[15px]">
+            <span className="text-monitor-text font-mono text-[13px] leading-4 font-semibold">
               {tx.id}
+            </span>
+            <span className="text-monitor-text-dim text-[11px] leading-[15px]">
+              {tx.time}
             </span>
           </div>
         </td>
@@ -303,7 +303,7 @@ interface PosTransactionTableProps {
 }
 
 const COL_HEADERS: { label: string; align: "left" | "right" }[] = [
-  { label: "시각 / ID", align: "left" },
+  { label: "ID / 시각", align: "left" },
   { label: "날짜", align: "left" },
   { label: "상태", align: "left" },
   { label: "추적 ID", align: "left" },

@@ -11,13 +11,13 @@ import {
 } from '@xross/core';
 import { useAuthStore } from '@/shared/auth/store';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { MonitoringStackParamList } from '@/app/navigation/types';
+import type { RootStackParamList } from '@/app/navigation/types';
 import type { EventSeverity } from '@xross/core';
 import { DetailHeader } from '../components/DetailHeader';
 import { VerificationList } from '../components/VerificationList';
 import { EventTimeline } from '../components/EventTimeline';
 
-type Props = NativeStackScreenProps<MonitoringStackParamList, 'EventDetail'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'EventDetail'>;
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 

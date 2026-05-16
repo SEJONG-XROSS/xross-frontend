@@ -16,6 +16,12 @@ export type MainTabParamList = {
   Setting: undefined;
 };
 
+export type MonitoringStackParamList = {
+  MonitoringHome: undefined;
+  AlertDetail: { id: number };
+  EventDetail: { id: number };
+};
+
 export type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 export type MonitoringScreenProps = BottomTabScreenProps<MainTabParamList, 'Monitoring'>;
 export type PosScreenProps = BottomTabScreenProps<MainTabParamList, 'Pos'>;

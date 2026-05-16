@@ -150,6 +150,18 @@ export function LoginScreen(_props: LoginScreenProps) {
             </Text>
           )}
         </Pressable>
+
+        {/* 개발 전용: 백엔드 없이 화면 확인 */}
+        {__DEV__ && (
+          <Pressable
+            onPress={() => {
+              useAuthStore.getState().setAuth('dev-mock-token', 1);
+            }}
+            className="h-9 items-center justify-center rounded-lg border border-input-border"
+          >
+            <Text className="text-xs text-label">🛠 개발 모드로 진입 (백엔드 없음)</Text>
+          </Pressable>
+        )}
       </View>
     </KeyboardAwareScrollView>
   );

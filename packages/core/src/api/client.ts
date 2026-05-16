@@ -65,7 +65,19 @@ export function createApiClient(baseURL: string, auth: AuthAdapter): AxiosInstan
         (axios.isAxiosError(error) &&
           (error.response?.data as { message?: string })?.message) ||
         '요청에 실패했습니다.';
-      return Promise.reject(new Error(message));
+
+      // 원래 axios 에러 정보를 보존해서 dev 로깅/디버깅에서 사용 가능하게
+      const err = new Error(message) as Error & {
+        status?: number;
+        axiosCode?: string;
+        axiosUrl?: string;
+      };
+      if (axios.isAxiosError(error)) {
+        err.status = error.response?.status;
+        err.axiosCode = error.code;
+        err.axiosUrl = `${error.config?.baseURL ?? ''}${error.config?.url ?? ''}`;
+      }
+      return Promise.reject(err);
     },
   );
 

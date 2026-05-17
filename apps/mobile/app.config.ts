@@ -38,6 +38,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   extra: {
     apiBaseUrl: process.env.EXPO_PUBLIC_API_BASE_URL,
     mediamtxBaseUrl: process.env.EXPO_PUBLIC_MEDIAMTX_BASE_URL,
+    eas: {
+      projectId: process.env.EAS_PROJECT_ID,
+    },
   },
   plugins: [
     'expo-splash-screen',

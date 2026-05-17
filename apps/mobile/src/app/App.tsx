@@ -9,6 +9,12 @@ import { StatusBar } from 'expo-status-bar';
 import { QueryProvider } from './providers/QueryProvider';
 import { AdaptersProvider } from './providers/AdaptersProvider';
 import { RootNavigator } from './navigation/RootNavigator';
+import { useFCMSetup } from '@/shared/push/useFCMSetup';
+
+function AppInner() {
+  useFCMSetup();
+  return <RootNavigator />;
+}
 
 export default function App() {
   return (
@@ -18,7 +24,7 @@ export default function App() {
           <QueryProvider>
             <AdaptersProvider>
               <StatusBar style="light" />
-              <RootNavigator />
+              <AppInner />
             </AdaptersProvider>
           </QueryProvider>
         </KeyboardProvider>

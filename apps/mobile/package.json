@@ -12,6 +12,9 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
+    "@notifee/react-native": "^9.1.8",
+    "@react-native-firebase/app": "^24.0.0",
+    "@react-native-firebase/messaging": "^24.0.0",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
@@ -39,6 +42,7 @@
     "react-native-screens": "~4.3.0",
     "react-native-sse": "^1.2.0",
     "react-native-svg": "15.8.0",
+    "react-native-webrtc": "^124.0.7",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^3.4.17",
     "zustand": "^5.0.12"

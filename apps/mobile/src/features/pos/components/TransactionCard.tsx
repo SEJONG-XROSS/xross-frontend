@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { usePayment, cn } from '@xross/core';
 import type { PosTransaction, TransactionStatus, PaymentMethod } from '@xross/core';
-import { navigationRef } from '@/app/navigation/RootNavigator';
+import type { RootStackParamList } from '@/app/navigation/types';
 
 const STATUS_CONFIG: Record<TransactionStatus, {
   label: string; rowBg: string; expandBg: string;
@@ -45,13 +47,9 @@ const PAYMENT_ICON: Record<PaymentMethod, IoniconName> = {
   mobile: 'phone-portrait-outline', qr_code: 'qr-code-outline',
 };
 
-function navigateToAlert(alertId: number) {
-  // AlertDetail이 Root 스택에 있어서 navigate만으로 push/back 정상 동작
-  navigationRef.navigate('AlertDetail', { id: alertId });
-}
-
 function TransactionDetail({ tx }: { tx: PosTransaction }) {
   const { data: payment, isLoading } = usePayment(tx.paymentId);
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const cfg = STATUS_CONFIG[tx.status];
   const isUnpaid = tx.status === 'unpaid';
   const isMismatch = tx.status === 'mismatch';
@@ -170,7 +168,7 @@ function TransactionDetail({ tx }: { tx: PosTransaction }) {
 
         {tx.alertId && (
           <Pressable
-            onPress={() => navigateToAlert(tx.alertId!)}
+            onPress={() => navigation.navigate('AlertDetail', { id: tx.alertId! })}
             className="mt-2 flex-row items-center justify-center gap-2 rounded-lg border border-[rgba(251,44,54,0.3)] bg-[rgba(251,44,54,0.08)] px-3 py-2.5"
           >
             <Ionicons name="open-outline" size={12} color="#ff6467" />

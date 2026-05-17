@@ -39,13 +39,12 @@ export function WebRTCView({ streamPath, baseUrl }: Props) {
         const pc = new RTCPeerConnection({ iceServers });
         pcRef.current = pc;
 
-        // 3) recvonly 트랜시버 추가
+        // 3) recvonly 트랜시버
         pc.addTransceiver('video', { direction: 'recvonly' });
         pc.addTransceiver('audio', { direction: 'recvonly' });
 
         // 4) 원격 트랙 수신 → MediaStream URL
         const remoteStream = new MediaStream();
-
         pc.addEventListener('track', (event: RTCTrackEvent<'track'>) => {
           if (event.track) {
             remoteStream.addTrack(event.track);
@@ -56,7 +55,7 @@ export function WebRTCView({ streamPath, baseUrl }: Props) {
           }
         });
 
-        // 5) Offer 생성 → POST → Answer 적용
+        // 5) Offer → POST → Answer
         const offer = await pc.createOffer({});
         await pc.setLocalDescription(offer);
 
@@ -67,7 +66,8 @@ export function WebRTCView({ streamPath, baseUrl }: Props) {
         });
 
         if (!postRes.ok) {
-          throw new Error(`WHEP failed: ${postRes.status}`);
+          const body = await postRes.text();
+          throw new Error(`WHEP failed: ${postRes.status} — ${body}`);
         }
 
         const answerSdp = await postRes.text();

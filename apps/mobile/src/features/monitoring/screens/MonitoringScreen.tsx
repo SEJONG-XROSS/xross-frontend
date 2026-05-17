@@ -12,11 +12,12 @@ import { EventLogPanel } from '../components/EventLogPanel';
 
 type Tab = 'monitor' | 'events';
 
+// id가 MediaMTX 스트림 경로로 사용됨 (웹 camera.id와 동일)
 const MOCK_CAMERAS = [
-  { id: 'cam-1', name: '냉동고 1구역', isOnline: true, isRecording: true, streamPath: 'camera1' },
-  { id: 'cam-2', name: '스낵/주류 코너', isOnline: false, isRecording: false },
-  { id: 'cam-3', name: 'POS 셀프 계산대', isOnline: false, isRecording: false },
-  { id: 'cam-4', name: '입구/출구', isOnline: false, isRecording: false },
+  { id: 'camera1', name: '냉동고 1구역', isOnline: true, isRecording: true, streamPath: 'camera1' },
+  { id: 'camera2', name: '스낵/주류 코너', isOnline: false, isRecording: false },
+  { id: 'camera3', name: 'POS 셀프 계산대', isOnline: false, isRecording: false },
+  { id: 'camera4', name: '입구/출구', isOnline: false, isRecording: false },
 ];
 
 const TABS: { key: Tab; label: string; icon: React.ComponentProps<typeof Ionicons>['name'] }[] = [

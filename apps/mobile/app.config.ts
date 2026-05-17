@@ -17,6 +17,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     supportsTablet: false,
     bundleIdentifier: 'com.xross.mobile',
+    googleServicesFile: './ios/GoogleService-Info.plist',
     infoPlist: {
       NSCameraUsageDescription: 'CCTV 스트리밍에 필요합니다.',
       NSMicrophoneUsageDescription: 'CCTV 스트리밍에 필요합니다.',
@@ -41,8 +42,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     'expo-splash-screen',
     'expo-font',
-    // P13에서 RN Firebase 설정 후 활성화
-    // '@react-native-firebase/app',
-    // '@react-native-firebase/messaging',
+    '@react-native-firebase/app',
+    '@react-native-firebase/messaging',
   ],
 });

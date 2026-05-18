@@ -14,7 +14,8 @@ export interface AuthResponse {
 
 export interface UpdateProfileDto {
   name?: string;
-  password?: string;
+  currentPassword?: string;
+  newPassword?: string;
   storeName?: string;
   storeAddress?: string;
 }

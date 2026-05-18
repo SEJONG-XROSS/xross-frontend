@@ -55,9 +55,11 @@ export function createApiClient(baseURL: string, auth: AuthAdapter): AxiosInstan
     (res) => res,
     (error) => {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
-        // 토큰이 있었던 경우만 세션 만료 → 인증 해제
-        // 로그인 요청의 401(잘못된 자격증명)은 토큰이 없으므로 통과
-        if (auth.getAccessToken()) {
+        const url = error.config?.url ?? '';
+        const method = (error.config?.method ?? '').toLowerCase();
+        // PATCH /auth/me의 401은 비밀번호 오류 — 세션 만료가 아니므로 로그아웃 제외
+        const isPasswordError = url.includes('/auth/me') && method === 'patch';
+        if (auth.getAccessToken() && !isPasswordError) {
           auth.onUnauthorized();
         }
       }

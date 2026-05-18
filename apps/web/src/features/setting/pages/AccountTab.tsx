@@ -66,12 +66,12 @@ export default function AccountTab() {
         <button
           type="button"
           onClick={handleSave}
-          className="bg-brand-primary shadow-button flex h-10 w-full items-center justify-center gap-2 rounded-[10px] px-6 transition-opacity hover:opacity-90 sm:w-auto sm:justify-start"
+          className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand-primary px-6 shadow-[0_0_20px_rgba(21,93,252,0.35)] transition-all hover:shadow-[0_0_28px_rgba(21,93,252,0.5)] hover:brightness-110 sm:w-auto sm:justify-start"
         >
           <span className="relative size-4 shrink-0 text-white">
             <SaveIcon className="absolute block size-full max-w-none" />
           </span>
-          <span className="text-[14px] leading-5 font-medium tracking-[-0.15px] text-white">
+          <span className="text-[14px] leading-5 font-semibold tracking-[-0.15px] text-white">
             변경 저장
           </span>
         </button>
@@ -79,12 +79,12 @@ export default function AccountTab() {
         <button
           type="button"
           onClick={logout}
-          className="flex h-10 w-full items-center justify-center gap-2 rounded-[10px] border border-[#e2e8f0] bg-white px-5 py-[1px] transition-opacity hover:opacity-80 sm:w-auto sm:justify-start"
+          className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-[rgba(251,44,54,0.25)] bg-[rgba(251,44,54,0.07)] px-5 transition-all hover:border-[rgba(251,44,54,0.45)] hover:bg-[rgba(251,44,54,0.12)] sm:w-auto sm:justify-start"
         >
           <span className="relative size-4 shrink-0 text-[#fb2c36]">
             <LogOutIcon className="absolute block size-full max-w-none" />
           </span>
-          <span className="text-[14px] leading-5 font-medium tracking-[-0.15px] text-[#fb2c36]">
+          <span className="text-[14px] leading-5 font-semibold tracking-[-0.15px] text-[#fb2c36]">
             로그아웃
           </span>
         </button>

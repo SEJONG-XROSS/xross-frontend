@@ -26,11 +26,12 @@ export function MonitoringHeader({ date, onDateChange }: Props) {
         borderBottomWidth: 1,
         borderBottomColor: "#e2e8f0",
         paddingTop: insets.top,
+        height: 56 + insets.top,
       }}
     >
       <View
         style={{
-          height: 52,
+          flex: 1,
           flexDirection: "row",
           alignItems: "center",
           paddingHorizontal: 16,

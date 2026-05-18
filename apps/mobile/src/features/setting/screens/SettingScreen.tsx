@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { cn } from '@xross/core';
 import { AccountTab } from '../tabs/AccountTab';
 import { NotificationTab } from '../tabs/NotificationTab';
@@ -10,11 +11,13 @@ import type { SettingScreenProps } from '@/app/navigation/types';
 
 type Tab = 'account' | 'notification' | 'store' | 'system';
 
-const TABS: { key: Tab; label: string }[] = [
-  { key: 'account', label: '계정' },
-  { key: 'notification', label: '알림' },
-  { key: 'store', label: '매장' },
-  { key: 'system', label: '시스템' },
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
+
+const TABS: { key: Tab; label: string; icon: IoniconName }[] = [
+  { key: 'account', label: '계정', icon: 'person-outline' },
+  { key: 'notification', label: '알림', icon: 'notifications-outline' },
+  { key: 'store', label: '매장', icon: 'storefront-outline' },
+  { key: 'system', label: '시스템', icon: 'settings-outline' },
 ];
 
 export function SettingScreen(_props: SettingScreenProps) {
@@ -26,28 +29,40 @@ export function SettingScreen(_props: SettingScreenProps) {
       {/* 헤더 */}
       <View
         className="bg-surface-page border-b border-input-border"
-        style={{ paddingTop: insets.top }}
+        style={{ paddingTop: insets.top, height: 56 + insets.top }}
       >
-        <View className="h-14 items-center justify-center">
+        <View className="flex-1 items-center justify-center">
           <Text className="text-heading text-[15px] font-bold">설정</Text>
         </View>
+      </View>
 
-        {/* 세그먼트 탭 컨트롤 */}
-        <View className="flex-row px-4 pb-0">
-          {TABS.map(({ key, label }) => {
+      {/* 탭바 */}
+      <View className="bg-monitor-bg border-b border-monitor-border px-3 py-2.5">
+        <View className="flex-row gap-1 rounded-xl bg-[rgba(255,255,255,0.06)] p-1">
+          {TABS.map(({ key, label, icon }) => {
             const active = tab === key;
             return (
               <Pressable
                 key={key}
                 onPress={() => setTab(key)}
-                className="flex-1 items-center pb-2.5 pt-1"
+                className={cn(
+                  'flex-1 flex-row items-center justify-center gap-1.5 rounded-lg py-2',
+                  active ? 'bg-monitor-card-bg' : '',
+                )}
               >
-                <Text className={cn('text-[13px] font-medium', active ? 'text-brand-primary' : 'text-body')}>
+                <Ionicons
+                  name={icon}
+                  size={14}
+                  color={active ? '#51a2ff' : '#62748e'}
+                />
+                <Text
+                  className={cn(
+                    'text-[11px] font-semibold tracking-wide',
+                    active ? 'text-monitor-accent-blue' : 'text-monitor-text-dim',
+                  )}
+                >
                   {label}
                 </Text>
-                {active && (
-                  <View className="absolute bottom-0 left-2 right-2 h-[2px] bg-brand-primary rounded-full" />
-                )}
               </Pressable>
             );
           })}
@@ -55,7 +70,7 @@ export function SettingScreen(_props: SettingScreenProps) {
       </View>
 
       {/* 탭 콘텐츠 */}
-      <View className="flex-1 bg-monitor-bg">
+      <View className="flex-1">
         {tab === 'account' && <AccountTab />}
         {tab === 'notification' && <NotificationTab />}
         {tab === 'store' && <StoreTab />}

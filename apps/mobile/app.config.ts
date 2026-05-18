@@ -1,6 +1,25 @@
 import { ExpoConfig, ConfigContext } from 'expo/config';
+import { withDangerousMod } from '@expo/config-plugins';
+import * as fs from 'fs';
+import * as path from 'path';
 
-export default ({ config }: ConfigContext): ExpoConfig => ({
+const withGoogleUtilitiesModularHeaders = (cfg: ExpoConfig): ExpoConfig =>
+  withDangerousMod(cfg, [
+    'ios',
+    (c) => {
+      const podfilePath = path.join(c.modRequest.platformProjectRoot, 'Podfile');
+      let podfile = fs.readFileSync(podfilePath, 'utf8');
+      const line = "  pod 'GoogleUtilities', :modular_headers => true";
+      if (!podfile.includes(line)) {
+        podfile = podfile.replace("target 'Xross' do", `target 'Xross' do\n${line}`);
+        fs.writeFileSync(podfilePath, podfile);
+      }
+      return c;
+    },
+  ]);
+
+export default ({ config }: ConfigContext): ExpoConfig =>
+  withGoogleUtilitiesModularHeaders({
   ...config,
   name: 'Xross',
   slug: 'xross-mobile',
@@ -12,12 +31,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   splash: {
     image: './assets/splash.png',
     resizeMode: 'contain',
-    backgroundColor: '#0f172b',
+    backgroundColor: '#ffffff',
   },
   ios: {
     supportsTablet: false,
     bundleIdentifier: 'com.xross.mobile',
-    googleServicesFile: './ios/GoogleService-Info.plist',
+    googleServicesFile: './GoogleService-Info.plist',
     infoPlist: {
       NSCameraUsageDescription: 'CCTV 스트리밍에 필요합니다.',
       NSMicrophoneUsageDescription: 'CCTV 스트리밍에 필요합니다.',

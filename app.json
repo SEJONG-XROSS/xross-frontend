@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "c7198f64-8fc0-4485-8da2-0a36bc835e93"
+      }
+    },
+    "owner": "yunhyoyeon",
+    "ios": {
+      "bundleIdentifier": "com.yunhyoyeon.xross",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    }
+  }
+}

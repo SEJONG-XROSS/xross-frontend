@@ -4,11 +4,10 @@ import CameraGrid from "@/features/monitoring/components/CameraGrid";
 import AnalyticsPanel from "@/features/monitoring/components/AnalyticsPanel";
 import EventLogPanel from "@/features/monitoring/components/EventLogPanel";
 import { MOCK_CAMERAS } from "@/features/monitoring/data/monitoring.mock";
-import { useEventStream } from "@/features/monitoring/hooks/useEventStream";
-import { useAlertStream } from "@/features/monitoring/hooks/useAlertStream";
-import { getTodayStr, isToday } from "@/shared/lib/date";
+import { isToday } from "@/shared/lib/date";
 import type { EventResponse } from "@/features/monitoring/api/monitoring.types";
 import type { AnalyticsDataPoint } from "@/features/monitoring/types/monitoring.types";
+import type { MonitoringContext } from "@/features/monitoring/layouts/MonitoringLayout";
 import { cn } from "@xross/core";
 import ShieldIcon from "@/assets/icons/shield.svg?react";
 import LogsIcon from "@/assets/icons/logs.svg?react";
@@ -78,13 +77,15 @@ function buildChartData(
   });
 }
 
-export default function MonitoringPage() {
+export default function MonitoringPage({
+  alerts,
+  events,
+  connected,
+  selectedDate,
+  setSelectedDate,
+}: MonitoringContext) {
   const [mobileTab, setMobileTab] = useState<MobileTab>("monitor");
-  const [selectedDate, setSelectedDate] = useState(getTodayStr);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-
-  const { events } = useEventStream(selectedDate);
-  const { alerts, connected } = useAlertStream(selectedDate);
 
   const criticalCount = alerts.filter(
     (a) => a.status === "PENDING" || a.status === "SENT",

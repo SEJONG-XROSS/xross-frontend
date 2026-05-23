@@ -21,7 +21,7 @@ const ProtectedRoute = () => {
 };
 import LoginPage from "@/features/auth/pages/LoginPage";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
-import MonitoringPage from "@/features/monitoring/pages/MonitoringPage";
+import MonitoringLayout from "@/features/monitoring/layouts/MonitoringLayout";
 import EventDetailPage from "@/features/monitoring/pages/EventDetailPage";
 import AlertDetailPage from "@/features/monitoring/pages/AlertDetailPage";
 import PosPage from "@/features/pos/pages/PosPage";
@@ -49,9 +49,14 @@ export const routes: RouteObject[] = [
         element: <RootLayout />,
         children: [
           { index: true, element: <Navigate to="/monitoring" replace /> },
-          { path: "monitoring", element: <MonitoringPage /> },
-          { path: "monitoring/alerts/:id", element: <AlertDetailPage /> },
-          { path: "monitoring/events/:id", element: <EventDetailPage /> },
+          {
+            path: "monitoring",
+            element: <MonitoringLayout />,
+            children: [
+              { path: "alerts/:id", element: <AlertDetailPage /> },
+              { path: "events/:id", element: <EventDetailPage /> },
+            ],
+          },
           { path: "pos", element: <PosPage /> },
           {
             path: "settings",

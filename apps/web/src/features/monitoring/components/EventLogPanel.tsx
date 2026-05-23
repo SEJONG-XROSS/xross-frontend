@@ -1,7 +1,8 @@
+import { useMemo, useState } from "react";
 import type { AlertResponse } from "@/features/monitoring/api/monitoring.types";
 import EventCard from "@/features/monitoring/components/EventCard";
 import LogsIcon from "@/assets/icons/logs.svg?react";
-import { cn } from "@xross/core";
+import { cn, sortAlerts, type AlertSortKey } from "@xross/core";
 
 interface EventLogPanelProps {
   alerts: AlertResponse[];
@@ -10,11 +11,23 @@ interface EventLogPanelProps {
   standalone?: boolean;
 }
 
+const SORT_OPTIONS: { key: AlertSortKey; label: string }[] = [
+  { key: "recent", label: "최신순" },
+  { key: "priority", label: "중요도순" },
+];
+
 export default function EventLogPanel({
   alerts,
   connected,
   standalone,
 }: EventLogPanelProps) {
+  const [sortKey, setSortKey] = useState<AlertSortKey>("recent");
+
+  const sortedAlerts = useMemo(
+    () => sortAlerts(alerts, sortKey),
+    [alerts, sortKey],
+  );
+
   const criticalCount = alerts.filter(
     (a) => a.status === "PENDING" || a.status === "SENT",
   ).length;
@@ -55,11 +68,49 @@ export default function EventLogPanel({
         </div>
       )}
 
+      {/* 정렬 토글 */}
+      <div
+        className={cn(
+          "shrink-0 px-4 py-2",
+          standalone ? "" : "border-monitor-border border-b",
+        )}
+        role="group"
+        aria-label="알림 정렬"
+      >
+        <div className="flex gap-1 rounded-lg bg-[rgba(255,255,255,0.06)] p-1">
+          {SORT_OPTIONS.map(({ key, label }) => {
+            const active = sortKey === key;
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setSortKey(key)}
+                aria-pressed={active}
+                className={cn(
+                  "flex-1 rounded-md py-1.5 text-[11px] font-semibold tracking-[0.2px] transition-colors",
+                  active
+                    ? "bg-monitor-card-bg text-monitor-accent-blue"
+                    : "text-monitor-text-dim hover:text-monitor-text-muted",
+                )}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* 이벤트 목록 */}
       <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
-        {alerts.map((alert) => (
-          <EventCard key={alert.id} alert={alert} />
-        ))}
+        {sortedAlerts.length === 0 ? (
+          <div className="text-monitor-text-dim flex flex-1 items-center justify-center text-[12px]">
+            탐지된 이벤트가 없습니다.
+          </div>
+        ) : (
+          sortedAlerts.map((alert) => (
+            <EventCard key={alert.id} alert={alert} />
+          ))
+        )}
       </div>
     </div>
   );

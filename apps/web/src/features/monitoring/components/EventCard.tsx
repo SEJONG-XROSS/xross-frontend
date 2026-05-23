@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { cn } from "@xross/core";
 import type { AlertResponse } from "@/features/monitoring/api/monitoring.types";
 import { getAlertSeverity } from "@/features/monitoring/lib/mappers";
@@ -60,16 +60,20 @@ interface EventCardProps {
 
 export default function EventCard({ alert }: EventCardProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const severity = getAlertSeverity(alert.priority);
   const { Icon: EventIcon, ...style } = SEVERITY_CONFIG[severity];
+  const goDetail = () =>
+    navigate({
+      pathname: `/monitoring/alerts/${alert.id}`,
+      search: location.search,
+    });
   return (
     <div
       role="button"
       tabIndex={0}
-      onClick={() => navigate(`/monitoring/alerts/${alert.id}`)}
-      onKeyDown={(e) =>
-        e.key === "Enter" && navigate(`/monitoring/alerts/${alert.id}`)
-      }
+      onClick={goDetail}
+      onKeyDown={(e) => e.key === "Enter" && goDetail()}
 
       className={cn(
         "bg-monitor-card-bg relative cursor-pointer rounded-[14px] border p-[14px] transition-opacity hover:opacity-80",

@@ -26,6 +26,7 @@ export * from './mappers/pos';
 // Utils
 export * from './utils/date';
 export * from './utils/cn';
+export * from './utils/sortAlerts';
 export * from './business/pos';
 
 // Hooks

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Modal, View, Text, Pressable, ScrollView } from 'react-native';
+import React, { useRef, useEffect, useState } from 'react';
+import { Modal, View, Text, Pressable, ScrollView, Animated, PanResponder } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { cn } from '@xross/core';
 import type { PosFilters, StatusFilterOption, PaymentFilterOption } from '@xross/core';
@@ -55,18 +55,72 @@ function ChipRow<T extends string>({
 
 export function PosFilterSheet({ visible, filters, onChange, onClose }: Props) {
   const [calVisible, setCalVisible] = React.useState<'from' | 'to' | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const today = getTodayStr();
 
+  const translateY = useRef(new Animated.Value(600)).current;
+  const overlayOpacity = useRef(new Animated.Value(0)).current;
+
+  const animateOut = () => {
+    Animated.parallel([
+      Animated.timing(translateY, { toValue: 600, duration: 250, useNativeDriver: true }),
+      Animated.timing(overlayOpacity, { toValue: 0, duration: 200, useNativeDriver: true }),
+    ]).start(() => setModalVisible(false));
+  };
+
+  useEffect(() => {
+    if (visible) {
+      setModalVisible(true);
+      Animated.parallel([
+        Animated.spring(translateY, { toValue: 0, damping: 20, stiffness: 200, useNativeDriver: true }),
+        Animated.timing(overlayOpacity, { toValue: 1, duration: 220, useNativeDriver: true }),
+      ]).start();
+    } else {
+      animateOut();
+    }
+  }, [visible]);
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (_, { dy }) => dy > 3,
+      onPanResponderMove: (_, { dy }) => {
+        if (dy > 0) translateY.setValue(dy);
+      },
+      onPanResponderRelease: (_, { dy, vy }) => {
+        if (dy > 120 || vy > 0.8) {
+          onClose();
+        } else {
+          Animated.spring(translateY, { toValue: 0, damping: 20, stiffness: 200, useNativeDriver: true }).start();
+        }
+      },
+    })
+  ).current;
+
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <View className="flex-1 justify-end bg-[rgba(0,0,0,0.5)]">
-        <View className="bg-monitor-bg rounded-t-2xl px-5 pt-5 pb-8">
-          {/* 핸들 */}
-          <View className="w-10 h-1 bg-monitor-border rounded-full self-center mb-4" />
+    <Modal visible={modalVisible} transparent animationType="none" onRequestClose={onClose}>
+      <View className="flex-1">
+        {/* 딤 오버레이 */}
+        <Animated.View
+          className="absolute inset-0"
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)', opacity: overlayOpacity }}
+        >
+          <Pressable className="flex-1" onPress={onClose} />
+        </Animated.View>
+
+        {/* 바텀 시트 */}
+        <Animated.View
+          className="absolute bottom-0 left-0 right-0 bg-monitor-bg rounded-t-2xl px-5 pt-3 pb-8"
+          style={{ transform: [{ translateY }] }}
+        >
+          {/* 드래그 핸들 */}
+          <View {...panResponder.panHandlers} className="items-center py-3 -mx-5 px-5">
+            <View className="w-10 h-1 bg-monitor-border rounded-full" />
+          </View>
 
           <View className="flex-row items-center justify-between mb-5">
             <Text className="text-monitor-text text-base font-bold">필터</Text>
-            <Pressable onPress={onClose}>
+            <Pressable onPress={onClose} hitSlop={8}>
               <Ionicons name="close" size={20} color="#90a1b9" />
             </Pressable>
           </View>
@@ -125,7 +179,7 @@ export function PosFilterSheet({ visible, filters, onChange, onClose }: Props) {
               <Text className="text-monitor-text-muted text-sm">필터 초기화</Text>
             </Pressable>
           </ScrollView>
-        </View>
+        </Animated.View>
       </View>
 
       <CalendarPicker

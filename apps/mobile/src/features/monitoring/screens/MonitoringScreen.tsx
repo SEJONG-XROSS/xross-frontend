@@ -9,6 +9,7 @@ import { MonitoringHeader } from '../components/MonitoringHeader';
 import { CameraCarousel } from '../components/CameraCarousel';
 import { AnalyticsPanel, buildStats, buildChartData } from '../components/AnalyticsPanel';
 import { EventLogPanel } from '../components/EventLogPanel';
+import { EventLogModal } from '../components/EventLogModal';
 
 type Tab = 'monitor' | 'events';
 
@@ -31,6 +32,7 @@ export function MonitoringScreen() {
   const [tab, setTab] = useState<Tab>('monitor');
   const [date, setDate] = useState(getTodayStr);
   const [streamEnabled, setStreamEnabled] = useState(true);
+  const [eventLogVisible, setEventLogVisible] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -45,7 +47,7 @@ export function MonitoringScreen() {
   const criticalCount = alerts.filter(
     (a: { status: string }) => a.status === 'PENDING' || a.status === 'SENT',
   ).length;
-  const stats = buildStats(events, alerts);
+  const { behaviorStats, paymentStats } = buildStats(events);
   const chartData = buildChartData(events, date);
 
   return (
@@ -81,17 +83,32 @@ export function MonitoringScreen() {
         </View>
       </View>
 
-      {/* 두 탭 모두 항상 mount — hidden(display:none) 으로만 가려 CameraCarousel/WebRTC 재연결 방지 */}
-      <ScrollView
-        className={cn('flex-1', tab !== 'monitor' && 'hidden')}
-        showsVerticalScrollIndicator={false}
-      >
+      {/* 관제 탭 */}
+      <View className={cn('flex-1', tab !== 'monitor' && 'hidden')}>
+        {/* 카메라 — 항상 노출, WebRTC 유지 */}
         <CameraCarousel cameras={MOCK_CAMERAS} />
-        <AnalyticsPanel stats={stats} chartData={chartData} />
-      </ScrollView>
+
+        {/* 통계 차트 */}
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+          <AnalyticsPanel
+            behaviorStats={behaviorStats}
+            paymentStats={paymentStats}
+            chartData={chartData}
+            date={date}
+            onOpenEventLog={() => setEventLogVisible(true)}
+          />
+        </ScrollView>
+      </View>
       <View className={cn('flex-1', tab !== 'events' && 'hidden')}>
         <EventLogPanel alerts={alerts} connected={connected} />
       </View>
+
+      <EventLogModal
+        visible={eventLogVisible}
+        events={events}
+        date={date}
+        onClose={() => setEventLogVisible(false)}
+      />
     </View>
   );
 }

@@ -78,7 +78,7 @@ function buildEventDescription(e: EventResponse): string {
     case 'PUT': return `${e.product?.name ?? '상품'}을(를) 반납했습니다.`;
     case 'BROWSE_ONLY': return '고객이 진열대를 탐색했습니다.';
     case 'CART_UPDATED': return '장바구니가 변경되었습니다.';
-    case 'PAYMENT_RECEIVED': return 'POS 결제가 완료되었습니다.';
+    case 'PAID': return 'POS 결제가 완료되었습니다.';
     case 'PAYMENT_MATCHED': return '결제 내역이 장바구니와 일치합니다.';
     case 'PAYMENT_MISMATCH': return e.message ?? '장바구니 불일치 결제가 감지되었습니다.';
     case 'UNPAID_SUSPICIOUS': return e.message ?? '미결제 의심 퇴장이 감지되었습니다.';

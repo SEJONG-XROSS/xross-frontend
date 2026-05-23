@@ -31,7 +31,7 @@ export interface EventFreezerResponse {
 export type EventType =
   | 'ENTER' | 'LOCATION_UPDATE' | 'SENSOR_TRIGGER'
   | 'PICK' | 'PUT' | 'BROWSE_ONLY' | 'CART_UPDATED'
-  | 'PAYMENT_RECEIVED' | 'PAYMENT_MATCHED' | 'PAYMENT_MISMATCH'
+  | 'PAID' | 'PAYMENT_MATCHED' | 'PAYMENT_MISMATCH'
   | 'UNPAID_SUSPICIOUS' | 'EXIT_LINE_CROSSED'
   | 'LONG_STAY' | 'FALL_DETECTED' | 'ALERT_SENT';
 
@@ -94,7 +94,7 @@ export interface AlertResponse {
 
 export type EventDetailType =
   | 'CUSTOMER_ENTER' | 'CUSTOMER_EXIT' | 'ITEM_PICKED'
-  | 'ITEM_RETURNED' | 'WEIGHT_CHANGE' | 'PAYMENT_COMPLETED';
+  | 'ITEM_RETURNED' | 'WEIGHT_CHANGE' | 'PAYMENT_MATCHED';
 
 export type EventDetailStatus =
   | 'PENDING' | 'PROCESSED' | 'MATCHED' | 'IGNORED' | 'ERROR';

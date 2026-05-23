@@ -14,7 +14,7 @@ export function mapApiPaymentMethod(method: ApiPaymentMethod): PaymentMethod {
 }
 
 export const POS_EVENT_TYPES = [
-  'PAYMENT_RECEIVED',
+  'PAYMENT_MATCHED',
   'PAYMENT_MISMATCH',
   'UNPAID_SUSPICIOUS',
 ] as const;

@@ -44,11 +44,11 @@ const FILTERS: { key: FilterKey; label: string; types: string[] }[] = [
   { key: "all",     label: "전체",      types: [] },
   { key: "entry",   label: "입장·이동", types: ["ENTER", "LOCATION_UPDATE", "EXIT_LINE_CROSSED"] },
   { key: "product", label: "상품",      types: ["PICK", "PUT", "BROWSE_ONLY", "CART_UPDATED", "SENSOR_TRIGGER"] },
-  { key: "payment", label: "결제",      types: ["PAYMENT_RECEIVED", "PAYMENT_MATCHED", "PAYMENT_MISMATCH"] },
-  { key: "anomaly", label: "이상 감지", types: ["UNPAID_SUSPICIOUS", "LONG_STAY", "FALL_DETECTED"] },
+  { key: "payment", label: "결제",      types: ["PAID", "PAYMENT_MATCHED"] },
+  { key: "anomaly", label: "이상 감지", types: ["UNPAID_SUSPICIOUS", "LONG_STAY", "FALL_DETECTED", "PAYMENT_MISMATCH"] },
 ];
 
-type Severity = "critical" | "warning" | "info";
+type Severity = "critical" | "warning" | "success" | "info";
 
 const TYPE_SEVERITY: Record<string, Severity> = {
   UNPAID_SUSPICIOUS: "critical",
@@ -56,11 +56,13 @@ const TYPE_SEVERITY: Record<string, Severity> = {
   PAYMENT_MISMATCH: "warning",
   LONG_STAY: "warning",
   ALERT_SENT: "warning",
+  PAYMENT_MATCHED: "success",
 };
 
 const TYPE_BADGE: Record<Severity, string> = {
   critical: "bg-[rgba(255,100,103,0.1)] text-event-critical border border-[rgba(255,100,103,0.25)]",
   warning:  "bg-[rgba(254,154,0,0.1)]  text-event-warning  border border-[rgba(254,154,0,0.25)]",
+  success:  "bg-[rgba(0,212,146,0.1)]  text-[#00d492]      border border-[rgba(0,212,146,0.25)]",
   info:     "bg-monitor-card-bg        text-monitor-text   border border-monitor-border",
 };
 

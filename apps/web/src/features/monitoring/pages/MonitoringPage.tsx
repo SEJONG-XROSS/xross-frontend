@@ -44,7 +44,7 @@ function buildStats(events: EventResponse[]) {
     },
     {
       label: "결제 완료",
-      value: String(events.filter((e) => e.type === "PAYMENT_RECEIVED").length),
+      value: String(events.filter((e) => e.type === "PAYMENT_MATCHED").length),
       variant: "success" as const,
     },
   ];
@@ -76,7 +76,7 @@ function buildChartData(
       picks: inRange.filter((e) => e.type === "PICK").length,
       suspicions: inRange.filter((e) => e.type === "UNPAID_SUSPICIOUS").length,
       enters: inRange.filter((e) => e.type === "ENTER").length,
-      payments: inRange.filter((e) => e.type === "PAYMENT_RECEIVED").length,
+      payments: inRange.filter((e) => e.type === "PAYMENT_MATCHED").length,
     };
   });
 }

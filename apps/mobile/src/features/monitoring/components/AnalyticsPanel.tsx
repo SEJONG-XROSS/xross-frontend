@@ -1,7 +1,7 @@
-import React from "react";
-import { View, Text, useWindowDimensions } from "react-native";
+import React, { useState, useMemo } from "react";
+import { View, Text, Pressable, useWindowDimensions } from "react-native";
 import { LineChart } from "react-native-gifted-charts";
-import type { EventResponse, AlertResponse } from "@xross/core";
+import type { EventResponse } from "@xross/core";
 
 interface Stat {
   label: string;
@@ -10,8 +10,17 @@ interface Stat {
 }
 
 interface Props {
-  stats: Stat[];
-  chartData: { time: string; picks: number; suspicions: number }[];
+  behaviorStats: Stat[];
+  paymentStats: Stat[];
+  chartData: {
+    time: string;
+    picks: number;
+    suspicions: number;
+    enters: number;
+    payments: number;
+  }[];
+  date: string;
+  onOpenEventLog?: () => void;
 }
 
 const STAT_COLOR = {
@@ -20,97 +29,114 @@ const STAT_COLOR = {
   success: "#00d492",
 };
 
-export function AnalyticsPanel({ stats, chartData }: Props) {
-  const { width } = useWindowDimensions();
-  const chartWidth = width - 32;
-  // 포인트당 간격 — 최대 20px 로 제한해 데이터가 적을 때 과도하게 벌어지지 않게
-  const spacing = Math.min(20, chartWidth / Math.max(chartData.length, 1));
+type ChartMode = "hourly" | "cumulative";
+type ChartTab = "behavior" | "payment";
 
-  // x라벨 — 2시간 고정 간격, dataHour는 툴팁에서 사용
-  const picksData = chartData.map((d, i) => ({
-    value: d.picks,
-    label: i % 2 === 0 ? `${i}h` : "",
-    dataHour: i,
-  }));
-  const suspData = chartData.map((d) => ({ value: d.suspicions }));
+const CHART_TABS: { key: ChartTab; label: string; color: string }[] = [
+  { key: "behavior", label: "Pick 행동",  color: "#51a2ff" },
+  { key: "payment",  label: "입장·결제",  color: "#8b5cf6" },
+];
 
+function toCumulative(data: Props["chartData"]): Props["chartData"] {
+  let picks = 0, suspicions = 0, enters = 0, payments = 0;
+  return data.map((d) => {
+    picks += d.picks;
+    suspicions += d.suspicions;
+    enters += d.enters;
+    payments += d.payments;
+    return { ...d, picks, suspicions, enters, payments };
+  });
+}
+
+function formatDate(dateStr: string): string {
+  const today = new Date().toLocaleDateString("en-CA");
+  if (dateStr === today) return "금일";
+  const d = new Date(dateStr);
+  return `${d.getMonth() + 1}월 ${d.getDate()}일`;
+}
+
+function StatRow({ stats }: { stats: Stat[] }) {
   return (
-    <View
-      style={{
-        backgroundColor: "#0f172b",
-        borderTopWidth: 1,
-        borderTopColor: "#1d293d",
-        paddingHorizontal: 16,
-        paddingTop: 12,
-        paddingBottom: 16,
-      }}
-    >
-      {/* 헤더 + 통계 */}
-      <Text
-        style={{
-          fontSize: 10,
-          fontWeight: "700",
-          color: "#90a1b9",
-          letterSpacing: 1.2,
-          textTransform: "uppercase",
-          marginBottom: 10,
-        }}
-      >
-        매장 행동 분석 통계
-      </Text>
-      <View style={{ flexDirection: "row", marginBottom: 16 }}>
-        {stats.map((stat, i) => (
-          <View
-            key={stat.label}
-            style={{
-              flex: 1,
-              paddingLeft: i > 0 ? 16 : 0,
-              paddingRight: 12,
-              borderLeftWidth: i > 0 ? 1 : 0,
-              borderLeftColor: "#314158",
-              alignItems: "flex-end",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 11,
-                color: "#62748e",
-                fontFamily: "monospace",
-              }}
-            >
-              {stat.label}
-            </Text>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "700",
-                color: STAT_COLOR[stat.variant ?? "default"],
-                fontFamily: "monospace",
-              }}
-            >
-              {stat.value}
-            </Text>
-          </View>
-        ))}
+    <View style={{ flexDirection: "row", gap: 0 }}>
+      {stats.map((stat, i) => (
+        <View
+          key={stat.label}
+          style={{
+            paddingLeft: i > 0 ? 12 : 0,
+            paddingRight: 12,
+            borderLeftWidth: i > 0 ? 1 : 0,
+            borderLeftColor: "#314158",
+          }}
+        >
+          <Text style={{ fontSize: 10, color: "#62748e", fontFamily: "monospace" }}>
+            {stat.label}
+          </Text>
+          <Text style={{ fontSize: 14, fontWeight: "700", color: STAT_COLOR[stat.variant ?? "default"], fontFamily: "monospace" }}>
+            {stat.value}
+          </Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+function ChartSection({
+  label,
+  stats,
+  data1,
+  data2,
+  color1,
+  color2,
+  fill1,
+  fill2,
+  chartWidth,
+  spacing,
+  mode,
+  tooltipKey1,
+  tooltipKey2,
+}: {
+  label: string;
+  stats: Stat[];
+  data1: { value: number; label?: string; dataHour?: number }[];
+  data2: { value: number }[];
+  color1: string;
+  color2: string;
+  fill1: string;
+  fill2: string;
+  chartWidth: number;
+  spacing: number;
+  mode: ChartMode;
+  tooltipKey1: string;
+  tooltipKey2: string;
+}) {
+  const totalPoints = data1.length;
+  return (
+    <View style={{ marginBottom: 4 }}>
+      {/* 라벨 + 통계 */}
+      <View style={{ flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 6 }}>
+        <Text style={{ fontSize: 9, fontWeight: "700", color: "#62748e", letterSpacing: 1, textTransform: "uppercase" }}>
+          {label}
+        </Text>
+        <StatRow stats={stats} />
       </View>
 
       {/* 차트 */}
-      {chartData.length > 0 && (
+      {data1.length > 0 && (
         <View style={{ marginLeft: -8 }}>
           <LineChart
-            data={picksData}
-            data2={suspData}
+            data={data1}
+            data2={data2}
             width={chartWidth}
-            height={120}
+            height={100}
             spacing={spacing}
-            color1="#51a2ff"
-            color2="#ff6467"
+            color1={color1}
+            color2={color2}
             thickness1={2}
             thickness2={1.5}
-            startFillColor1="rgba(81,162,255,0.2)"
-            endFillColor1="rgba(81,162,255,0)"
-            startFillColor2="rgba(255,100,103,0.15)"
-            endFillColor2="rgba(255,100,103,0)"
+            startFillColor1={fill1}
+            endFillColor1="rgba(0,0,0,0)"
+            startFillColor2={fill2}
+            endFillColor2="rgba(0,0,0,0)"
             areaChart
             curved
             hideDataPoints
@@ -120,60 +146,31 @@ export function AnalyticsPanel({ stats, chartData }: Props) {
             xAxisThickness={1}
             backgroundColor="transparent"
             noOfSections={3}
-            yAxisTextStyle={{ color: "#62748e", fontSize: 9 }}
             xAxisLabelTextStyle={{ color: "#62748e", fontSize: 8 }}
             showXAxisIndices={false}
             pointerConfig={{
-              pointerStripHeight: 80,
+              pointerStripHeight: 70,
               pointerStripColor: "#314158",
               pointerStripWidth: 1,
-              pointerColor: "#51a2ff",
+              pointerColor: color1,
               radius: 4,
               pointerLabelWidth: 80,
-              pointerLabelHeight: 40,
+              pointerLabelHeight: 44,
               activatePointersOnLongPress: false,
-              pointerLabelComponent: (
-                items: { value: number; dataHour?: number }[],
-              ) => {
+              pointerLabelComponent: (items: { value: number; dataHour?: number }[]) => {
                 const hour = items[0]?.dataHour ?? 0;
-                const total = chartData.length;
-                const TOOLTIP_WIDTH = 72;
-                // 스트립 기준 중앙 정렬 (기본)
-                // 오른쪽 끝 구간은 스트립 오른쪽에 툴팁이 붙도록 오프셋
-                const isRightSide = (hour as number) >= total * 0.65;
-                // 스트립과 툴팁이 항상 연결되도록:
-                // - 기본: 스트립이 툴팁 왼쪽 가장자리에 닿게 (marginLeft: 0)
-                // - 오른쪽: 스트립이 툴팁 오른쪽 가장자리에 닿게 (marginLeft: -TOOLTIP_WIDTH)
-                const marginLeft = isRightSide ? -TOOLTIP_WIDTH + 20 : 0;
+                const isRightSide = (hour as number) >= totalPoints * 0.65;
+                const marginLeft = isRightSide ? -60 : 0;
                 return (
-                  <View
-                    style={{
-                      marginLeft,
-                      backgroundColor: "#020618",
-                      borderRadius: 6,
-                      borderWidth: 1,
-                      borderColor: "#314158",
-                      padding: 6,
-                      gap: 2,
-                      width: TOOLTIP_WIDTH,
-                    }}
-                  >
-                    <Text
-                      style={{ color: "#62748e", fontSize: 9, marginBottom: 2 }}
-                    >
-                      {hour}시
+                  <View style={{ marginLeft, backgroundColor: "#020618", borderRadius: 6, borderWidth: 1, borderColor: "#314158", padding: 6, gap: 2, width: 80 }}>
+                    <Text style={{ color: "#62748e", fontSize: 9, marginBottom: 2 }}>
+                      {mode === "cumulative" ? `~${hour}시 누적` : `${hour}시`}
                     </Text>
-                    <Text
-                      style={{
-                        color: "#51a2ff",
-                        fontSize: 10,
-                        fontWeight: "700",
-                      }}
-                    >
-                      집기 {items[0]?.value ?? 0}
+                    <Text style={{ color: color1, fontSize: 10, fontWeight: "700" }}>
+                      {tooltipKey1} {items[0]?.value ?? 0}
                     </Text>
-                    <Text style={{ color: "#ff6467", fontSize: 10 }}>
-                      의심 {items[1]?.value ?? 0}
+                    <Text style={{ color: color2, fontSize: 10 }}>
+                      {tooltipKey2} {items[1]?.value ?? 0}
                     </Text>
                   </View>
                 );
@@ -186,26 +183,129 @@ export function AnalyticsPanel({ stats, chartData }: Props) {
   );
 }
 
-export function buildStats(
-  events: EventResponse[],
-  alerts: AlertResponse[],
-): Stat[] {
-  return [
-    {
-      label: "총 입장",
-      value: String(events.filter((e) => e.type === "ENTER").length),
-    },
-    {
-      label: "상품 집기",
-      value: String(events.filter((e) => e.type === "PICK").length),
-    },
-    { label: "이상 감지", value: String(alerts.length), variant: "danger" },
-    {
-      label: "결제 완료",
-      value: String(events.filter((e) => e.type === "PAYMENT_RECEIVED").length),
-      variant: "success",
-    },
+export function AnalyticsPanel({ behaviorStats, paymentStats, chartData, date, onOpenEventLog }: Props) {
+  const { width } = useWindowDimensions();
+  const chartWidth = width - 32;
+  const [mode, setMode] = useState<ChartMode>("hourly");
+  const [chartTab, setChartTab] = useState<ChartTab>("behavior");
+
+  const displayData = mode === "cumulative" ? toCumulative(chartData) : chartData;
+  const spacing = Math.min(20, chartWidth / Math.max(displayData.length, 1));
+
+  const behaviorData1 = displayData.map((d, i) => ({
+    value: d.picks,
+    label: i % 2 === 0 ? `${i}h` : "",
+    dataHour: i,
+  }));
+  const behaviorData2 = displayData.map((d) => ({ value: d.suspicions }));
+
+  const paymentData1 = displayData.map((d, i) => ({
+    value: d.enters,
+    label: i % 2 === 0 ? `${i}h` : "",
+    dataHour: i,
+  }));
+  const paymentData2 = displayData.map((d) => ({ value: d.payments }));
+
+  return (
+    <View style={{ backgroundColor: "#0f172b", borderTopWidth: 1, borderTopColor: "#1d293d", paddingHorizontal: 16, paddingTop: 12, paddingBottom: 16 }}>
+      {/* 헤더 */}
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+        <Text style={{ fontSize: 10, fontWeight: "700", color: "#90a1b9", letterSpacing: 1.2, textTransform: "uppercase" }}>
+          매장 행동 분석 통계{" "}
+          <Text style={{ color: "#62748e", letterSpacing: 0 }}>({formatDate(date)})</Text>
+        </Text>
+
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+          {onOpenEventLog && (
+            <Pressable
+              onPress={onOpenEventLog}
+              style={{ borderWidth: 1, borderColor: "#1d293d", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, backgroundColor: "#0d1b2e" }}
+            >
+              <Text style={{ fontSize: 10, fontWeight: "600", color: "#62748e" }}>이벤트 로그</Text>
+            </Pressable>
+          )}
+          <View style={{ flexDirection: "row", borderWidth: 1, borderColor: "#1d293d", borderRadius: 6, backgroundColor: "#0d1b2e", padding: 2 }}>
+            {(["hourly", "cumulative"] as const).map((m) => (
+              <Pressable
+                key={m}
+                onPress={() => setMode(m)}
+                style={{ paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, backgroundColor: mode === m ? "#51a2ff" : "transparent" }}
+              >
+                <Text style={{ fontSize: 9, fontWeight: "700", color: mode === m ? "#fff" : "#62748e" }}>
+                  {m === "hourly" ? "시간대별" : "누적"}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      </View>
+
+      {/* 차트 탭 */}
+      <View style={{ flexDirection: "row", backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 10, padding: 3, marginBottom: 14 }}>
+        {CHART_TABS.map(({ key, label, color }) => {
+          const active = chartTab === key;
+          return (
+            <Pressable
+              key={key}
+              onPress={() => setChartTab(key)}
+              style={{ flex: 1, alignItems: "center", paddingVertical: 7, borderRadius: 7, backgroundColor: active ? "#0d1b2e" : "transparent" }}
+            >
+              <Text style={{ fontSize: 11, fontWeight: "700", color: active ? color : "#62748e" }}>
+                {label}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+
+      {/* 차트 */}
+      {chartTab === "behavior" ? (
+        <ChartSection
+          label="Pick 행동 · 미결제 의심"
+          stats={behaviorStats}
+          data1={behaviorData1}
+          data2={behaviorData2}
+          color1="#51a2ff"
+          color2="#ff6467"
+          fill1="rgba(81,162,255,0.2)"
+          fill2="rgba(255,100,103,0.15)"
+          chartWidth={chartWidth}
+          spacing={spacing}
+          mode={mode}
+          tooltipKey1="집기"
+          tooltipKey2="의심"
+        />
+      ) : (
+        <ChartSection
+          label="총 입장 · 결제 완료"
+          stats={paymentStats}
+          data1={paymentData1}
+          data2={paymentData2}
+          color1="#8b5cf6"
+          color2="#00d492"
+          fill1="rgba(139,92,246,0.2)"
+          fill2="rgba(0,212,146,0.15)"
+          chartWidth={chartWidth}
+          spacing={spacing}
+          mode={mode}
+          tooltipKey1="입장"
+          tooltipKey2="결제"
+        />
+      )}
+    </View>
+  );
+}
+
+export function buildStats(events: EventResponse[]) {
+  const behaviorStats: { label: string; value: string; variant?: "default" | "danger" | "success" }[] = [
+    { label: "상품 집기", value: String(events.filter((e) => e.type === "PICK").length) },
+    { label: "미결제 의심", value: String(events.filter((e) => e.type === "UNPAID_SUSPICIOUS").length), variant: "danger" },
   ];
+  const paymentStats: { label: string; value: string; variant?: "default" | "danger" | "success" }[] = [
+    { label: "총 입장", value: String(events.filter((e) => e.type === "ENTER").length) },
+    { label: "결제 완료", value: String(events.filter((e) => e.type === "PAYMENT_MATCHED").length), variant: "success" },
+  ];
+  return { behaviorStats, paymentStats };
 }
 
 export function buildChartData(events: EventResponse[], date: string) {
@@ -228,9 +328,9 @@ export function buildChartData(events: EventResponse[], date: string) {
     return {
       time: `${h}시`,
       picks: inRange.filter((e) => e.type === "PICK").length,
-      suspicions: inRange.filter(
-        (e) => e.type === "UNPAID_SUSPICIOUS" || e.type === "PAYMENT_MISMATCH",
-      ).length,
+      suspicions: inRange.filter((e) => e.type === "UNPAID_SUSPICIOUS").length,
+      enters: inRange.filter((e) => e.type === "ENTER").length,
+      payments: inRange.filter((e) => e.type === "PAYMENT_MATCHED").length,
     };
   });
 }

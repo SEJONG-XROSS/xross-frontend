@@ -81,14 +81,17 @@ export function MonitoringScreen() {
         </View>
       </View>
 
-      {tab === 'monitor' ? (
-        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-          <CameraCarousel cameras={MOCK_CAMERAS} />
-          <AnalyticsPanel stats={stats} chartData={chartData} />
-        </ScrollView>
-      ) : (
+      {/* 두 탭 모두 항상 mount — hidden(display:none) 으로만 가려 CameraCarousel/WebRTC 재연결 방지 */}
+      <ScrollView
+        className={cn('flex-1', tab !== 'monitor' && 'hidden')}
+        showsVerticalScrollIndicator={false}
+      >
+        <CameraCarousel cameras={MOCK_CAMERAS} />
+        <AnalyticsPanel stats={stats} chartData={chartData} />
+      </ScrollView>
+      <View className={cn('flex-1', tab !== 'events' && 'hidden')}>
         <EventLogPanel alerts={alerts} connected={connected} />
-      )}
+      </View>
     </View>
   );
 }

@@ -201,7 +201,8 @@ export default function WebRTCVideoPlayer({
         autoPlay
         playsInline
         muted={muted}
-        className="absolute inset-0 z-0 h-full w-full object-cover"
+        controls
+        className="absolute inset-0 z-0 h-full w-full object-contain"
         style={{ backgroundColor: "transparent" }}
       />
       {isLoading && (

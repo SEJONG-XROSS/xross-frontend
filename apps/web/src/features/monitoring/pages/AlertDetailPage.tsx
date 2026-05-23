@@ -208,7 +208,6 @@ export default function AlertDetailPage() {
         <EventCCTVPlayer
           cameraId={cameraSource}
           cameraName={EVENT_SOURCE_LABEL[cameraSource]?.label ?? cameraSource}
-          timestamp={relatedEvents[0] ? formatTime(relatedEvents[0].occurredAt) : ""}
           alertId={alertId}
         />
 

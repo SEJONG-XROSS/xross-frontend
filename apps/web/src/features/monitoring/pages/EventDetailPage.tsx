@@ -95,7 +95,6 @@ export default function EventDetailPage() {
         <EventCCTVPlayer
           cameraId={eventDetail.cameraId}
           cameraName={eventDetail.cameraName}
-          timestamp={eventDetail.timestamp}
         />
         <EventDetailPanel event={eventDetail} />
       </main>

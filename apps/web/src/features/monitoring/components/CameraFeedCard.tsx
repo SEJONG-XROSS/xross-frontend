@@ -5,11 +5,13 @@ import WebRTCVideoPlayer from "@/shared/components/WebRTCVideoPlayer";
 interface CameraFeedCardProps {
   camera: CameraFeed;
   className?: string;
+  fullHeight?: boolean;
 }
 
 export default function CameraFeedCard({
   camera,
   className,
+  fullHeight = false,
 }: CameraFeedCardProps) {
   return (
     <div
@@ -22,8 +24,8 @@ export default function CameraFeedCard({
       )}
     >
       {/* CCTV 영상 영역: 온라인 시 로딩 UI, 오프라인 시 빈 캔버스 */}
-      <div className="flex min-h-0 w-full flex-1 items-center justify-center">
-        <div className="relative aspect-video w-full overflow-hidden bg-[#020618]">
+      <div className={cn("flex min-h-0 w-full items-center justify-center", fullHeight ? "flex-1" : "")}>
+        <div className={cn("relative w-full overflow-hidden bg-[#020618]", fullHeight ? "h-full" : "aspect-video")}>
           {camera.isOnline ? (
             <WebRTCVideoPlayer streamPath={camera.id} className="h-full w-full" />
           ) : (

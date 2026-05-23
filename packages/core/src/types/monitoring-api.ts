@@ -120,3 +120,11 @@ export interface EventDetailResponse {
   processedAt?: string | null;
   errorMessage?: string | null;
 }
+
+
+export interface VideoPlaybackResponse {
+  videoPath: string;
+  startTime: string;
+  endTime: string;
+  cameraDeviceId: number;
+}

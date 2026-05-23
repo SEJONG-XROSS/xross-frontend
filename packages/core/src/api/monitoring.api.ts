@@ -1,5 +1,5 @@
 import { getApiClient } from './client';
-import type { EventResponse, AlertResponse, EventDetailResponse } from '../types/monitoring-api';
+import type { EventResponse, AlertResponse, EventDetailResponse, VideoPlaybackResponse } from '../types/monitoring-api';
 
 export function getEvents(
   storeId: number,
@@ -41,4 +41,8 @@ export function acknowledgeAlert(alertId: number, userId: number): Promise<Alert
   return getApiClient()
     .post<AlertResponse>(`/alerts/${alertId}/acknowledge`, { userId })
     .then((r) => r.data);
+}
+
+export function getVideoPlayback(alertId: number): Promise<VideoPlaybackResponse> {
+  return getApiClient().get<VideoPlaybackResponse>(`/videos/playback/${alertId}`).then((r) => r.data);
 }

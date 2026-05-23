@@ -12,24 +12,6 @@ export const MOCK_CAMERAS: CameraFeed[] = [
     isOnline: true,
     isRecording: true,
   },
-  {
-    id: "camera2",
-    name: "스낵/주류 코너",
-    isOnline: false,
-    isRecording: false,
-  },
-  {
-    id: "camera3",
-    name: "POS 셀프 계산대",
-    isOnline: false,
-    isRecording: false,
-  },
-  {
-    id: "camera4",
-    name: "입구/출구",
-    isOnline: false,
-    isRecording: false,
-  },
   // {
   //   id: "cam-05",
   //   name: "음료 코너",

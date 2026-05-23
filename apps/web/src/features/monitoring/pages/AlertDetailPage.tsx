@@ -207,10 +207,9 @@ export default function AlertDetailPage() {
       <main className="flex flex-1 flex-col overflow-auto md:flex-row md:overflow-hidden">
         <EventCCTVPlayer
           cameraId={cameraSource}
-          cameraName={
-            EVENT_SOURCE_LABEL[cameraSource]?.label ?? cameraSource
-          }
+          cameraName={EVENT_SOURCE_LABEL[cameraSource]?.label ?? cameraSource}
           timestamp={relatedEvents[0] ? formatTime(relatedEvents[0].occurredAt) : ""}
+          alertId={alertId}
         />
 
         {/* 우: 알림 정보 + 이벤트 타임라인 */}

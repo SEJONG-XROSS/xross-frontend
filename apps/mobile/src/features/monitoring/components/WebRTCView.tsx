@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import {
   RTCPeerConnection,
   RTCView,
@@ -103,13 +104,16 @@ export function WebRTCView({ streamPath, baseUrl }: Props) {
 
   if (error || !streamURL) {
     return (
-      <View className="flex-1 items-center justify-center bg-monitor-card-bg gap-1 px-4">
-        <Text className="text-xs text-event-critical text-center">스트림 연결 실패</Text>
-        {error && (
-          <Text className="text-[10px] text-monitor-text-dim text-center font-mono">
-            {error}
-          </Text>
-        )}
+      <View className="flex-1 items-center justify-center bg-monitor-card-bg gap-3 px-6">
+        <View
+          className="w-12 h-12 rounded-full items-center justify-center bg-[rgba(251,44,54,0.08)] border border-[rgba(251,44,54,0.2)]"
+        >
+          <Ionicons name="videocam-off-outline" size={22} color="#ff6467" />
+        </View>
+        <View className="items-center gap-1">
+          <Text className="text-[13px] font-semibold text-event-critical text-center">스트림 연결 실패</Text>
+          <Text className="text-[11px] text-monitor-text-dim text-center">카메라가 오프라인이거나{'\n'}스트림을 사용할 수 없습니다</Text>
+        </View>
       </View>
     );
   }

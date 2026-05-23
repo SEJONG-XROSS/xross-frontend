@@ -7,13 +7,25 @@ const withGoogleUtilitiesModularHeaders = (cfg: ExpoConfig): ExpoConfig =>
   withDangerousMod(cfg, [
     'ios',
     (c) => {
-      const podfilePath = path.join(c.modRequest.platformProjectRoot, 'Podfile');
+      const root = c.modRequest.platformProjectRoot;
+
+      // GoogleUtilities modular headers
+      const podfilePath = path.join(root, 'Podfile');
       let podfile = fs.readFileSync(podfilePath, 'utf8');
       const line = "  pod 'GoogleUtilities', :modular_headers => true";
       if (!podfile.includes(line)) {
         podfile = podfile.replace("target 'Xross' do", `target 'Xross' do\n${line}`);
         fs.writeFileSync(podfilePath, podfile);
       }
+
+      // iOS deployment target
+      const propsPath = path.join(root, 'Podfile.properties.json');
+      const props = JSON.parse(fs.readFileSync(propsPath, 'utf8'));
+      if (props['ios.deploymentTarget'] !== '16.0') {
+        props['ios.deploymentTarget'] = '16.0';
+        fs.writeFileSync(propsPath, JSON.stringify(props, null, 2) + '\n');
+      }
+
       return c;
     },
   ]);

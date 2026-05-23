@@ -95,10 +95,10 @@ export function AlertDetailScreen({ route }: Props) {
         </View>
       ) : (
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-          {/* CCTV 플레이스홀더 — 백엔드 영상 API 준비 후 비디오 플레이어로 교체 */}
+          {/* 영상 복기 플레이어 — 백엔드 준비 후 VideoView로 교체 */}
           <View className="h-[220px] bg-monitor-card-bg border-b border-monitor-border items-center justify-center gap-2">
             <Ionicons name="videocam-off-outline" size={36} color="#62748e" />
-            <Text className="text-monitor-text-dim text-xs">영상 조회 기능 준비 중</Text>
+            <Text className="text-monitor-text-dim text-xs">영상 준비 중</Text>
           </View>
 
           {/* 알림 정보 */}

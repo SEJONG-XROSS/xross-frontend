@@ -41,3 +41,4 @@ export * from './hooks/usePayment';
 export * from './hooks/usePosTransactions';
 export * from './hooks/useAlertStream';
 export * from './hooks/useEventStream';
+export * from './hooks/useVideoPlayback';

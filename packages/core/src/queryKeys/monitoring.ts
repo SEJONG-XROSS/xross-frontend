@@ -4,4 +4,5 @@ export const monitoringQueryKeys = {
   alerts: (storeId: number) => ['monitoring', 'alerts', storeId] as const,
   alert: (alertId: number) => ['monitoring', 'alert', alertId] as const,
   eventDetails: (eventId: number) => ['monitoring', 'event-details', eventId] as const,
+  videoPlayback: (alertId: number) => ['monitoring', 'video-playback', alertId] as const,
 };

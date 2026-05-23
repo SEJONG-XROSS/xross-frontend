@@ -81,7 +81,7 @@ function DesktopGrid({ cameras }: { cameras: CameraFeed[] }) {
   if (count === 1) {
     return (
       <div className="h-full p-4">
-        <CameraFeedCard camera={cameras[0]} className="h-full" />
+        <CameraFeedCard camera={cameras[0]} className="h-full" fullHeight />
       </div>
     );
   }

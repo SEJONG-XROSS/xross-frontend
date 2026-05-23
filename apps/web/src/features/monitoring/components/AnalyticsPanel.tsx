@@ -1,4 +1,6 @@
+import { useState } from "react";
 import ChartAnalyticsIcon from "@/assets/icons/chart-analytics.svg?react";
+import LogsIcon from "@/assets/icons/logs.svg?react";
 import AnalyticsChart from "@/features/monitoring/components/AnalyticsChart";
 import type { AnalyticsDataPoint } from "@/features/monitoring/types/monitoring.types";
 import { cn } from "@xross/core";
@@ -10,10 +12,12 @@ interface AnalyticsStat {
 }
 
 interface AnalyticsPanelProps {
-  stats: AnalyticsStat[];
+  behaviorStats: AnalyticsStat[];
+  paymentStats: AnalyticsStat[];
   chartData: AnalyticsDataPoint[];
-  /** 모바일 탭에서 독립 뷰로 표시될 때 true */
+  date: string;
   standalone?: boolean;
+  onOpenEventLog?: () => void;
 }
 
 const STAT_VALUE_COLOR = {
@@ -22,11 +26,71 @@ const STAT_VALUE_COLOR = {
   success: "text-monitor-accent-green",
 };
 
+const CHART_HEIGHT = {
+  compact: 110,
+  standalone: 180,
+};
+
+type ChartMode = "hourly" | "cumulative";
+
+function toCumulative(data: AnalyticsDataPoint[]): AnalyticsDataPoint[] {
+  let picks = 0, suspicions = 0, enters = 0, payments = 0;
+  return data.map((d) => {
+    picks += d.picks;
+    suspicions += d.suspicions;
+    enters += d.enters;
+    payments += d.payments;
+    return { ...d, picks, suspicions, enters, payments };
+  });
+}
+
+function formatDate(dateStr: string): string {
+  const today = new Date().toISOString().slice(0, 10);
+  if (dateStr === today) return "금일";
+  const d = new Date(dateStr);
+  return `${d.getMonth() + 1}월 ${d.getDate()}일`;
+}
+
+function StatRow({ stats }: { stats: AnalyticsStat[] }) {
+  return (
+    <div className="flex items-center gap-4 sm:gap-6">
+      {stats.map((stat, i) => (
+        <div
+          key={stat.label}
+          className={cn(
+            "flex flex-col",
+            i > 0 && "border-monitor-border-strong border-l pl-4 sm:pl-6",
+          )}
+        >
+          <span className="text-monitor-text-dim font-mono text-[11px] leading-[16.5px]">
+            {stat.label}
+          </span>
+          <span
+            className={cn(
+              "font-mono text-[14px] leading-5 font-bold",
+              STAT_VALUE_COLOR[stat.variant ?? "default"],
+            )}
+          >
+            {stat.value}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function AnalyticsPanel({
-  stats,
+  behaviorStats,
+  paymentStats,
   chartData,
+  date,
   standalone,
+  onOpenEventLog,
 }: AnalyticsPanelProps) {
+  const [mode, setMode] = useState<ChartMode>("hourly");
+  const chartH = standalone ? CHART_HEIGHT.standalone : CHART_HEIGHT.compact;
+  const displayData = mode === "cumulative" ? toCumulative(chartData) : chartData;
+
   return (
     <div
       className={cn(
@@ -35,43 +99,68 @@ export default function AnalyticsPanel({
       )}
     >
       {/* 헤더 */}
-      <div className="shrink-0 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="shrink-0 flex items-center justify-between">
         <div className="text-monitor-text-muted flex items-center gap-[6px]">
           <ChartAnalyticsIcon className="h-5 w-5 shrink-0" />
           <span className="text-[12px] leading-4 font-bold tracking-[1.2px] uppercase">
-            매장 행동 분석 통계 (금일)
+            매장 행동 분석 통계 ({formatDate(date)})
           </span>
         </div>
 
-        {/* 통계 수치 */}
-        <div className="flex flex-wrap items-start gap-4 sm:gap-6">
-          {stats.map((stat, i) => (
-            <div
-              key={stat.label}
-              className={cn(
-                "flex flex-col items-end",
-                i > 0 && "border-monitor-border-strong border-l pl-4 sm:pl-6",
-              )}
+        <div className="flex items-center gap-2">
+          {/* 이벤트 로그 버튼 */}
+          {onOpenEventLog && (
+            <button
+              type="button"
+              onClick={onOpenEventLog}
+              className="flex items-center gap-1 rounded-md border border-monitor-border bg-monitor-card-bg px-2.5 py-1 text-[10px] font-semibold text-monitor-text-dim transition-colors hover:border-monitor-accent-blue/40 hover:text-monitor-accent-blue"
             >
-              <span className="text-monitor-text-dim font-mono text-[11px] leading-[16.5px]">
-                {stat.label}
-              </span>
-              <span
+              <LogsIcon className="h-3 w-3 shrink-0" />
+              이벤트 로그
+            </button>
+          )}
+
+          {/* 시간대별 / 누적 토글 */}
+          <div className="flex items-center rounded-md border border-monitor-border bg-monitor-card-bg p-[3px]">
+            {(["hourly", "cumulative"] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => setMode(m)}
                 className={cn(
-                  "font-mono text-[14px] leading-5 font-bold",
-                  STAT_VALUE_COLOR[stat.variant ?? "default"],
+                  "rounded px-2 py-0.5 font-mono text-[10px] font-semibold tracking-[0.5px] transition-all",
+                  mode === m
+                    ? "bg-monitor-accent-blue text-white"
+                    : "text-monitor-text-dim hover:text-monitor-text-muted",
                 )}
               >
-                {stat.value}
-              </span>
-            </div>
-          ))}
+                {m === "hourly" ? "시간대별" : "누적"}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* 차트 — standalone일 때 적절한 높이, 아닐 때 고정 높이 */}
+      {/* 차트 1 — Pick 행동 / 미결제 의심 */}
       <div className="mt-3 min-w-0">
-        <AnalyticsChart data={chartData} height={standalone ? 240 : 132} />
+        <div className="flex items-end justify-between mb-1">
+          <p className="text-monitor-text-dim font-mono text-[10px] tracking-[1px] uppercase">
+            Pick 행동 · 미결제 의심
+          </p>
+          <StatRow stats={behaviorStats} />
+        </div>
+        <AnalyticsChart data={displayData} height={chartH} variant="behavior" />
+      </div>
+
+      {/* 차트 2 — 총 입장 / 결제 완료 */}
+      <div className="mt-3 min-w-0">
+        <div className="flex items-end justify-between mb-1">
+          <p className="text-monitor-text-dim font-mono text-[10px] tracking-[1px] uppercase">
+            총 입장 · 결제 완료
+          </p>
+          <StatRow stats={paymentStats} />
+        </div>
+        <AnalyticsChart data={displayData} height={chartH} variant="payment" />
       </div>
     </div>
   );

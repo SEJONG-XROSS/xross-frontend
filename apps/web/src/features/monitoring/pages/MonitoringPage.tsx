@@ -3,6 +3,7 @@ import MonitoringHeader from "@/features/monitoring/components/MonitoringHeader"
 import CameraGrid from "@/features/monitoring/components/CameraGrid";
 import AnalyticsPanel from "@/features/monitoring/components/AnalyticsPanel";
 import EventLogPanel from "@/features/monitoring/components/EventLogPanel";
+import EventLogModal from "@/features/monitoring/components/EventLogModal";
 import { MOCK_CAMERAS } from "@/features/monitoring/data/monitoring.mock";
 import { isToday } from "@/shared/lib/date";
 import type { EventResponse } from "@/features/monitoring/api/monitoring.types";
@@ -24,20 +25,22 @@ const MOBILE_TABS: {
   { key: "events", label: "탐지 로그", Icon: LogsIcon },
 ];
 
-function buildStats(events: EventResponse[], alertCount: number) {
-  return [
-    {
-      label: "총 입장",
-      value: String(events.filter((e) => e.type === "ENTER").length),
-    },
+function buildStats(events: EventResponse[]) {
+  const behaviorStats = [
     {
       label: "상품 집기",
       value: String(events.filter((e) => e.type === "PICK").length),
     },
     {
-      label: "이상 감지",
-      value: String(alertCount),
+      label: "미결제 의심",
+      value: String(events.filter((e) => e.type === "UNPAID_SUSPICIOUS").length),
       variant: "danger" as const,
+    },
+  ];
+  const paymentStats = [
+    {
+      label: "총 입장",
+      value: String(events.filter((e) => e.type === "ENTER").length),
     },
     {
       label: "결제 완료",
@@ -45,6 +48,7 @@ function buildStats(events: EventResponse[], alertCount: number) {
       variant: "success" as const,
     },
   ];
+  return { behaviorStats, paymentStats };
 }
 
 function buildChartData(
@@ -70,9 +74,9 @@ function buildChartData(
     return {
       time: `${h}시`,
       picks: inRange.filter((e) => e.type === "PICK").length,
-      suspicions: inRange.filter(
-        (e) => e.type === "UNPAID_SUSPICIOUS" || e.type === "PAYMENT_MISMATCH",
-      ).length,
+      suspicions: inRange.filter((e) => e.type === "UNPAID_SUSPICIOUS").length,
+      enters: inRange.filter((e) => e.type === "ENTER").length,
+      payments: inRange.filter((e) => e.type === "PAYMENT_RECEIVED").length,
     };
   });
 }
@@ -85,12 +89,13 @@ export default function MonitoringPage({
   setSelectedDate,
 }: MonitoringContext) {
   const [mobileTab, setMobileTab] = useState<MobileTab>("monitor");
+  const [eventLogOpen, setEventLogOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const criticalCount = alerts.filter(
     (a) => a.status === "PENDING" || a.status === "SENT",
   ).length;
-  const stats = buildStats(events, alerts.length);
+  const { behaviorStats, paymentStats } = buildStats(events);
   const chartData = buildChartData(events, selectedDate);
 
   return (
@@ -98,6 +103,12 @@ export default function MonitoringPage({
       <MonitoringHeader
         date={selectedDate}
         onDateChange={setSelectedDate}
+      />
+      <EventLogModal
+        open={eventLogOpen}
+        events={events}
+        date={selectedDate}
+        onClose={() => setEventLogOpen(false)}
       />
 
       {isDesktop ? (
@@ -107,7 +118,7 @@ export default function MonitoringPage({
             <div className="flex-1 overflow-hidden">
               <CameraGrid cameras={MOCK_CAMERAS} isDesktop={true} />
             </div>
-            <AnalyticsPanel stats={stats} chartData={chartData} />
+            <AnalyticsPanel behaviorStats={behaviorStats} paymentStats={paymentStats} chartData={chartData} date={selectedDate} onOpenEventLog={() => setEventLogOpen(true)} />
           </div>
           <EventLogPanel alerts={alerts} connected={connected} />
         </main>
@@ -158,7 +169,7 @@ export default function MonitoringPage({
                 <div className="min-h-[220px] shrink-0 sm:min-h-[280px]">
                   <CameraGrid cameras={MOCK_CAMERAS} isDesktop={false} />
                 </div>
-                <AnalyticsPanel stats={stats} chartData={chartData} standalone />
+                <AnalyticsPanel behaviorStats={behaviorStats} paymentStats={paymentStats} chartData={chartData} date={selectedDate} standalone onOpenEventLog={() => setEventLogOpen(true)} />
               </div>
             )}
 

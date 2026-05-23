@@ -18,17 +18,18 @@ export function CameraCarousel({ cameras }: { cameras: CameraFeed[] }) {
 
   if (count === 0) return null;
 
-  const CARD_HEIGHT = 220;
+  const PADDING = 10;
+  const CARD_HEIGHT = Math.round((width - PADDING * 2) * (9 / 16));
 
   return (
-    <View className="bg-monitor-bg" style={{ height: CARD_HEIGHT + 40 }}>
+    <View className="bg-monitor-bg" style={{ height: CARD_HEIGHT + PADDING * 2 + 40 }}>
       {/* width는 런타임 값 → style 유지 */}
       <FlatList
         ref={listRef}
         data={cameras}
         keyExtractor={(item) => item.id}
         renderItem={({ item }: { item: CameraFeed }) => (
-          <View style={{ width, height: CARD_HEIGHT, padding: 10 }}>
+          <View style={{ width, height: CARD_HEIGHT + PADDING * 2, padding: PADDING }}>
             <CameraFeedCard camera={item} />
           </View>
         )}
@@ -38,7 +39,7 @@ export function CameraCarousel({ cameras }: { cameras: CameraFeed[] }) {
         onMomentumScrollEnd={(e) => {
           setIdx(Math.round(e.nativeEvent.contentOffset.x / width));
         }}
-        style={{ height: CARD_HEIGHT }}
+        style={{ height: CARD_HEIGHT + PADDING * 2 }}
       />
 
       {count > 1 && (

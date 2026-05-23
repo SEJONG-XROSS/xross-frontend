@@ -11,13 +11,27 @@ import type { AnalyticsDataPoint } from "@/features/monitoring/types/monitoring.
 interface AnalyticsChartProps {
   data: AnalyticsDataPoint[];
   height: number;
+  variant?: "behavior" | "payment";
 }
 
 function formatTick(value: string): string {
   return value.replace(":00", "시");
 }
 
-export default function AnalyticsChart({ data, height }: AnalyticsChartProps) {
+const SERIES = {
+  behavior: [
+    { dataKey: "picks",      name: "Pick 행동",   color: "#3B82F6", gradientId: "pickGradient" },
+    { dataKey: "suspicions", name: "미결제 의심",  color: "#EF4444", gradientId: "suspicionGradient" },
+  ],
+  payment: [
+    { dataKey: "enters",   name: "총 입장",    color: "#8B5CF6", gradientId: "enterGradient" },
+    { dataKey: "payments", name: "결제 완료",  color: "#10B981", gradientId: "paymentGradient" },
+  ],
+} as const;
+
+export default function AnalyticsChart({ data, height, variant = "behavior" }: AnalyticsChartProps) {
+  const series = SERIES[variant];
+
   return (
     <ResponsiveContainer width="100%" height={height}>
       <AreaChart
@@ -25,14 +39,12 @@ export default function AnalyticsChart({ data, height }: AnalyticsChartProps) {
         margin={{ top: 5, right: 8, left: 8, bottom: 20 }}
       >
         <defs>
-          <linearGradient id="pickGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
-            <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
-          </linearGradient>
-          <linearGradient id="suspicionGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#EF4444" stopOpacity={0.25} />
-            <stop offset="95%" stopColor="#EF4444" stopOpacity={0} />
-          </linearGradient>
+          {series.map(({ gradientId, color }) => (
+            <linearGradient key={gradientId} id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%"  stopColor={color} stopOpacity={0.3} />
+              <stop offset="95%" stopColor={color} stopOpacity={0} />
+            </linearGradient>
+          ))}
         </defs>
         <CartesianGrid
           strokeDasharray="3 3"
@@ -63,26 +75,19 @@ export default function AnalyticsChart({ data, height }: AnalyticsChartProps) {
           }}
           labelStyle={{ color: "#62748e" }}
         />
-        <Area
-          type="monotone"
-          dataKey="picks"
-          name="Pick 행동"
-          stroke="#3B82F6"
-          strokeWidth={2}
-          fill="url(#pickGradient)"
-          dot={false}
-          activeDot={{ r: 4, fill: "#3B82F6" }}
-        />
-        <Area
-          type="monotone"
-          dataKey="suspicions"
-          name="미결제 의심"
-          stroke="#EF4444"
-          strokeWidth={2}
-          fill="url(#suspicionGradient)"
-          dot={false}
-          activeDot={{ r: 4, fill: "#EF4444" }}
-        />
+        {series.map(({ dataKey, name, color, gradientId }) => (
+          <Area
+            key={dataKey}
+            type="monotone"
+            dataKey={dataKey}
+            name={name}
+            stroke={color}
+            strokeWidth={2}
+            fill={`url(#${gradientId})`}
+            dot={false}
+            activeDot={{ r: 4, fill: color }}
+          />
+        ))}
       </AreaChart>
     </ResponsiveContainer>
   );

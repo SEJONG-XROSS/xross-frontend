@@ -32,6 +32,8 @@ export interface AnalyticsDataPoint {
   time: string;
   picks: number;
   suspicions: number;
+  enters: number;
+  payments: number;
 }
 
 export type VerificationStatus =

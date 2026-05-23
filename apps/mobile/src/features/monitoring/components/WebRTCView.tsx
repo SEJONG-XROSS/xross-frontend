@@ -121,8 +121,8 @@ export function WebRTCView({ streamPath, baseUrl }: Props) {
   return (
     <RTCView
       streamURL={streamURL}
-      style={{ flex: 1 }}
-      objectFit="cover"
+      style={{ flex: 1, backgroundColor: '#000' }}
+      objectFit="contain"
       mirror={false}
     />
   );

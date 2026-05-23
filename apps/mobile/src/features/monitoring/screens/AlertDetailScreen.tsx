@@ -14,6 +14,7 @@ import type { RootStackParamList } from '@/app/navigation/types';
 import type { EventResponse, AlertPriority, AlertStatus } from '@xross/core';
 import { DetailHeader } from '../components/DetailHeader';
 import { EventTimeline } from '../components/EventTimeline';
+import { CCTVPlaybackView } from '../components/CCTVPlaybackView';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AlertDetail'>;
 
@@ -27,6 +28,13 @@ const STATUS_CONFIG: Record<AlertStatus, { label: string; bgClass: string; textC
   SENT:         { label: '전송됨',   bgClass: 'bg-monitor-border/30',          textClass: 'text-monitor-text-muted',     borderClass: 'border-monitor-border' },
   FAILED:       { label: '전송 실패', bgClass: 'bg-[rgba(254,154,0,0.1)]',    textClass: 'text-event-warning',           borderClass: 'border-[rgba(254,154,0,0.3)]' },
   ACKNOWLEDGED: { label: '확인 완료', bgClass: 'bg-[rgba(0,212,146,0.1)]',    textClass: 'text-monitor-accent-green',   borderClass: 'border-[rgba(0,212,146,0.3)]' },
+};
+
+const EVENT_SOURCE_LABEL: Record<string, string> = {
+  CEILING_CAMERA: '비전 AI (천장)',
+  FREEZER_CAMERA: '비전 AI (냉동고)',
+  WEIGHT_SENSOR: '무게 센서',
+  POS: 'POS',
 };
 
 const EVENT_TYPE_LABEL: Record<string, string> = {
@@ -69,6 +77,11 @@ export function AlertDetailScreen({ route }: Props) {
   const priorityCfg = alert ? PRIORITY_CONFIG[alert.priority] : null;
   const statusCfg = alert ? STATUS_CONFIG[alert.status] : null;
 
+  const cameraSource = relatedEvents.find(
+    (e) => e.source === 'CEILING_CAMERA' || e.source === 'FREEZER_CAMERA',
+  )?.source ?? relatedEvents[0]?.source ?? 'CEILING_CAMERA';
+  const cameraName = EVENT_SOURCE_LABEL[cameraSource] ?? cameraSource;
+
   // 로그 타임라인 데이터로 변환
   const logEntries = relatedEvents.map((e) => ({
     time: formatTime(e.occurredAt),
@@ -95,11 +108,8 @@ export function AlertDetailScreen({ route }: Props) {
         </View>
       ) : (
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-          {/* 영상 복기 플레이어 — 백엔드 준비 후 VideoView로 교체 */}
-          <View className="h-[220px] bg-monitor-card-bg border-b border-monitor-border items-center justify-center gap-2">
-            <Ionicons name="videocam-off-outline" size={36} color="#62748e" />
-            <Text className="text-monitor-text-dim text-xs">영상 준비 중</Text>
-          </View>
+          {/* 영상 복기 플레이어 */}
+          <CCTVPlaybackView alertId={id} cameraName={cameraName} />
 
           {/* 알림 정보 */}
           <View className="bg-monitor-card-bg border-b border-monitor-border px-4 py-4">

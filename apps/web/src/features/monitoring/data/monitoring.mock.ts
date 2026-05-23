@@ -106,18 +106,18 @@ export const MOCK_EVENTS: DetectionEvent[] = [
 ];
 
 export const MOCK_ANALYTICS_DATA: AnalyticsDataPoint[] = [
-  { time: "08:00", picks: 12, suspicions: 0 },
-  { time: "09:00", picks: 28, suspicions: 0 },
-  { time: "10:00", picks: 45, suspicions: 1 },
-  { time: "11:00", picks: 62, suspicions: 1 },
-  { time: "12:00", picks: 88, suspicions: 1 },
-  { time: "13:00", picks: 110, suspicions: 2 },
-  { time: "14:00", picks: 145, suspicions: 2 },
-  { time: "15:00", picks: 178, suspicions: 2 },
-  { time: "16:00", picks: 210, suspicions: 3 },
-  { time: "17:00", picks: 238, suspicions: 3 },
-  { time: "18:00", picks: 252, suspicions: 3 },
-  { time: "19:00", picks: 264, suspicions: 3 },
+  { time: "08:00", picks: 12, suspicions: 0, enters: 5,  payments: 4  },
+  { time: "09:00", picks: 28, suspicions: 0, enters: 12, payments: 11 },
+  { time: "10:00", picks: 45, suspicions: 1, enters: 20, payments: 18 },
+  { time: "11:00", picks: 62, suspicions: 1, enters: 28, payments: 26 },
+  { time: "12:00", picks: 88, suspicions: 1, enters: 38, payments: 35 },
+  { time: "13:00", picks: 110, suspicions: 2, enters: 47, payments: 43 },
+  { time: "14:00", picks: 145, suspicions: 2, enters: 58, payments: 54 },
+  { time: "15:00", picks: 178, suspicions: 2, enters: 70, payments: 65 },
+  { time: "16:00", picks: 210, suspicions: 3, enters: 82, payments: 76 },
+  { time: "17:00", picks: 238, suspicions: 3, enters: 91, payments: 85 },
+  { time: "18:00", picks: 252, suspicions: 3, enters: 97, payments: 90 },
+  { time: "19:00", picks: 264, suspicions: 3, enters: 102, payments: 95 },
 ];
 
 export const MOCK_ANALYTICS_STATS = [

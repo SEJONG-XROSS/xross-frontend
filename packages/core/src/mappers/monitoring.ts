@@ -25,7 +25,7 @@ const EVENT_TYPE_LABEL: Record<EventType, string> = {
   PUT: '상품 반납',
   BROWSE_ONLY: '진열대 탐색',
   CART_UPDATED: '장바구니 변경',
-  PAYMENT_RECEIVED: '결제 완료',
+  PAID: '결제 완료',
   PAYMENT_MATCHED: '결제 일치 확인',
   PAYMENT_MISMATCH: '장바구니 불일치',
   UNPAID_SUSPICIOUS: '미결제 의심 퇴장',
@@ -41,7 +41,7 @@ const DETAIL_TYPE_LABEL: Record<EventDetailType, string> = {
   ITEM_PICKED: '상품 집기',
   ITEM_RETURNED: '상품 반납',
   WEIGHT_CHANGE: '무게 변화',
-  PAYMENT_COMPLETED: '결제 완료',
+  PAYMENT_MATCHED: '결제 완료',
 };
 
 export function getAlertSeverity(priority: AlertPriority): 'critical' | 'warning' | 'info' {

@@ -1,7 +1,9 @@
+<img width="1709" height="747" alt="image" src="https://github.com/user-attachments/assets/b8f943f7-3cfa-4931-ad30-4350c102bbac" />
+
 # Xross Frontend
 
-매장 모니터링 및 관리를 위한 풀스택 프론트엔드 모노레포입니다.  
-웹 대시보드(관리자)와 모바일 앱(점주)으로 구성되며, CCTV 실시간 스트리밍, 이벤트 알림, POS 매출 분석 기능을 제공합니다.
+매장 모니터링 및 관리를 위한 프론트엔드 모노레포입니다.  
+웹 대시보드와 모바일 앱으로 구성되며, CCTV 실시간 스트리밍, 이벤트 알림, POS 매출 분석 기능을 제공합니다.
 
 ---
 

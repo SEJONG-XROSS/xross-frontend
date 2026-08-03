@@ -27,11 +27,11 @@ export default function SettingsRow({
       )}
     >
       <div className="flex flex-col gap-0.5">
-        <span className="text-[14px] leading-5 tracking-[-0.15px] text-monitor-text">
+        <span className="text-monitor-text text-14">
           {label}
         </span>
         {description && (
-          <span className="text-[12px] leading-4 text-monitor-text-dim">
+          <span className="text-monitor-text-dim text-12">
             {description}
           </span>
         )}

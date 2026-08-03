@@ -26,7 +26,7 @@ const PRIORITY_CONFIG: Record<AlertPriority, { label: string; cls: string }> = {
 };
 
 const STATUS_CONFIG: Record<AlertStatus, { label: string; cls: string }> = {
-  PENDING:      { label: "미확인",   cls: "border-[rgba(251,44,54,0.3)] bg-[rgba(251,44,54,0.08)] text-[#ff6467]" },
+  PENDING:      { label: "미확인",   cls: "border-event-critical/30 bg-event-critical/10 text-event-critical" },
   SENT:         { label: "전송됨",   cls: "border-monitor-border bg-monitor-border/30 text-monitor-text-muted" },
   FAILED:       { label: "전송 실패", cls: "border-event-warning/30 bg-event-warning/10 text-event-warning" },
   ACKNOWLEDGED: { label: "확인 완료", cls: "border-monitor-accent-green/30 bg-monitor-accent-green/10 text-monitor-accent-green" },
@@ -115,29 +115,29 @@ function EventTimelineEntry({ event, isLast }: EventTimelineEntryProps) {
       {/* 내용 */}
       <div className="flex flex-col gap-[5px] pb-6">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[10px] text-monitor-text-dim">
+          <span className="font-mono text-10 text-monitor-text-dim">
             {formatTime(event.occurredAt)}
           </span>
-          <span className={cn("rounded-[4px] px-[6px] py-[1.5px] font-mono text-[9px] uppercase tracking-[0.4px]", src.badgeCls)}>
+          <span className={cn("rounded-badge px-[6px] py-[1.5px] font-mono text-10 uppercase", src.badgeCls)}>
             {src.label}
           </span>
         </div>
         <p className={cn(
-          "text-[14px] leading-[19px] tracking-[-0.15px]",
+          "text-14",
           isCritical ? "font-semibold text-event-critical" :
           isWarning  ? "font-semibold text-event-warning" :
           "text-monitor-text-muted",
         )}>
           {typeLabel}
           {event.product?.name && (
-            <span className="ml-1 text-monitor-text-dim text-[12px]">— {event.product.name}</span>
+            <span className="ml-1 text-monitor-text-dim text-12">— {event.product.name}</span>
           )}
         </p>
         {event.message && (
-          <p className="text-[12px] text-monitor-text-dim leading-[17px]">{event.message}</p>
+          <p className="text-12 text-monitor-text-dim">{event.message}</p>
         )}
         {event.confidence != null && (
-          <span className="text-[11px] text-monitor-text-dim">
+          <span className="text-11 text-monitor-text-dim">
             신뢰도 {Math.round(event.confidence * 100)}%
           </span>
         )}
@@ -218,36 +218,36 @@ export default function AlertDetailPage() {
           <div className="shrink-0 border-b border-monitor-border bg-monitor-card-bg px-4 pb-5 pt-4 sm:px-6 sm:pt-6">
             <div className="mb-3 flex items-start gap-3">
               <PriorityIcon className={cn("mt-[3px] h-5 w-5 shrink-0", severity === "critical" ? "text-event-critical" : "text-event-warning")} />
-              <h2 className="flex-1 text-[17px] font-bold leading-[23px] tracking-[-0.4px] text-monitor-text">
+              <h2 className="flex-1 text-16 font-bold text-monitor-text">
                 {alert.title}
               </h2>
               <div className="flex shrink-0 items-center gap-[6px]">
-                <span className={cn("rounded-[4px] border px-2 py-[3px] text-[10px] font-bold leading-[14px] tracking-[0.3px]", priorityCfg.cls)}>
+                <span className={cn("rounded-badge border px-2 py-[3px] text-10 font-bold", priorityCfg.cls)}>
                   {priorityCfg.label}
                 </span>
-                <span className={cn("rounded-[4px] border px-2 py-[3px] text-[10px] font-medium leading-[14px]", statusCfg.cls)}>
+                <span className={cn("rounded-badge border px-2 py-[3px] text-10 font-medium", statusCfg.cls)}>
                   {statusCfg.label}
                 </span>
               </div>
             </div>
 
-            <p className="text-[13px] leading-[21px] text-monitor-text-muted">
+            <p className="text-13 text-monitor-text-muted">
               {alert.message}
             </p>
 
             <div className="mt-3 flex flex-col gap-[6px]">
-              <div className="flex justify-between text-[12px]">
+              <div className="flex justify-between text-12">
                 <span className="text-monitor-text-dim">발생 시각</span>
                 <span className="text-monitor-text-muted font-mono">{formatDateTime(alert.createdAt)}</span>
               </div>
               {alert.customer && (
-                <div className="flex justify-between text-[12px]">
+                <div className="flex justify-between text-12">
                   <span className="text-monitor-text-dim">추적 ID</span>
                   <span className="text-monitor-text-muted font-mono">#{alert.customer.trackingKey}</span>
                 </div>
               )}
               {alert.acknowledgedBy && (
-                <div className="flex justify-between text-[12px]">
+                <div className="flex justify-between text-12">
                   <span className="text-monitor-text-dim">확인 처리자</span>
                   <span className="text-monitor-text-muted">{alert.acknowledgedBy.name}</span>
                 </div>
@@ -257,20 +257,20 @@ export default function AlertDetailPage() {
 
           {/* 관련 이벤트 타임라인 */}
           <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
-            <div className="mb-5 flex items-center gap-[8px]">
+            <div className="mb-5 flex items-center gap-2">
               <LogsIcon className="h-4 w-4 shrink-0 text-monitor-text-dim" />
-              <span className="text-[12px] font-bold uppercase tracking-[1.2px] text-monitor-text-dim">
+              <span className="font-mono text-11 font-bold uppercase tracking-caps text-monitor-text-dim">
                 관련 이벤트 타임라인
               </span>
               {relatedEvents.length > 0 && (
-                <span className="ml-auto font-mono text-[11px] text-monitor-text-dim">
+                <span className="ml-auto font-mono text-11 text-monitor-text-dim">
                   {relatedEvents.length}건
                 </span>
               )}
             </div>
 
             {relatedEvents.length === 0 ? (
-              <p className="text-[13px] text-monitor-text-dim">관련 이벤트가 없습니다.</p>
+              <p className="text-13 text-monitor-text-dim">관련 이벤트가 없습니다.</p>
             ) : (
               <div className="relative">
                 {relatedEvents.map((event, idx) => (

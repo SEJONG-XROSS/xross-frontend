@@ -32,38 +32,38 @@ function TransactionDetail({ tx }: TransactionDetailProps) {
         colSpan={7}
         className={`px-6 pt-2 pb-4 ${
           isUnpaid
-            ? "bg-[rgba(251,44,54,0.06)]"
+            ? "bg-event-critical/5"
             : isMismatch
-              ? "bg-[rgba(254,200,0,0.06)]"
-              : "bg-[rgba(255,255,255,0.03)]"
+              ? "bg-event-warning/5"
+              : "bg-white/3"
         }`}
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
           {/* 결제 상품 내역 */}
           <div className="flex-1 overflow-x-auto">
-            <p className="text-monitor-text-dim mb-[9px] text-[11px] font-medium tracking-wider uppercase">
+            <p className="text-monitor-text-dim mb-[9px] text-11 font-medium tracking-wider uppercase">
               결제 상품
             </p>
 
             {isUnpaid ? (
-              <div className="flex items-center gap-2 rounded-lg border border-[rgba(251,44,54,0.2)] bg-[rgba(251,44,54,0.07)] px-4 py-3">
-                <ShieldAlertIcon className="h-4 w-4 shrink-0 text-[#ff6467]" />
-                <span className="text-[13px] text-[#ff6467]">
+              <div className="border-event-critical/20 bg-event-critical/5 flex items-center gap-2 rounded-control border px-4 py-3">
+                <ShieldAlertIcon className="text-event-critical h-4 w-4 shrink-0" />
+                <span className="text-event-critical text-13">
                   결제 기록 없음 — 미결제 퇴장 감지됨
                 </span>
               </div>
             ) : isLoading ? (
-              <p className="text-monitor-text-muted text-[13px]">로딩 중...</p>
+              <p className="text-monitor-text-muted text-13">로딩 중...</p>
             ) : items.length === 0 ? (
-              <p className="text-monitor-text-muted text-[13px]">
+              <p className="text-monitor-text-muted text-13">
                 상품 정보 없음
               </p>
             ) : (
               <>
                 {detectedMismatch && (
-                  <div className="mb-3 flex items-center gap-2 rounded-lg border border-[rgba(254,154,0,0.25)] bg-[rgba(254,154,0,0.08)] px-3 py-2">
+                  <div className="border-event-warning/25 bg-event-warning/8 mb-3 flex items-center gap-2 rounded-control border px-3 py-2">
                     <TriangleAlertIcon className="text-event-warning h-3.5 w-3.5 shrink-0" />
-                    <span className="text-event-warning text-[12px]">
+                    <span className="text-event-warning text-12">
                       장바구니 수량·품목과 결제 내역이 일치하지 않습니다
                     </span>
                   </div>
@@ -71,16 +71,16 @@ function TransactionDetail({ tx }: TransactionDetailProps) {
                 <table className="w-full max-w-[814px]">
                   <thead>
                     <tr className="border-monitor-border border-b">
-                      <th className="text-monitor-text-dim pb-[7px] text-left text-[11px] font-medium">
+                      <th className="text-monitor-text-dim pb-[7px] text-left text-11 font-medium">
                         상품명
                       </th>
-                      <th className="text-monitor-text-dim w-10 pb-[7px] text-right text-[11px] font-medium">
+                      <th className="text-monitor-text-dim w-10 pb-[7px] text-right text-11 font-medium">
                         수량
                       </th>
-                      <th className="text-monitor-text-dim w-24 pb-[7px] text-right text-[11px] font-medium">
+                      <th className="text-monitor-text-dim w-24 pb-[7px] text-right text-11 font-medium">
                         단가
                       </th>
-                      <th className="text-monitor-text-dim w-24 pb-[7px] text-right text-[11px] font-medium">
+                      <th className="text-monitor-text-dim w-24 pb-[7px] text-right text-11 font-medium">
                         소계
                       </th>
                     </tr>
@@ -91,16 +91,16 @@ function TransactionDetail({ tx }: TransactionDetailProps) {
                         key={item.id}
                         className="border-monitor-border border-b"
                       >
-                        <td className="text-monitor-text py-[4.5px] text-[13px]">
+                        <td className="text-monitor-text py-[4.5px] text-13">
                           {item.product?.name ?? `상품 #${item.productId}`}
                         </td>
-                        <td className="text-monitor-text py-[4.5px] text-right text-[13px]">
+                        <td className="text-monitor-text py-[4.5px] text-right text-13">
                           {item.quantity}
                         </td>
-                        <td className="text-monitor-text py-[4.5px] text-right text-[13px]">
+                        <td className="text-monitor-text py-[4.5px] text-right text-13">
                           {Number(item.unitPrice).toLocaleString("ko-KR")}원
                         </td>
-                        <td className="text-monitor-text py-[4.5px] text-right text-[13px]">
+                        <td className="text-monitor-text py-[4.5px] text-right text-13">
                           {Number(item.subtotal).toLocaleString("ko-KR")}원
                         </td>
                       </tr>
@@ -110,11 +110,11 @@ function TransactionDetail({ tx }: TransactionDetailProps) {
                     <tr>
                       <td
                         colSpan={3}
-                        className="text-monitor-text-dim pt-[6px] text-right text-[11px] font-medium"
+                        className="text-monitor-text-dim pt-[6px] text-right text-11 font-medium"
                       >
                         합계
                       </td>
-                      <td className="text-monitor-text pt-[6px] text-right text-[13px] font-semibold">
+                      <td className="text-monitor-text pt-[6px] text-right text-13 font-semibold">
                         {total.toLocaleString("ko-KR")}원
                       </td>
                     </tr>
@@ -126,16 +126,16 @@ function TransactionDetail({ tx }: TransactionDetailProps) {
 
           {/* 상세 정보 */}
           <div className="w-full shrink-0 sm:w-[224px]">
-            <p className="text-monitor-text-dim mb-[8px] text-[11px] font-medium tracking-wider uppercase">
+            <p className="text-monitor-text-dim mb-[8px] text-11 font-medium tracking-wider uppercase">
               상세 정보
             </p>
             <div className="flex flex-col gap-[8px]">
               {tx.trackingId && (
-                <div className="flex justify-between text-[13px]">
+                <div className="flex justify-between text-13">
                   <span className="text-monitor-text-dim">비전 AI 추적 ID</span>
                   <span
                     className={`font-medium ${
-                      isUnpaid ? "text-[#ff6467]" : "text-monitor-text-muted"
+                      isUnpaid ? "text-event-critical" : "text-monitor-text-muted"
                     }`}
                   >
                     {tx.trackingId}
@@ -144,16 +144,16 @@ function TransactionDetail({ tx }: TransactionDetailProps) {
               )}
               {payment && (
                 <>
-                  <div className="flex justify-between text-[13px]">
+                  <div className="flex justify-between text-13">
                     <span className="text-monitor-text-dim">결제 총액</span>
                     <span className="text-monitor-text font-semibold">
                       {total.toLocaleString("ko-KR")}원
                     </span>
                   </div>
                   {payment.externalPaymentId && (
-                    <div className="flex justify-between text-[13px]">
+                    <div className="flex justify-between text-13">
                       <span className="text-monitor-text-dim">결제 ID</span>
-                      <span className="text-monitor-text-muted font-mono text-[11px]">
+                      <span className="text-monitor-text-muted font-mono text-11">
                         {payment.externalPaymentId}
                       </span>
                     </div>
@@ -162,15 +162,15 @@ function TransactionDetail({ tx }: TransactionDetailProps) {
               )}
               {tx.note && (
                 <div
-                  className={`mt-1 rounded-md border px-[11px] py-[11px] ${
+                  className={`mt-1 rounded-control border p-3 ${
                     isUnpaid
-                      ? "border-[rgba(251,44,54,0.2)] bg-[rgba(251,44,54,0.08)]"
-                      : "border-[rgba(254,154,0,0.2)] bg-[rgba(254,154,0,0.07)]"
+                      ? "border-event-critical/20 bg-event-critical/8"
+                      : "border-event-warning/20 bg-event-warning/8"
                   }`}
                 >
                   <p
-                    className={`text-[11px] leading-[17px] ${
-                      isUnpaid ? "text-[#ff6467]" : "text-event-warning"
+                    className={`text-11 ${
+                      isUnpaid ? "text-event-critical" : "text-event-warning"
                     }`}
                   >
                     {tx.note}
@@ -181,7 +181,7 @@ function TransactionDetail({ tx }: TransactionDetailProps) {
                 <button
                   type="button"
                   onClick={() => navigate(tx.linkedPath!)}
-                  className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg border border-[rgba(251,44,54,0.3)] bg-[rgba(251,44,54,0.08)] px-3 py-[8px] text-[12px] font-medium text-[#ff6467] transition-colors hover:bg-[rgba(251,44,54,0.15)]"
+                  className="border-event-critical/30 bg-event-critical/8 text-event-critical hover:bg-event-critical/15 mt-2 flex w-full items-center justify-center gap-2 rounded-control border px-3 py-2 text-12 font-medium transition-colors"
                 >
                   <ExternalLinkIcon className="h-3 w-3 shrink-0" />
                   알림 상세 검토 →
@@ -213,21 +213,21 @@ function TransactionRow({ tx, isExpanded, onToggle }: TransactionRowProps) {
         onClick={onToggle}
         className={`border-monitor-border cursor-pointer border-b transition-colors ${
           isUnpaid
-            ? "bg-[rgba(251,44,54,0.08)] hover:bg-[rgba(251,44,54,0.13)]"
+            ? "bg-event-critical/8 hover:bg-event-critical/13"
             : isMismatch
-              ? "bg-[rgba(254,200,0,0.07)] hover:bg-[rgba(254,200,0,0.12)]"
+              ? "bg-event-warning/7 hover:bg-event-warning/12"
               : isExpanded
-                ? "bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(255,255,255,0.05)]"
-                : "hover:bg-[rgba(255,255,255,0.03)]"
+                ? "bg-white/4 hover:bg-white/5"
+                : "hover:bg-white/3"
         }`}
       >
         {/* ID / 시각 */}
         <td className="px-4 py-[12.5px]">
           <div className="flex flex-col gap-[2px]">
-            <span className="text-monitor-text font-mono text-[13px] leading-4 font-semibold">
+            <span className="text-monitor-text font-mono text-13 font-semibold">
               {tx.id}
             </span>
-            <span className="text-monitor-text-dim text-[11px] leading-[15px]">
+            <span className="text-monitor-text-dim text-11">
               {tx.time}
             </span>
           </div>
@@ -235,7 +235,7 @@ function TransactionRow({ tx, isExpanded, onToggle }: TransactionRowProps) {
 
         {/* 날짜 */}
         <td className="px-4 py-[12.5px]">
-          <span className="text-monitor-text-muted text-[13px] leading-4">
+          <span className="text-monitor-text-muted text-13">
             {tx.date}
           </span>
         </td>
@@ -249,14 +249,14 @@ function TransactionRow({ tx, isExpanded, onToggle }: TransactionRowProps) {
         <td className="px-4 py-[12.5px]">
           {tx.trackingId ? (
             <span
-              className={`font-mono text-[12px] ${
-                isUnpaid ? "text-[#ff6467]" : "text-monitor-text-muted"
+              className={`font-mono text-12 ${
+                isUnpaid ? "text-event-critical" : "text-monitor-text-muted"
               }`}
             >
               {tx.trackingId}
             </span>
           ) : (
-            <span className="text-monitor-text-dim text-[13px]">—</span>
+            <span className="text-monitor-text-dim text-13">—</span>
           )}
         </td>
 
@@ -265,20 +265,20 @@ function TransactionRow({ tx, isExpanded, onToggle }: TransactionRowProps) {
           {tx.paymentMethod ? (
             <PosPaymentMethod method={tx.paymentMethod} />
           ) : (
-            <span className="text-monitor-text-dim text-[13px]">—</span>
+            <span className="text-monitor-text-dim text-13">—</span>
           )}
         </td>
 
         {/* 결제 정보 여부 */}
         <td className="px-4 py-[12.5px]">
           {isUnpaid ? (
-            <span className="text-[12px] text-[#ff6467]">없음</span>
+            <span className="text-event-critical text-12">없음</span>
           ) : tx.paymentId ? (
-            <span className="text-monitor-text-dim font-mono text-[11px]">
+            <span className="text-monitor-text-dim font-mono text-11">
               #{tx.paymentId}
             </span>
           ) : (
-            <span className="text-monitor-text-dim text-[13px]">—</span>
+            <span className="text-monitor-text-dim text-13">—</span>
           )}
         </td>
 
@@ -328,15 +328,15 @@ export default function PosTransactionTable({
   }
 
   return (
-    <div className="border-monitor-border bg-monitor-card-bg overflow-hidden rounded-xl border">
+    <div className="border-monitor-border bg-monitor-card-bg overflow-hidden rounded-card border">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[600px] border-collapse">
           <thead>
-            <tr className="border-monitor-border border-b bg-[rgba(255,255,255,0.04)]">
+            <tr className="border-monitor-border border-b bg-white/4">
               {COL_HEADERS.map((col, i) => (
                 <th
                   key={i}
-                  className={`text-monitor-text-dim px-4 py-[10px] text-[11px] font-medium tracking-wider uppercase ${
+                  className={`text-monitor-text-dim px-4 py-[10px] text-11 font-medium tracking-wider uppercase ${
                     col.align === "right" ? "text-right" : "text-left"
                   } ${i === COL_HEADERS.length - 1 ? "w-12" : ""}`}
                 >
@@ -380,10 +380,10 @@ export default function PosTransactionTable({
       </div>
 
       <div className="border-monitor-border flex flex-col items-start gap-1 border-t px-4 py-[10px] sm:flex-row sm:items-center sm:justify-between sm:gap-0">
-        <span className="text-monitor-text-dim text-[12px]">
+        <span className="text-monitor-text-dim text-12">
           {transactions.length}건 표시 중 (전체 {totalCount}건)
         </span>
-        <span className="text-monitor-text-dim text-[11px]">
+        <span className="text-monitor-text-dim text-11">
           행을 클릭하면 결제 상세 내역을 확인할 수 있습니다
         </span>
       </div>

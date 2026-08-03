@@ -31,9 +31,9 @@ function PlaybackPlayer({ alertId, cameraName }: { alertId: number; cameraName: 
       <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between bg-linear-to-b from-black/80 to-transparent px-4 pt-4 pb-8 pointer-events-none">
         <div className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-monitor-accent-blue" />
-          <span className="text-[13px] leading-4 font-bold tracking-[0.3px] text-white drop-shadow-sm">{cameraName}</span>
+          <span className="text-13 font-bold text-white drop-shadow-sm">{cameraName}</span>
         </div>
-        <span className="border-monitor-accent-blue/30 bg-monitor-accent-blue/20 text-monitor-accent-blue rounded-sm border px-2 py-0.75 font-mono text-[10px] leading-3.75 tracking-[1px]">
+        <span className="border-monitor-accent-blue/30 bg-monitor-accent-blue/20 text-monitor-accent-blue rounded-sm border px-2 py-0.75 font-mono text-10 tracking-caps">
           복기
         </span>
       </div>
@@ -63,10 +63,10 @@ export default function EventCCTVPlayer({
 
       <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between bg-linear-to-b from-black/80 to-transparent px-4 pt-4 pb-8 pointer-events-none">
         <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-[#fb2c36]/76" />
-          <span className="text-[13px] leading-4 font-bold tracking-[0.3px] text-white drop-shadow-sm">{cameraName}</span>
+          <span className="bg-event-critical h-2 w-2 rounded-full" />
+          <span className="text-13 font-bold text-white drop-shadow-sm">{cameraName}</span>
         </div>
-        <span className="border-event-critical/30 bg-event-critical/20 text-event-critical rounded-[4px] border px-2 py-[3px] font-mono text-[10px] leading-[15px] tracking-[1px]">
+        <span className="border-event-critical/30 bg-event-critical/20 text-event-critical rounded-badge border px-2 py-[3px] font-mono text-10 tracking-caps">
           LIVE
         </span>
       </div>

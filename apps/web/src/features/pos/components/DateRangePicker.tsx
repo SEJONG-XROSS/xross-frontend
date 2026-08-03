@@ -77,7 +77,7 @@ function CalendarMonth({ year, month, range, hoverDate, onSelect, onHover }: Cal
 
   return (
     <div className="w-full sm:w-[224px]">
-      <div className="text-monitor-text mb-2 text-center text-[13px] font-semibold">
+      <div className="text-monitor-text mb-2 text-center text-13 font-semibold">
         {year}년 {MONTH_NAMES[month]}
       </div>
       <CalendarGrid
@@ -93,14 +93,14 @@ function CalendarMonth({ year, month, range, hoverDate, onSelect, onHover }: Cal
               onClick={() => onSelect(dateStr)}
               onMouseEnter={() => onHover(dateStr)}
               onMouseLeave={() => onHover(null)}
-              className={`mx-auto flex h-[28px] w-[28px] items-center justify-center rounded-md text-[12px] transition-colors ${
+              className={`mx-auto flex h-7 w-7 items-center justify-center rounded-md text-12 transition-colors ${
                 end
                   ? "bg-monitor-accent-blue font-semibold text-white"
                   : inRange
-                    ? "text-monitor-accent-blue bg-[rgba(81,162,255,0.15)]"
+                    ? "text-monitor-accent-blue bg-monitor-accent-blue/15"
                     : isToday
                       ? "text-monitor-accent-blue font-semibold"
-                      : "text-monitor-text hover:bg-[rgba(255,255,255,0.06)]"
+                      : "text-monitor-text hover:bg-white/5"
               }`}
             >
               {dateStr.slice(8)}
@@ -192,7 +192,7 @@ export default function DateRangePicker({
       <button
         type="button"
         onClick={onToggle}
-        className={`border-monitor-border bg-monitor-card-bg text-monitor-text flex h-10 items-center gap-2 rounded-lg border px-3 text-[13px] font-medium whitespace-nowrap transition-colors hover:bg-[rgba(255,255,255,0.06)] ${
+        className={`border-monitor-border bg-monitor-card-bg text-monitor-text flex h-10 items-center gap-2 rounded-control border px-3 text-13 font-medium whitespace-nowrap transition-colors hover:bg-white/5 ${
           hasRange ? "border-monitor-accent-blue/40" : ""
         }`}
       >
@@ -208,11 +208,11 @@ export default function DateRangePicker({
       </button>
 
       {open && (
-        <div className="border-monitor-border bg-monitor-card-bg fixed inset-x-2 top-1/2 z-50 -translate-y-1/2 rounded-xl border p-4 shadow-xl sm:absolute sm:inset-x-auto sm:top-[calc(100%+4px)] sm:right-0 sm:translate-y-0">
+        <div className="border-monitor-border bg-monitor-card-bg fixed inset-x-2 top-1/2 z-50 -translate-y-1/2 rounded-card border p-4 shadow-xl sm:absolute sm:inset-x-auto sm:top-[calc(100%+4px)] sm:right-0 sm:translate-y-0">
           <div className="flex flex-col gap-4 sm:flex-row sm:gap-4">
             {/* 프리셋 */}
             <div className="border-monitor-border flex shrink-0 flex-row gap-1 overflow-x-auto border-b pb-3 sm:w-[110px] sm:flex-col sm:gap-0.5 sm:overflow-x-visible sm:border-r sm:border-b-0 sm:pr-4 sm:pb-0">
-              <span className="text-monitor-text-dim mb-1 hidden text-[10px] font-semibold tracking-wider uppercase sm:mb-2 sm:block">
+              <span className="text-monitor-text-dim tracking-caps mb-1 hidden font-mono text-10 font-semibold uppercase sm:mb-2 sm:block">
                 프리셋
               </span>
               {PRESETS.map((p) => {
@@ -224,10 +224,10 @@ export default function DateRangePicker({
                     key={p.label}
                     type="button"
                     onClick={() => handlePreset(preset)}
-                    className={`shrink-0 rounded-md px-2 py-1.5 text-left text-[12px] whitespace-nowrap transition-colors ${
+                    className={`shrink-0 rounded-md px-2 py-1.5 text-left text-12 whitespace-nowrap transition-colors ${
                       active
-                        ? "text-monitor-accent-blue bg-[rgba(81,162,255,0.12)] font-medium"
-                        : "text-monitor-text-muted hover:text-monitor-text hover:bg-[rgba(255,255,255,0.05)]"
+                        ? "text-monitor-accent-blue bg-monitor-accent-blue/12 font-medium"
+                        : "text-monitor-text-muted hover:text-monitor-text hover:bg-white/5"
                     }`}
                   >
                     {p.label}
@@ -242,14 +242,14 @@ export default function DateRangePicker({
                 <button
                   type="button"
                   onClick={prevMonth}
-                  className="text-monitor-text-dim hover:text-monitor-text flex h-6 w-6 items-center justify-center rounded-md transition-colors hover:bg-[rgba(255,255,255,0.06)]"
+                  className="text-monitor-text-dim hover:text-monitor-text flex h-6 w-6 items-center justify-center rounded-md transition-colors hover:bg-white/5"
                 >
                   ‹
                 </button>
                 <button
                   type="button"
                   onClick={nextMonth}
-                  className="text-monitor-text-dim hover:text-monitor-text flex h-6 w-6 items-center justify-center rounded-md transition-colors hover:bg-[rgba(255,255,255,0.06)]"
+                  className="text-monitor-text-dim hover:text-monitor-text flex h-6 w-6 items-center justify-center rounded-md transition-colors hover:bg-white/5"
                 >
                   ›
                 </button>
@@ -273,7 +273,7 @@ export default function DateRangePicker({
                 />
               </div>
               {selecting === "to" && (
-                <p className="text-monitor-accent-blue mt-3 text-center text-[11px]">
+                <p className="text-monitor-accent-blue mt-3 text-center text-11">
                   종료일을 선택하세요
                 </p>
               )}

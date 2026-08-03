@@ -43,13 +43,13 @@ export default function EventLogPanel({
     >
       {/* 헤더 — standalone 모바일 탭에서는 탭 바가 역할을 대신하므로 숨김 */}
       {!standalone && (
-        <div className="border-monitor-border bg-monitor-card-bg flex h-[54px] shrink-0 items-center justify-between border-b px-4">
+        <div className="border-monitor-border bg-monitor-card-bg flex h-14 shrink-0 items-center justify-between border-b px-4">
           <div className="flex items-center gap-2">
             <LogsIcon
               className="text-monitor-text-muted h-4 w-4 shrink-0"
               aria-hidden
             />
-            <span className="text-monitor-text text-[14px] leading-5 font-bold tracking-[0.5px]">
+            <span className="text-monitor-text text-14 font-bold">
               실시간 탐지 로그
             </span>
             <span
@@ -61,7 +61,7 @@ export default function EventLogPanel({
             />
           </div>
           {criticalCount > 0 && (
-            <span className="text-event-critical rounded-[4px] border border-[rgba(251,44,54,0.2)] bg-[rgba(251,44,54,0.1)] px-2 py-[3px] text-[10px] leading-[15px] font-bold tracking-[0.12px]">
+            <span className="text-event-critical border-event-critical/20 bg-event-critical/10 rounded-badge border px-2 py-[3px] text-10 font-bold">
               {criticalCount}건 검토 필요
             </span>
           )}
@@ -77,7 +77,7 @@ export default function EventLogPanel({
         role="group"
         aria-label="알림 정렬"
       >
-        <div className="flex gap-1 rounded-lg bg-[rgba(255,255,255,0.06)] p-1">
+        <div className="flex gap-1 rounded-control bg-white/5 p-1">
           {SORT_OPTIONS.map(({ key, label }) => {
             const active = sortKey === key;
             return (
@@ -87,7 +87,7 @@ export default function EventLogPanel({
                 onClick={() => setSortKey(key)}
                 aria-pressed={active}
                 className={cn(
-                  "flex-1 rounded-md py-1.5 text-[11px] font-semibold tracking-[0.2px] transition-colors",
+                  "flex-1 rounded-md py-1.5 text-11 font-semibold transition-colors",
                   active
                     ? "bg-monitor-card-bg text-monitor-accent-blue"
                     : "text-monitor-text-dim hover:text-monitor-text-muted",
@@ -103,7 +103,7 @@ export default function EventLogPanel({
       {/* 이벤트 목록 */}
       <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-4">
         {sortedAlerts.length === 0 ? (
-          <div className="text-monitor-text-dim flex flex-1 items-center justify-center text-[12px]">
+          <div className="text-monitor-text-dim flex flex-1 items-center justify-center text-12">
             탐지된 이벤트가 없습니다.
           </div>
         ) : (

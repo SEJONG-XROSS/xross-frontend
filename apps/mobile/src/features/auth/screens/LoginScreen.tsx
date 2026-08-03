@@ -9,6 +9,7 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLogin } from '@xross/core';
+import { colors } from '@xross/tokens';
 import { useAuthStore } from '@/shared/auth/store';
 import { TextField } from '@/shared/ui/TextField';
 import type { LoginScreenProps } from '@/app/navigation/types';
@@ -52,7 +53,7 @@ export function LoginScreen(_props: LoginScreenProps) {
         <View
           className="mb-4 rounded-2xl"
           style={{
-            shadowColor: '#155dfc',
+            shadowColor: colors.brand.primary,
             shadowOpacity: 0.18,
             shadowRadius: 14,
             shadowOffset: { width: 0, height: 4 },
@@ -62,7 +63,7 @@ export function LoginScreen(_props: LoginScreenProps) {
           <LogoSvg width={60} height={60} />
         </View>
 
-        <Text className="text-[22px] font-bold tracking-tight text-heading">
+        <Text className="text-22 font-bold tracking-tight text-heading">
           XROSS
         </Text>
         <Text className="mt-1 text-sm text-body">
@@ -78,14 +79,14 @@ export function LoginScreen(_props: LoginScreenProps) {
             shadowOffset: { width: 0, height: 1 },
           }}
         >
-          <Text className="text-[15px] font-bold tracking-tight text-heading">
+          <Text className="text-14 font-bold tracking-tight text-heading">
             비전 AI
             <Text className="font-light text-body">{'  |  '}</Text>
             무게 센서
             <Text className="font-light text-body">{'  |  '}</Text>
             POS
           </Text>
-          <Text className="mt-1 text-center text-[13px] leading-relaxed text-body">
+          <Text className="mt-1 text-center text-13 leading-relaxed text-body">
             <Text className="font-semibold text-brand-primary">3단계 교차 검증</Text>
             으로 매장을 안전하게.
           </Text>
@@ -137,13 +138,13 @@ export function LoginScreen(_props: LoginScreenProps) {
         <Pressable
           onPress={handleSubmit}
           disabled={!canSubmit}
-          className="h-11 items-center justify-center rounded-[10px] bg-brand-primary"
+          className="h-11 items-center justify-center rounded-control bg-brand-primary"
           style={({ pressed }: { pressed: boolean }) => ({
             opacity: pressed || !canSubmit ? 0.7 : 1,
           })}
         >
           {mutation.isPending ? (
-            <ActivityIndicator color="#ffffff" size="small" />
+            <ActivityIndicator color={colors.brand['on-primary']} size="small" />
           ) : (
             <Text className="text-sm font-semibold text-brand-on-primary">
               로그인
@@ -157,7 +158,7 @@ export function LoginScreen(_props: LoginScreenProps) {
             onPress={() => {
               useAuthStore.getState().setAuth('dev-mock-token', 1);
             }}
-            className="h-9 items-center justify-center rounded-lg border border-input-border"
+            className="h-9 items-center justify-center rounded-control border border-input-border"
           >
             <Text className="text-xs text-label">🛠 개발 모드로 진입 (백엔드 없음)</Text>
           </Pressable>

@@ -5,6 +5,7 @@ import ChevronRightIcon from "@/assets/icons/chevron-right.svg?react";
 import CalendarIcon from "@/assets/icons/calendar.svg?react";
 import { getTodayStr, isToday, shiftDay, formatDateLabel } from "@/shared/lib/date";
 import { CalendarGrid } from "@/shared/ui/CalendarGrid";
+import PageHeader from "@/shared/ui/PageHeader";
 import { useMe } from "@/features/auth/hooks/useMe";
 
 /* ── 캘린더 드롭다운 ───────────────────────────── */
@@ -34,24 +35,24 @@ function Calendar({ selected, onSelect, onClose }: CalendarProps) {
   const isNextDisabled = viewYear === ty && viewMonth === tm - 1;
 
   return (
-    <div className="w-[272px] rounded-xl border border-monitor-border bg-monitor-card-bg p-4 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+    <div className="w-[272px] rounded-card border border-monitor-border bg-monitor-card-bg p-4 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
       {/* 월 내비게이션 */}
       <div className="mb-3 flex items-center justify-between">
         <button
           type="button"
           onClick={prevMonth}
-          className="flex h-7 w-7 items-center justify-center rounded-md text-monitor-text-dim transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-monitor-text"
+          className="flex h-7 w-7 items-center justify-center rounded-md text-monitor-text-dim transition-colors hover:bg-white/10 hover:text-monitor-text"
         >
           <ChevronRightIcon className="h-3.5 w-3.5 rotate-180" />
         </button>
-        <span className="text-[13px] font-semibold text-monitor-text">
+        <span className="text-13 font-semibold text-monitor-text">
           {viewYear}년 {viewMonth + 1}월
         </span>
         <button
           type="button"
           onClick={nextMonth}
           disabled={isNextDisabled}
-          className="flex h-7 w-7 items-center justify-center rounded-md text-monitor-text-dim transition-colors hover:bg-[rgba(255,255,255,0.08)] hover:text-monitor-text disabled:cursor-not-allowed disabled:opacity-30"
+          className="flex h-7 w-7 items-center justify-center rounded-md text-monitor-text-dim transition-colors hover:bg-white/10 hover:text-monitor-text disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronRightIcon className="h-3.5 w-3.5" />
         </button>
@@ -73,18 +74,18 @@ function Calendar({ selected, onSelect, onClose }: CalendarProps) {
               type="button"
               disabled={future}
               onClick={() => { onSelect(dateStr); onClose(); }}
-              className={`relative mx-auto flex h-8 w-8 items-center justify-center rounded-lg text-[12px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-25 ${
+              className={`relative mx-auto flex h-8 w-8 items-center justify-center rounded-control text-12 font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-25 ${
                 isSelected
                   ? "bg-monitor-accent-blue text-white"
                   : isTodayDate
-                    ? "bg-[rgba(81,162,255,0.15)] text-monitor-accent-blue"
+                    ? "bg-monitor-accent-blue/15 text-monitor-accent-blue"
                     : future
                       ? "text-monitor-text-dim"
                       : isSun
-                        ? "text-event-critical/80 hover:bg-[rgba(255,255,255,0.07)]"
+                        ? "text-event-critical/80 hover:bg-white/5"
                         : isSat
-                          ? "text-monitor-accent-blue/80 hover:bg-[rgba(255,255,255,0.07)]"
-                          : "text-monitor-text hover:bg-[rgba(255,255,255,0.07)]"
+                          ? "text-monitor-accent-blue/80 hover:bg-white/5"
+                          : "text-monitor-text hover:bg-white/5"
               }`}
             >
               {dateStr.slice(8)}
@@ -101,7 +102,7 @@ function Calendar({ selected, onSelect, onClose }: CalendarProps) {
         <button
           type="button"
           onClick={() => { onSelect(today); onClose(); }}
-          className="mt-3 w-full rounded-lg border border-monitor-accent-blue/30 py-1.5 text-[12px] font-medium text-monitor-accent-blue transition-colors hover:bg-monitor-accent-blue/10"
+          className="mt-3 w-full rounded-control border border-monitor-accent-blue/30 py-1.5 text-12 font-medium text-monitor-accent-blue transition-colors hover:bg-monitor-accent-blue/10"
         >
           오늘로 이동
         </button>
@@ -152,11 +153,11 @@ export default function MonitoringHeader({ date, onDateChange }: MonitoringHeade
 
   return (
     <>
-      <header className="bg-surface-page border-monitor-border relative flex h-14 shrink-0 items-center border-b">
+      <PageHeader>
         {/* 좌측: 타이틀 */}
         <div className="flex items-center gap-2 pl-4 sm:pl-6">
-          <ShieldIcon className="h-5 w-5 shrink-0 text-brand-primary" />
-          <span className="text-[14px] leading-5 font-bold tracking-[0.2px] whitespace-nowrap text-gray-800">
+          <ShieldIcon className="text-monitor-accent-blue h-5 w-5 shrink-0" />
+          <span className="text-monitor-text text-14 font-bold whitespace-nowrap">
             XROSS 통합 관제
           </span>
         </div>
@@ -166,7 +167,7 @@ export default function MonitoringHeader({ date, onDateChange }: MonitoringHeade
           <button
             type="button"
             onClick={() => onDateChange(shiftDay(date, -1))}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-gray-400 transition-colors hover:bg-[rgba(0,0,0,0.04)] hover:text-gray-700"
+            className="text-monitor-text-dim hover:text-monitor-text flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-white/5"
           >
             <ChevronRightIcon className="h-[13px] w-[13px] rotate-180" />
           </button>
@@ -175,19 +176,19 @@ export default function MonitoringHeader({ date, onDateChange }: MonitoringHeade
             ref={triggerRef}
             type="button"
             onClick={openCalendar}
-            className={`flex flex-col items-center rounded-lg px-3 py-1 transition-colors ${
+            className={`flex flex-col items-center rounded-control px-3 py-1 transition-colors ${
               calOpen
-                ? "bg-[rgba(0,0,0,0.06)] text-gray-800"
-                : "text-gray-700 hover:bg-[rgba(0,0,0,0.04)]"
+                ? "text-monitor-text bg-white/10"
+                : "text-monitor-text-muted hover:text-monitor-text hover:bg-white/5"
             }`}
           >
             {today && (
-              <span className="rounded-full bg-monitor-accent-blue/20 px-1.5 py-0.5 text-[10px] font-bold text-monitor-accent-blue">
+              <span className="rounded-full bg-monitor-accent-blue/20 px-1.5 py-0.5 text-10 font-bold text-monitor-accent-blue">
                 오늘
               </span>
             )}
-            <span className="flex items-center gap-1.5 text-[13px] font-semibold tabular-nums">
-              <CalendarIcon className="h-3.5 w-3.5 shrink-0 text-gray-400" />
+            <span className="flex items-center gap-1.5 text-13 font-semibold tabular-nums">
+              <CalendarIcon className="text-monitor-text-dim h-3.5 w-3.5 shrink-0" />
               {formatDateLabel(date)}
             </span>
           </button>
@@ -196,7 +197,7 @@ export default function MonitoringHeader({ date, onDateChange }: MonitoringHeade
             type="button"
             onClick={() => onDateChange(shiftDay(date, 1))}
             disabled={today}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-gray-400 transition-colors hover:bg-[rgba(0,0,0,0.04)] hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-30"
+            className="text-monitor-text-dim hover:text-monitor-text flex h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-30"
           >
             <ChevronRightIcon className="h-[13px] w-[13px]" />
           </button>
@@ -205,15 +206,15 @@ export default function MonitoringHeader({ date, onDateChange }: MonitoringHeade
         {/* 우측: 매장 정보 */}
         <div className="ml-auto flex flex-col items-end pr-4 lg:pr-6">
           {me?.name && (
-            <span className="text-gray-700 text-[12px] font-medium leading-4 whitespace-nowrap">
+            <span className="text-monitor-text text-12 font-medium whitespace-nowrap">
               {me.name}
             </span>
           )}
-          <span className="text-gray-400 text-[11px] leading-4 whitespace-nowrap">
+          <span className="text-monitor-text-dim text-11 whitespace-nowrap">
             {me?.storeName ?? "—"}
           </span>
         </div>
-      </header>
+      </PageHeader>
 
       {/* 캘린더: body에 portal로 렌더링 */}
       {calOpen &&

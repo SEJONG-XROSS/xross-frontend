@@ -2,6 +2,7 @@ import React, { forwardRef, useState } from 'react';
 import { View, Text, TextInput, Pressable, type TextInputProps } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { cn } from '@xross/core';
+import { colors } from '@xross/tokens';
 
 interface TextFieldProps extends Omit<TextInputProps, 'secureTextEntry'> {
   label?: string;
@@ -23,13 +24,13 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
           </Text>
         )}
         <View className={cn(
-          'flex-row items-center h-11 px-4 rounded-[10px] border bg-surface-elevated',
+          'flex-row items-center h-11 px-4 rounded-control border bg-surface-elevated',
           error ? 'border-event-critical' : emailVariant ? 'border-input-border-email' : 'border-input-border',
         )}>
           <TextInput
             ref={ref}
             className="flex-1 text-heading text-sm tracking-tight"
-            placeholderTextColor="#94a3b8"
+            placeholderTextColor={colors.placeholder}
             secureTextEntry={secure}
             autoCapitalize="none"
             autoCorrect={false}
@@ -46,7 +47,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
                 hitSlop={8}
                 className="p-1"
               >
-                <Ionicons name="close-circle" size={16} color="#94a3b8" />
+                <Ionicons name="close-circle" size={16} color={colors.input.icon} />
               </Pressable>
             )}
 
@@ -60,7 +61,7 @@ export const TextField = forwardRef<TextInput, TextFieldProps>(
                 <Ionicons
                   name={secure ? 'eye-off-outline' : 'eye-outline'}
                   size={18}
-                  color="#94a3b8"
+                  color={colors.input.icon}
                 />
               </Pressable>
             )}

@@ -17,22 +17,22 @@ const STATUS_CONFIG: Record<
     label: "정상 결제",
     icon: CheckCircleIcon,
     textClass: "text-event-safe",
-    bgClass: "bg-[rgba(0,188,125,0.1)]",
-    borderClass: "border-[rgba(0,188,125,0.2)]",
+    bgClass: "bg-event-safe/10",
+    borderClass: "border-event-safe/20",
   },
   unpaid: {
     label: "미결제 의심",
     icon: ShieldAlertIcon,
-    textClass: "text-[#fb2c36]",
-    bgClass: "bg-[rgba(251,44,54,0.1)]",
-    borderClass: "border-[rgba(251,44,54,0.2)]",
+    textClass: "text-event-critical",
+    bgClass: "bg-event-critical/10",
+    borderClass: "border-event-critical/20",
   },
   mismatch: {
     label: "장바구니 불일치",
     icon: TriangleAlertIcon,
     textClass: "text-event-warning",
-    bgClass: "bg-[rgba(254,154,0,0.1)]",
-    borderClass: "border-[rgba(254,154,0,0.2)]",
+    bgClass: "bg-event-warning/10",
+    borderClass: "border-event-warning/20",
   },
 };
 
@@ -46,7 +46,7 @@ export default function PosStatusBadge({ status }: PosStatusBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-[6px] rounded-[5px] border px-[8px] py-[3px] text-[12px] leading-[18px] font-medium ${config.textClass} ${config.bgClass} ${config.borderClass}`}
+      className={`inline-flex items-center gap-1.5 rounded-badge border px-2 py-[3px] text-12 font-medium whitespace-nowrap ${config.textClass} ${config.bgClass} ${config.borderClass}`}
     >
       <Icon className="h-3 w-3 shrink-0" />
       {config.label}

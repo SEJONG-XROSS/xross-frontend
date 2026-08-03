@@ -19,8 +19,8 @@ export default function ToggleSwitch({
       disabled={disabled}
       onClick={() => onChange?.(!checked)}
       className={cn(
-        "relative h-6 w-11 shrink-0 rounded-full transition-colors",
-        checked ? "bg-brand-primary" : "bg-[#cad5e2]",
+        "focus-visible:outline-monitor-accent-blue relative h-6 w-11 shrink-0 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2",
+        checked ? "bg-brand-primary" : "bg-monitor-border-strong",
         disabled && "cursor-not-allowed opacity-50",
       )}
     >

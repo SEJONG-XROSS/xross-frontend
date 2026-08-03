@@ -5,11 +5,11 @@ interface SettingsSectionProps {
 
 export default function SettingsSection({ title, children }: SettingsSectionProps) {
   return (
-    <section className="flex flex-col gap-4">
-      <h3 className="text-[12px] font-medium uppercase leading-4 tracking-[1.2px] text-monitor-text-dim">
+    <section className="flex flex-col gap-3">
+      <h3 className="text-monitor-text-dim tracking-caps font-mono text-11 font-semibold uppercase">
         {title}
       </h3>
-      <div className="overflow-hidden rounded-[14px] border border-monitor-border bg-monitor-bg">
+      <div className="border-monitor-border bg-monitor-card-bg overflow-hidden rounded-card border">
         {children}
       </div>
     </section>

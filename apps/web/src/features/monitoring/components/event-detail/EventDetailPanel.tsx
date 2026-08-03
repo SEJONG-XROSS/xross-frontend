@@ -41,17 +41,17 @@ export default function EventDetailPanel({ event }: EventDetailPanelProps) {
         <div className="mb-2 flex items-start justify-between gap-3">
           <div className="flex min-w-0 flex-1 items-start gap-[10px]">
             <Icon className={`mt-[2px] h-6 w-6 shrink-0 ${iconColor}`} />
-            <h2 className="text-[16px] font-bold leading-[22px] tracking-[-0.45px] text-monitor-text sm:text-[20px] sm:leading-[25px]">
+            <h2 className="text-16 font-bold text-monitor-text sm:text-xl">
               {event.title}
             </h2>
           </div>
           <span
-            className={`shrink-0 rounded-[4px] px-2 py-[5px] text-[12px] font-bold leading-4 ${CONFIDENCE_BADGE[event.severity]}`}
+            className={`shrink-0 rounded-badge px-2 py-[5px] text-12 font-bold ${CONFIDENCE_BADGE[event.severity]}`}
           >
             신뢰도 {event.confidence}%
           </span>
         </div>
-        <p className="pb-5 text-[14px] leading-[22px] tracking-[-0.15px] text-monitor-text-muted">
+        <p className="pb-5 text-14 text-monitor-text-muted">
           {event.description}
         </p>
       </div>

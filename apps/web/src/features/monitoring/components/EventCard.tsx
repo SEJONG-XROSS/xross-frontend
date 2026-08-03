@@ -20,17 +20,17 @@ const SEVERITY_CONFIG: Record<
   }
 > = {
   critical: {
-    border: "border-[rgba(251,44,54,0.4)]",
-    shadow: "shadow-[0_0_15px_rgba(239,68,68,0.05)]",
-    iconBg: "bg-[#fb2c36] shadow-[0_0_10px_rgba(239,68,68,0.4)]",
+    border: "border-event-critical/40",
+    shadow: "shadow-glow-critical",
+    iconBg: "bg-event-critical shadow-icon-critical",
     iconColor: "text-white",
     titleColor: "text-event-critical",
     Icon: ShieldAlertIcon,
   },
   warning: {
-    border: "border-[rgba(254,154,0,0.4)]",
-    shadow: "shadow-[0_0_15px_rgba(254,154,0,0.05)]",
-    iconBg: "bg-[#fe9a00] shadow-[0_0_10px_rgba(254,154,0,0.4)]",
+    border: "border-event-warning/40",
+    shadow: "shadow-glow-warning",
+    iconBg: "bg-event-warning shadow-icon-warning",
     iconColor: "text-white",
     titleColor: "text-event-warning",
     Icon: TriangleAlertIcon,
@@ -76,7 +76,7 @@ export default function EventCard({ alert }: EventCardProps) {
       onKeyDown={(e) => e.key === "Enter" && goDetail()}
 
       className={cn(
-        "bg-monitor-card-bg relative cursor-pointer rounded-[14px] border p-[14px] transition-opacity hover:opacity-80",
+        "bg-monitor-card-bg relative cursor-pointer rounded-card border p-3.5 transition-opacity hover:opacity-80",
         alert.status === "ACKNOWLEDGED" && "opacity-50",
         style.border,
         style.shadow,
@@ -85,7 +85,7 @@ export default function EventCard({ alert }: EventCardProps) {
       <div className="flex items-start gap-[10px]">
         <div
           className={cn(
-            "mt-[2px] flex h-7 w-7 shrink-0 items-center justify-center rounded-[10px]",
+            "mt-[2px] flex h-7 w-7 shrink-0 items-center justify-center rounded-control",
             style.iconBg,
             style.iconColor,
           )}
@@ -95,19 +95,19 @@ export default function EventCard({ alert }: EventCardProps) {
         <div className="flex flex-1 flex-col gap-[2px]">
           <span
             className={cn(
-              "text-[14px] leading-5 font-bold tracking-[-0.15px]",
+              "text-14 font-bold",
               style.titleColor,
             )}
           >
             {alert.title}
           </span>
-          <span className="text-monitor-text-dim font-mono text-[10px] leading-[15px]">
+          <span className="text-monitor-text-dim font-mono text-10">
             {formatTime(alert.createdAt)} • #{alert.id}
           </span>
         </div>
       </div>
 
-      <p className="text-monitor-text-muted mt-[10px] pl-[38px] text-[12px] leading-[1.625]">
+      <p className="text-monitor-text-muted mt-[10px] pl-[38px] text-12">
         {alert.message}
       </p>
     </div>

@@ -12,48 +12,44 @@ export default function SecuritySection({
   onChangePassword,
 }: SecuritySectionProps) {
   return (
-    <section className="flex flex-col gap-4">
-      <h3 className="text-[12px] font-medium uppercase leading-4 tracking-[1.2px] text-monitor-text-dim">
+    <section className="flex flex-col gap-3">
+      <h3 className="text-monitor-text-dim tracking-caps font-mono text-11 font-semibold uppercase">
         보안
       </h3>
-      <div className="overflow-hidden rounded-[14px] border border-monitor-border bg-monitor-bg">
+      <div className="border-monitor-border bg-monitor-card-bg overflow-hidden rounded-card border">
         {/* 비밀번호 변경 행 */}
-        <div className="flex min-h-[70px] items-center justify-between gap-3 border-b border-monitor-border px-4 py-3 sm:px-5 lg:h-[75px] lg:py-0">
+        <div className="border-monitor-border flex min-h-[70px] items-center justify-between gap-3 border-b px-4 py-3 sm:px-5">
           <div className="flex flex-col gap-0.5">
-            <span className="text-[14px] leading-5 tracking-[-0.15px] text-monitor-text">
+            <span className="text-monitor-text text-14">
               비밀번호 변경
             </span>
-            <span className="text-[12px] leading-4 text-monitor-text-dim">
+            <span className="text-monitor-text-dim text-12">
               마지막 변경: {lastPasswordChangeDays}일 전
             </span>
           </div>
           <button
             type="button"
             onClick={onChangePassword}
-            className="flex shrink-0 items-center gap-1 transition-opacity hover:opacity-75"
+            className="text-monitor-accent-blue hover:bg-monitor-accent-blue/10 border-monitor-accent-blue/25 flex h-8 shrink-0 items-center gap-1.5 rounded-control border px-3 transition-colors"
           >
-            <span className="relative size-[14px] shrink-0 text-brand-primary">
-              <KeyIcon className="absolute block size-full max-w-none" />
-            </span>
-            <span className="text-[12px] font-medium leading-4 text-brand-primary">
-              변경
-            </span>
+            <KeyIcon className="size-3.5 shrink-0" />
+            <span className="text-12 font-medium">변경</span>
           </button>
         </div>
 
         {/* 2단계 인증 행 */}
-        <div className="flex min-h-[70px] items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:h-[74px] lg:py-0">
+        <div className="flex min-h-[70px] items-center justify-between gap-3 px-4 py-3 sm:px-5">
           <div className="flex flex-col gap-0.5">
-            <span className="text-[14px] leading-5 tracking-[-0.15px] text-monitor-text">
+            <span className="text-monitor-text text-14">
               2단계 인증 (OTP)
             </span>
-            <span className="text-[12px] leading-4 text-monitor-text-dim">
+            <span className="text-monitor-text-dim text-12">
               Google Authenticator 연동
             </span>
           </div>
           {isOtpEnabled && (
-            <div className="flex h-[18px] shrink-0 items-center rounded-[4px] border border-[rgba(0,188,125,0.2)] bg-[rgba(0,188,125,0.1)] px-[9px] py-[3px]">
-              <span className="font-mono text-[10px] leading-[15px] text-[#009966]">
+            <div className="border-event-safe/20 bg-event-safe/10 flex shrink-0 items-center rounded-badge border px-2 py-[3px]">
+              <span className="text-monitor-accent-green font-mono text-10">
                 활성
               </span>
             </div>

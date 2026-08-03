@@ -10,7 +10,7 @@ export default function FeatureCard({
   description,
 }: FeatureCardProps) {
   return (
-    <div className="flex items-center gap-4 rounded-[10px] border border-feature-border bg-feature-bg px-4 py-3.5">
+    <div className="flex items-center gap-4 rounded-control border border-feature-border bg-feature-bg px-4 py-3.5">
       <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-feature-icon-bg">
         {icon}
       </div>

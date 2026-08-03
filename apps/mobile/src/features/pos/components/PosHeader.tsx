@@ -6,13 +6,13 @@ export function PosHeader() {
   const insets = useSafeAreaInsets();
   return (
     <View
-      className="bg-surface-page border-b border-input-border items-center justify-center"
+      className="bg-monitor-card-bg border-b border-monitor-border items-center justify-center"
       style={{ paddingTop: insets.top, height: 56 + insets.top }}
     >
-      <Text className="text-label text-[10px] font-mono tracking-widest uppercase">
+      <Text className="text-monitor-text-dim text-10 font-mono tracking-caps uppercase">
         POS 결제 내역
       </Text>
-      <Text className="text-heading text-[13px] font-bold tracking-tight">
+      <Text className="text-monitor-text text-13 font-bold tracking-tight">
         KIS 무인 결제 v3.2
       </Text>
     </View>

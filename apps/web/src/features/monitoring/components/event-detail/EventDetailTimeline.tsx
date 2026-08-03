@@ -42,9 +42,9 @@ export default function EventDetailTimeline({
   return (
     <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
       {/* 섹션 헤더 */}
-      <div className="mb-6 flex items-center gap-[8px]">
+      <div className="mb-6 flex items-center gap-2">
         <LogsIcon className="h-4 w-4 shrink-0 text-monitor-text-dim" />
-        <span className="text-[12px] font-bold uppercase tracking-[1.2px] text-monitor-text-dim">
+        <span className="font-mono text-11 font-bold uppercase tracking-caps text-monitor-text-dim">
           상세 로그 타임라인
         </span>
       </div>
@@ -79,12 +79,12 @@ export default function EventDetailTimeline({
                 {/* 내용 */}
                 <div className="flex flex-col gap-1 pt-[2px]">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] leading-[15px] text-monitor-text-dim">
+                    <span className="font-mono text-10 text-monitor-text-dim">
                       {entry.time}
                     </span>
                     <span
                       className={cn(
-                        "rounded-[4px] px-[6px] py-[1.5px] font-mono text-[9px] uppercase tracking-[0.45px]",
+                        "rounded-badge px-[6px] py-[1.5px] font-mono text-10 uppercase",
                         src.badgeBg,
                         src.badgeText,
                       )}
@@ -94,7 +94,7 @@ export default function EventDetailTimeline({
                   </div>
                   <p
                     className={cn(
-                      "text-[14px] leading-[19px] tracking-[-0.15px]",
+                      "text-14",
                       entry.alert === "critical" && "font-semibold text-event-critical",
                       entry.alert === "warning"  && "font-semibold text-event-warning",
                       !entry.alert && "text-monitor-text-muted",

@@ -57,7 +57,7 @@ export default function PosPage() {
       <main className="bg-monitor-bg flex flex-1 flex-col overflow-auto">
         <div className="mx-auto w-full max-w-6xl px-3 py-4 sm:px-6 sm:py-6">
           <PosSummaryCards stats={summary} />
-          <div className="mt-7">
+          <div className="mt-6">
             <PosSearchBar filters={filters} onChange={setFilters} />
           </div>
           <div className="mt-4">

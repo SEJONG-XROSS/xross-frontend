@@ -36,7 +36,7 @@ function MobileCarousel({ cameras }: { cameras: CameraFeed[] }) {
           <button
             onClick={() => setIdx((i) => i - 1)}
             disabled={idx === 0}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-monitor-border text-[16px] text-monitor-text-muted transition-colors hover:border-monitor-border-strong hover:text-monitor-text disabled:cursor-not-allowed disabled:opacity-30"
+            className="flex h-8 w-8 items-center justify-center rounded-control border border-monitor-border text-16 text-monitor-text-muted transition-colors hover:border-monitor-border-strong hover:text-monitor-text disabled:cursor-not-allowed disabled:opacity-30"
             aria-label="이전 카메라"
           >
             ‹
@@ -60,13 +60,13 @@ function MobileCarousel({ cameras }: { cameras: CameraFeed[] }) {
           <button
             onClick={() => setIdx((i) => i + 1)}
             disabled={idx === count - 1}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-monitor-border text-[16px] text-monitor-text-muted transition-colors hover:border-monitor-border-strong hover:text-monitor-text disabled:cursor-not-allowed disabled:opacity-30"
+            className="flex h-8 w-8 items-center justify-center rounded-control border border-monitor-border text-16 text-monitor-text-muted transition-colors hover:border-monitor-border-strong hover:text-monitor-text disabled:cursor-not-allowed disabled:opacity-30"
             aria-label="다음 카메라"
           >
             ›
           </button>
 
-          <span className="ml-1 font-mono text-[11px] text-monitor-text-dim">
+          <span className="ml-1 font-mono text-11 text-monitor-text-dim">
             {idx + 1}/{count}
           </span>
         </div>

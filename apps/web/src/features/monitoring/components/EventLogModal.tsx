@@ -60,10 +60,10 @@ const TYPE_SEVERITY: Record<string, Severity> = {
 };
 
 const TYPE_BADGE: Record<Severity, string> = {
-  critical: "bg-[rgba(255,100,103,0.1)] text-event-critical border border-[rgba(255,100,103,0.25)]",
-  warning:  "bg-[rgba(254,154,0,0.1)]  text-event-warning  border border-[rgba(254,154,0,0.25)]",
-  success:  "bg-[rgba(0,212,146,0.1)]  text-[#00d492]      border border-[rgba(0,212,146,0.25)]",
-  info:     "bg-monitor-card-bg        text-monitor-text   border border-monitor-border",
+  critical: "bg-event-critical/10 text-event-critical border border-event-critical/25",
+  warning:  "bg-event-warning/10 text-event-warning border border-event-warning/25",
+  success:  "bg-monitor-accent-green/10 text-monitor-accent-green border border-monitor-accent-green/25",
+  info:     "bg-monitor-card-bg text-monitor-text border border-monitor-border",
 };
 
 function formatTime(iso: string) {
@@ -139,19 +139,19 @@ export default function EventLogModal({ open, events, date, onClose }: EventLogM
         <div className="shrink-0 border-b border-monitor-border bg-monitor-card-bg px-5 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[rgba(81,162,255,0.12)] border border-[rgba(81,162,255,0.2)]">
+              <div className="bg-monitor-accent-blue/10 border-monitor-accent-blue/20 flex h-8 w-8 items-center justify-center rounded-control border">
                 <LogsIcon className="h-4 w-4 text-monitor-accent-blue" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[15px] font-bold tracking-[-0.2px] text-monitor-text">
+                  <span className="text-14 font-bold text-monitor-text">
                     이벤트 로그
                   </span>
-                  <span className="rounded-md bg-monitor-bg border border-monitor-border px-2 py-0.5 font-mono text-[11px] text-monitor-text-dim">
+                  <span className="rounded-badge bg-monitor-bg border border-monitor-border px-2 py-0.5 font-mono text-11 text-monitor-text-dim">
                     {formatDate(date)}
                   </span>
                 </div>
-                <span className="font-mono text-[11px] text-monitor-text-dim">
+                <span className="font-mono text-11 text-monitor-text-dim">
                   총 {events.length}건
                   {filtered.length !== events.length && (
                     <span className="text-monitor-accent-blue"> · 필터 {filtered.length}건</span>
@@ -163,7 +163,7 @@ export default function EventLogModal({ open, events, date, onClose }: EventLogM
             <button
               type="button"
               onClick={onClose}
-              className="flex h-8 w-8 items-center justify-center rounded-lg text-monitor-text-dim transition-colors hover:bg-[rgba(255,255,255,0.07)] hover:text-monitor-text"
+              className="flex h-8 w-8 items-center justify-center rounded-control text-monitor-text-dim transition-colors hover:bg-white/5 hover:text-monitor-text"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
@@ -185,15 +185,15 @@ export default function EventLogModal({ open, events, date, onClose }: EventLogM
                   type="button"
                   onClick={() => setFilter(key)}
                   className={cn(
-                    "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-semibold transition-all",
+                    "flex items-center gap-1.5 rounded-control px-3 py-1.5 text-11 font-semibold transition-all",
                     active
                       ? "bg-monitor-accent-blue text-white"
-                      : "text-monitor-text-dim hover:bg-[rgba(255,255,255,0.05)] hover:text-monitor-text-muted",
+                      : "text-monitor-text-dim hover:bg-white/5 hover:text-monitor-text-muted",
                   )}
                 >
                   {label}
                   <span className={cn(
-                    "rounded-full px-1.5 py-px font-mono text-[9px] font-bold leading-none",
+                    "rounded-full px-1.5 py-px font-mono text-10 font-bold leading-none",
                     active
                       ? "bg-white/20 text-white"
                       : "bg-monitor-border text-monitor-text-dim",
@@ -216,7 +216,7 @@ export default function EventLogModal({ open, events, date, onClose }: EventLogM
               placeholder="유형·소스·고객ID 검색"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-8 w-52 rounded-lg border border-monitor-border bg-monitor-card-bg pl-8 pr-3 font-mono text-[11px] text-monitor-text placeholder:text-monitor-text-dim focus:border-monitor-accent-blue/60 focus:outline-none transition-colors"
+              className="h-8 w-52 rounded-control border border-monitor-border bg-monitor-card-bg pl-8 pr-3 font-mono text-11 text-monitor-text placeholder:text-monitor-text-dim focus:border-monitor-accent-blue/60 focus:outline-none transition-colors"
             />
             {search && (
               <button
@@ -233,9 +233,9 @@ export default function EventLogModal({ open, events, date, onClose }: EventLogM
         </div>
 
         {/* ── 테이블 헤더 ── */}
-        <div className={cn("grid shrink-0 gap-x-3 border-b border-monitor-border bg-[rgba(255,255,255,0.02)] px-5 py-2", TABLE_COLS)}>
+        <div className={cn("grid shrink-0 gap-x-3 border-b border-monitor-border bg-white/5 px-5 py-2", TABLE_COLS)}>
           {COL_HEADERS.map((h, i) => (
-            <span key={i} className="font-mono text-[10px] font-bold uppercase tracking-[1.2px] text-monitor-text-dim">
+            <span key={i} className="font-mono text-10 font-bold uppercase tracking-caps text-monitor-text-dim">
               {h}
             </span>
           ))}
@@ -250,7 +250,7 @@ export default function EventLogModal({ open, events, date, onClose }: EventLogM
                 <path d="M27 27L33 33" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                 <path d="M12 16h8M16 12v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
-              <span className="text-[13px]">해당하는 이벤트가 없습니다.</span>
+              <span className="text-13">해당하는 이벤트가 없습니다.</span>
             </div>
           ) : (
             filtered.map((event, idx) => {
@@ -260,25 +260,25 @@ export default function EventLogModal({ open, events, date, onClose }: EventLogM
                 <div
                   key={event.id}
                   className={cn(
-                    "grid items-center gap-x-3 px-5 py-2.5 transition-colors hover:bg-[rgba(81,162,255,0.04)]",
+                    "hover:bg-monitor-accent-blue/[0.04] grid items-center gap-x-3 px-5 py-2.5 transition-colors",
                     TABLE_COLS,
-                    isEven ? "bg-transparent" : "bg-[rgba(255,255,255,0.015)]",
+                    isEven ? "bg-transparent" : "bg-white/[0.015]",
                   )}
                 >
                   {/* 이벤트 ID */}
-                  <span className="font-mono text-[11px] text-monitor-text-dim">
+                  <span className="font-mono text-11 text-monitor-text-dim">
                     #{event.id}
                   </span>
 
                   {/* 시각 */}
-                  <span className="font-mono text-[11px] tabular-nums text-monitor-text-dim">
+                  <span className="font-mono text-11 tabular-nums text-monitor-text-dim">
                     {formatTime(event.occurredAt)}
                   </span>
 
                   {/* 이벤트 유형 배지 */}
                   <div className="flex items-center">
                     <span className={cn(
-                      "inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold leading-none",
+                      "inline-flex items-center rounded-badge px-2 py-0.5 text-11 font-semibold leading-none",
                       TYPE_BADGE[severity],
                     )}>
                       {EVENT_TYPE_LABEL[event.type] ?? event.type}
@@ -286,12 +286,12 @@ export default function EventLogModal({ open, events, date, onClose }: EventLogM
                   </div>
 
                   {/* 소스 */}
-                  <span className="truncate text-[11px] text-monitor-text-muted">
+                  <span className="truncate text-11 text-monitor-text-muted">
                     {SOURCE_LABEL[event.source] ?? event.source}
                   </span>
 
                   {/* 추적 키 */}
-                  <span className="font-mono text-[11px] text-monitor-text-dim">
+                  <span className="font-mono text-11 text-monitor-text-dim">
                     {event.customer?.trackingKey != null ? (
                       <span className="rounded bg-monitor-card-bg border border-monitor-border px-1.5 py-0.5">
                         #{event.customer.trackingKey}

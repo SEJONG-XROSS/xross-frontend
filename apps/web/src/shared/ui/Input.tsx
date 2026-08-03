@@ -56,8 +56,7 @@ export default function Input({
           type={resolvedType}
           onChange={handleChange}
           className={cn(
-            "border-input-border bg-surface-elevated text-heading placeholder:text-placeholder focus:border-input-focus h-11 w-full rounded-[10px] border px-4 text-sm tracking-tight focus:outline-none",
-            !isPassword && type === "email" && "border-input-border-email",
+            "border-input-border bg-surface-elevated text-heading placeholder:text-placeholder focus:border-input-focus focus:ring-brand-accent/20 h-11 w-full rounded-control border px-4 text-sm tracking-tight transition-shadow focus:ring-2 focus:outline-none",
             rightPadding,
             className,
           )}

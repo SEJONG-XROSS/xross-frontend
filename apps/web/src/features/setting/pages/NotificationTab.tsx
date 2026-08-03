@@ -91,20 +91,20 @@ export default function NotificationTab() {
 
       {/* 알림 테스트 */}
       <SettingsSection title="알림 테스트">
-        <div className="relative h-24 w-full shrink-0">
+        <div className="flex flex-col items-start gap-3 p-4 sm:p-5">
           <button
             type="button"
             onClick={handleSendTest}
-            className="absolute top-4 left-5 flex h-10 items-center gap-2 rounded-[10px] border border-[#314158] bg-[#1d293d] px-[21px] py-[1px] transition-opacity hover:opacity-80"
+            className="border-monitor-border-strong bg-monitor-border text-monitor-text flex h-10 items-center gap-2 rounded-control border px-5 transition-colors hover:bg-monitor-border-strong/60"
           >
-            <span className="relative size-4 shrink-0 text-[#cad5e2]">
+            <span className="relative size-4 shrink-0">
               <BellIcon className="absolute block size-full max-w-none" />
             </span>
-            <span className="text-[14px] leading-5 font-medium tracking-[-0.15px] text-[#cad5e2]">
+            <span className="text-14 font-medium">
               테스트 알림 발송
             </span>
           </button>
-          <p className="absolute bottom-4 left-5 text-[12px] leading-4 text-[#45556c]">
+          <p className="text-monitor-text-dim text-12">
             설정된 모든 채널로 테스트 알림이 발송됩니다.
           </p>
         </div>

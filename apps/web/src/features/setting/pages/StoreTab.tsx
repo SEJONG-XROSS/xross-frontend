@@ -37,14 +37,14 @@ function CameraRow({
       className={`flex min-h-[65px] items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:h-[71.5px] lg:py-0 ${hasBorder ? "border-monitor-border border-b" : ""}`}
     >
       <div className="flex items-center gap-3">
-        <span className="relative size-4 shrink-0 text-[#2b7fff]">
+        <span className="text-monitor-accent-blue relative size-4 shrink-0">
           <CameraIcon className="absolute block size-full max-w-none" />
         </span>
         <div className="flex flex-col gap-0.5">
-          <span className="text-monitor-text text-[14px] leading-5 tracking-[-0.15px]">
+          <span className="text-monitor-text text-14">
             {name}
           </span>
-          <span className="text-monitor-text-dim font-mono text-[11px] leading-[16.5px]">
+          <span className="text-monitor-text-dim font-mono text-11">
             {edgeNode} · {camId}
           </span>
         </div>
@@ -52,16 +52,16 @@ function CameraRow({
 
       <div className="flex items-center gap-2">
         {hasSensorBadge && (
-          <div className="flex h-[21px] items-center gap-1 rounded-[4px] border border-[rgba(0,188,125,0.2)] bg-[rgba(0,188,125,0.1)] px-1.5">
-            <span className="relative size-3 shrink-0 text-[#00d492]">
+          <div className="border-event-safe/20 bg-event-safe/10 flex items-center gap-1 rounded-badge border px-1.5 py-[3px]">
+            <span className="text-monitor-accent-green relative size-3 shrink-0">
               <BalanceScaleIcon className="absolute block size-full max-w-none" />
             </span>
-            <span className="text-monitor-accent-green font-mono text-[10px] leading-[15px]">
+            <span className="text-monitor-accent-green font-mono text-10">
               센서
             </span>
           </div>
         )}
-        <div className="shadow-status size-2 shrink-0 rounded-full bg-[#00bc7d]" />
+        <div className="shadow-status bg-event-safe size-2 shrink-0 rounded-full" />
       </div>
     </div>
   );
@@ -75,31 +75,31 @@ export default function StoreTab() {
       {/* 매장 기본 정보 */}
       <SettingsSection title="매장 기본 정보">
         <SettingsRow label="매장 ID" hasBorder>
-          <span className="font-mono text-[14px] leading-5 text-[#cad5e2]">
+          <span className="text-monitor-text font-mono text-14">
             {me ? String(me.storeId) : "—"}
           </span>
         </SettingsRow>
         <SettingsRow label="매장명" hasBorder>
-          <span className="text-[14px] leading-5 tracking-[-0.15px] text-[#d4d4d4]">
+          <span className="text-monitor-text text-14">
             {me?.storeName ?? "—"}
           </span>
         </SettingsRow>
         <SettingsRow label="운영 시간" hasBorder>
-          <span className="text-[14px] leading-5 tracking-[-0.15px] text-[#cad5e2]">
+          <span className="text-monitor-text text-14">
             24시간 무인 운영
           </span>
         </SettingsRow>
         {/* 주소 row - 2줄 타입 */}
         <div className="flex min-h-[70px] items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:h-[74px] lg:py-0">
           <div className="flex flex-col gap-0.5">
-            <span className="text-monitor-text text-[14px] leading-5 tracking-[-0.15px]">
+            <span className="text-monitor-text text-14">
               주소
             </span>
-            <span className="text-monitor-text-dim text-[12px] leading-4">
+            <span className="text-monitor-text-dim text-12">
               서울 강남구 테헤란로 123
             </span>
           </div>
-          <span className="relative size-4 shrink-0 text-[#45556c]">
+          <span className="text-monitor-text-dim relative size-4 shrink-0">
             <ChevronRightIcon className="absolute block size-full max-w-none" />
           </span>
         </div>
@@ -119,8 +119,8 @@ export default function StoreTab() {
       {/* POS 연동 */}
       <SettingsSection title="POS 연동">
         <SettingsRow label="POS 시스템" description="KIS 무인 결제 v3.2">
-          <div className="flex h-[18px] items-center rounded-[4px] border border-[rgba(0,188,125,0.2)] bg-[rgba(0,188,125,0.1)] px-[9px]">
-            <span className="font-mono text-[10px] leading-[15px] text-[#009966]">
+          <div className="border-event-safe/20 bg-event-safe/10 flex items-center rounded-badge border px-2 py-[3px]">
+            <span className="text-monitor-accent-green font-mono text-10">
               동기화됨
             </span>
           </div>
@@ -130,7 +130,7 @@ export default function StoreTab() {
           description="퇴장 시점 자동 교차 검증"
           hasBorder={false}
         >
-          <span className="font-mono text-[14px] leading-5 text-[#cad5e2]">
+          <span className="text-monitor-text font-mono text-14">
             EXIT_TRIGGER
           </span>
         </SettingsRow>

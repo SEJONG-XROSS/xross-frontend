@@ -6,6 +6,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { usePayment, cn } from '@xross/core';
 import type { PosTransaction, TransactionStatus, PaymentMethod } from '@xross/core';
 import type { RootStackParamList } from '@/app/navigation/types';
+import { colors } from '@xross/tokens';
 
 const STATUS_CONFIG: Record<TransactionStatus, {
   label: string; rowBg: string; expandBg: string;
@@ -61,14 +62,14 @@ function TransactionDetail({ tx }: { tx: PosTransaction }) {
     <View className={cn('border-t border-monitor-border px-4 py-4 gap-4', cfg.expandBg)}>
       {/* 결제 상품 */}
       <View>
-        <Text className="text-monitor-text-dim text-[11px] font-medium uppercase tracking-wider mb-2">
+        <Text className="text-monitor-text-dim text-11 font-medium uppercase tracking-wider mb-2">
           결제 상품
         </Text>
 
         {isUnpaid ? (
           <View className="flex-row items-center gap-2 rounded-lg border border-[rgba(251,44,54,0.2)] bg-[rgba(251,44,54,0.07)] px-3 py-3">
-            <Ionicons name="shield-outline" size={14} color="#ff6467" />
-            <Text className="text-[13px] text-event-critical flex-1">
+            <Ionicons name="shield-outline" size={14} color={colors.event.critical} />
+            <Text className="text-13 text-event-critical flex-1">
               결제 기록 없음 — 미결제 퇴장 감지됨
             </Text>
           </View>

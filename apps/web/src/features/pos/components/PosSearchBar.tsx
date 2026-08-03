@@ -57,7 +57,7 @@ export default function PosSearchBar({ filters, onChange }: PosSearchBarProps) {
           value={filters.search}
           onChange={(e) => onChange({ ...filters, search: e.target.value })}
           placeholder="거래 ID, 추적 ID 검색..."
-          className="border-monitor-border bg-monitor-card-bg text-monitor-text placeholder:text-monitor-text-dim focus:border-monitor-accent-blue focus:ring-monitor-accent-blue/20 h-10 w-full rounded-lg border py-2 pr-4 pl-10 text-[13px] transition-colors outline-none focus:ring-2"
+          className="border-monitor-border bg-monitor-card-bg text-monitor-text placeholder:text-monitor-text-dim focus:border-monitor-accent-blue focus:ring-monitor-accent-blue/20 h-10 w-full rounded-control border py-2 pr-4 pl-10 text-13 transition-colors outline-none focus:ring-2"
         />
       </div>
 

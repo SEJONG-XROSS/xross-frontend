@@ -28,24 +28,28 @@ export default function SettingNav() {
           to={to}
           className={({ isActive }) =>
             cn(
-              "flex h-[42px] w-full items-center gap-3 rounded-[10px] pl-[17px] transition-colors",
+              "flex h-[42px] w-full items-center gap-3 rounded-control pl-4 transition-colors",
               isActive
-                ? "border border-[rgba(43,127,255,0.2)] bg-[rgba(43,127,255,0.1)]"
-                : "border border-transparent hover:bg-[rgba(255,255,255,0.05)]",
+                ? "border-monitor-accent-blue/20 bg-monitor-accent-blue/10 border"
+                : "border border-transparent hover:bg-white/5",
             )
           }
         >
           {({ isActive }) => (
             <>
               <span
-                className="relative size-4 shrink-0"
-                style={{ color: isActive ? "#51a2ff" : "#90a1b9" }}
+                className={cn(
+                  "relative size-4 shrink-0",
+                  isActive
+                    ? "text-monitor-accent-blue"
+                    : "text-monitor-text-muted",
+                )}
               >
                 <Icon className="absolute block size-full max-w-none" />
               </span>
               <span
                 className={cn(
-                  "whitespace-nowrap text-[14px] font-medium leading-5 tracking-[-0.15px]",
+                  "text-14 font-medium whitespace-nowrap",
                   isActive ? "text-monitor-accent-blue" : "text-monitor-text-muted",
                 )}
               >

@@ -15,20 +15,20 @@ export default function EventDetailActions({
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
         <button
           onClick={onDismiss}
-          className="flex items-center justify-center gap-2 rounded-[12px] border border-monitor-border bg-monitor-bg px-4 py-3 transition-colors hover:border-monitor-border-strong hover:bg-monitor-border"
+          className="text-monitor-text flex items-center justify-center gap-2 rounded-control border border-monitor-border bg-monitor-bg px-4 py-3 transition-colors hover:border-monitor-border-strong hover:bg-monitor-border"
         >
-          <CheckCircleIcon className="h-5 w-5 shrink-0 text-[#cad5e2]" />
-          <span className="text-[12px] font-bold tracking-[0.3px] text-[#cad5e2]">
+          <CheckCircleIcon className="h-5 w-5 shrink-0" />
+          <span className="text-12 font-bold">
             정상 확인 (오탐)
           </span>
         </button>
 
         <button
           onClick={onAlert}
-          className="flex items-center justify-center gap-2 rounded-[12px] bg-[#e7000b] px-4 py-3 text-white shadow-[0_4px_15px_rgba(239,68,68,0.2)] transition-opacity hover:opacity-90"
+          className="bg-event-critical-strong shadow-icon-critical flex items-center justify-center gap-2 rounded-control px-4 py-3 text-white transition-opacity hover:opacity-90"
         >
           <SirenIcon className="h-5 w-5 shrink-0" />
-          <span className="text-[12px] font-bold tracking-[0.3px]">
+          <span className="text-12 font-bold">
             경고 방송 및 녹화 보존
           </span>
         </button>

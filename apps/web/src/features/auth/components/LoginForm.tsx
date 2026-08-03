@@ -28,22 +28,22 @@ export default function LoginForm() {
             <BrandLogo className="size-11 shrink-0" />
           </div>
           <div className="flex flex-col items-center gap-1 text-center">
-            <h2 className="text-heading text-[22px] font-bold tracking-tight">
+            <h2 className="text-heading text-22 font-bold tracking-tight">
               XROSS
             </h2>
-            <p className="text-body text-[14px] font-medium tracking-wide">
+            <p className="text-body text-14 font-medium tracking-wide">
               무인점포 실시간 관제 플랫폼
             </p>
           </div>
         </div>
 
         {/* 핵심 가치 하이라이트 박스 */}
-        <div className="flex w-full flex-col items-center gap-1.5 rounded-2xl bg-slate-50 px-5 py-4 text-center ring-1 ring-slate-200">
-          <p className="text-heading text-[15px] font-bold tracking-tight">
+        <div className="flex w-full flex-col items-center gap-1.5 rounded-2xl bg-surface-page px-5 py-4 text-center ring-1 ring-input-border">
+          <p className="text-heading text-14 font-bold tracking-tight">
             비전 AI <span className="text-muted mx-1.5 font-light">|</span> 무게
             센서 <span className="text-muted mx-1.5 font-light">|</span> POS
           </p>
-          <p className="text-body text-[13px] leading-relaxed tracking-tight">
+          <p className="text-body text-13 leading-relaxed tracking-tight">
             <span className="text-brand-primary font-semibold">
               3단계 교차 검증
             </span>
@@ -54,7 +54,7 @@ export default function LoginForm() {
 
       <div className="mt-8 flex flex-col gap-8 lg:mt-0">
         <div className="flex flex-col gap-2">
-          <h1 className="text-heading text-2xl leading-8 font-medium tracking-tight">
+          <h1 className="text-heading text-2xl leading-8 font-bold tracking-tight">
             관제 로그인
           </h1>
           <p className="text-body text-sm leading-5 tracking-tight">
@@ -106,7 +106,7 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={mutation.isPending}
-            className="bg-brand-primary text-brand-on-primary shadow-button hover:bg-brand-primary-hover active:bg-brand-primary-active h-11 rounded-[10px] text-sm font-medium transition-colors disabled:opacity-60"
+            className="bg-brand-primary text-brand-on-primary shadow-button hover:bg-brand-primary-hover active:bg-brand-primary-active focus-visible:outline-brand-accent h-11 rounded-control text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-60"
           >
             {mutation.isPending ? "로그인 중..." : "로그인"}
           </button>

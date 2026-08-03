@@ -29,7 +29,7 @@ export default function FilterDropdown<T extends string>({
       <button
         type="button"
         onClick={onToggle}
-        className="border-monitor-border bg-monitor-card-bg text-monitor-text flex h-10 items-center gap-2 rounded-lg border px-3 text-[13px] font-medium whitespace-nowrap transition-colors hover:bg-[rgba(255,255,255,0.06)]"
+        className="border-monitor-border bg-monitor-card-bg text-monitor-text flex h-10 items-center gap-2 rounded-control border px-3 text-13 font-medium whitespace-nowrap transition-colors hover:bg-white/5"
       >
         <span>{selectedLabel}</span>
         <ChevronDownIcon
@@ -38,7 +38,7 @@ export default function FilterDropdown<T extends string>({
       </button>
 
       {open && (
-        <div className="border-monitor-border bg-monitor-card-bg absolute top-[calc(100%+4px)] right-0 z-50 min-w-[120px] rounded-lg border py-1 shadow-lg">
+        <div className="border-monitor-border bg-monitor-card-bg absolute top-[calc(100%+4px)] right-0 z-50 min-w-[120px] rounded-control border py-1 shadow-lg">
           {options.map((opt) => (
             <button
               key={opt.value}
@@ -47,10 +47,10 @@ export default function FilterDropdown<T extends string>({
                 onChange(opt.value);
                 onClose();
               }}
-              className={`flex w-full items-center px-3 py-2 text-left text-[13px] transition-colors ${
+              className={`flex w-full items-center px-3 py-2 text-left text-13 transition-colors ${
                 opt.value === value
-                  ? "text-monitor-accent-blue bg-[rgba(81,162,255,0.1)]"
-                  : "text-monitor-text hover:bg-[rgba(255,255,255,0.05)]"
+                  ? "text-monitor-accent-blue bg-monitor-accent-blue/10"
+                  : "text-monitor-text hover:bg-white/5"
               }`}
             >
               {opt.label}

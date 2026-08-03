@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import type { SvgProps } from 'react-native-svg';
+import { colors } from '@xross/tokens';
 import type { MainTabParamList } from './types';
 import { MonitoringNavigator } from './MonitoringNavigator';
 import { PosScreen } from '@/features/pos/screens/PosScreen';
@@ -11,8 +12,8 @@ import ShieldIcon from '@/assets/icons/shield.svg';
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 const TAB_BAR_STYLE = {
-  backgroundColor: '#f8fafc',
-  borderTopColor: '#e2e8f0',
+  backgroundColor: colors.monitor['card-bg'],
+  borderTopColor: colors.monitor.border,
   borderTopWidth: 1,
 } as const;
 
@@ -38,8 +39,8 @@ export function MainNavigator() {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: TAB_BAR_STYLE,
-        tabBarActiveTintColor: '#155dfc',
-        tabBarInactiveTintColor: '#94a3b8',
+        tabBarActiveTintColor: colors.monitor['accent-blue'],
+        tabBarInactiveTintColor: colors.monitor['text-dim'],
         tabBarLabel: TAB_LABELS[route.name as keyof MainTabParamList],
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'Monitoring') {

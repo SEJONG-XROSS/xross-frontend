@@ -67,7 +67,7 @@ export default function AuthLayout() {
         </div>
 
         {/* 카피라이트 */}
-        <p className="text-sidebar-footnote text-[11px] leading-4 tracking-wider">
+        <p className="text-sidebar-footnote text-11 tracking-wider">
           © 2026 XROSS Systems. All rights reserved.
         </p>
       </aside>

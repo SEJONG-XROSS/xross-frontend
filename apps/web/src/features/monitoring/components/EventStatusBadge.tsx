@@ -7,28 +7,28 @@ const TAG_STYLES: Record<
 > = {
   "ai-pick": {
     text: "text-event-safe",
-    bg: "bg-[rgba(0,188,125,0.1)]",
-    border: "border-[rgba(0,188,125,0.2)]",
+    bg: "bg-event-safe/10",
+    border: "border-event-safe/20",
   },
   sensor: {
     text: "text-event-safe",
-    bg: "bg-[rgba(0,188,125,0.1)]",
-    border: "border-[rgba(0,188,125,0.2)]",
+    bg: "bg-event-safe/10",
+    border: "border-event-safe/20",
   },
   "pos-mismatch": {
     text: "text-event-critical",
-    bg: "bg-[rgba(251,44,54,0.1)]",
-    border: "border-[rgba(251,44,54,0.2)]",
+    bg: "bg-event-critical/10",
+    border: "border-event-critical/20",
   },
   "pos-pending": {
     text: "text-event-warning",
-    bg: "bg-[rgba(254,154,0,0.1)]",
-    border: "border-[rgba(254,154,0,0.2)]",
+    bg: "bg-event-warning/10",
+    border: "border-event-warning/20",
   },
   "pos-match": {
     text: "text-event-safe",
-    bg: "bg-[rgba(0,188,125,0.1)]",
-    border: "border-[rgba(0,188,125,0.2)]",
+    bg: "bg-event-safe/10",
+    border: "border-event-safe/20",
   },
 };
 
@@ -42,7 +42,7 @@ export default function EventStatusBadge({ type, label }: EventStatusBadgeProps)
   return (
     <span
       className={cn(
-        "rounded-[4px] border px-[6px] py-[3px] font-mono text-[9px] leading-[13.5px]",
+        "rounded-badge border px-[6px] py-[3px] font-mono text-10",
         style.text,
         style.bg,
         style.border,

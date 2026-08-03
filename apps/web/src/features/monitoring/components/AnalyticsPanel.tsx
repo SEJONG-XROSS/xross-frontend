@@ -62,12 +62,12 @@ function StatRow({ stats }: { stats: AnalyticsStat[] }) {
             i > 0 && "border-monitor-border-strong border-l pl-4 sm:pl-6",
           )}
         >
-          <span className="text-monitor-text-dim font-mono text-[11px] leading-[16.5px]">
+          <span className="text-monitor-text-dim font-mono text-11">
             {stat.label}
           </span>
           <span
             className={cn(
-              "font-mono text-[14px] leading-5 font-bold",
+              "font-mono text-14 font-bold",
               STAT_VALUE_COLOR[stat.variant ?? "default"],
             )}
           >
@@ -101,8 +101,8 @@ export default function AnalyticsPanel({
       {/* 헤더 */}
       <div className="shrink-0 flex items-center justify-between">
         <div className="text-monitor-text-muted flex items-center gap-[6px]">
-          <ChartAnalyticsIcon className="h-5 w-5 shrink-0" />
-          <span className="text-[12px] leading-4 font-bold tracking-[1.2px] uppercase">
+          <ChartAnalyticsIcon className="h-4 w-4 shrink-0" />
+          <span className="font-mono text-11 font-bold tracking-caps uppercase">
             매장 행동 분석 통계 ({formatDate(date)})
           </span>
         </div>
@@ -113,7 +113,7 @@ export default function AnalyticsPanel({
             <button
               type="button"
               onClick={onOpenEventLog}
-              className="flex items-center gap-1 rounded-md border border-monitor-border bg-monitor-card-bg px-2.5 py-1 text-[10px] font-semibold text-monitor-text-dim transition-colors hover:border-monitor-accent-blue/40 hover:text-monitor-accent-blue"
+              className="flex items-center gap-1 rounded-md border border-monitor-border bg-monitor-card-bg px-2.5 py-1 text-10 font-semibold text-monitor-text-dim transition-colors hover:border-monitor-accent-blue/40 hover:text-monitor-accent-blue"
             >
               <LogsIcon className="h-3 w-3 shrink-0" />
               이벤트 로그
@@ -128,7 +128,7 @@ export default function AnalyticsPanel({
                 type="button"
                 onClick={() => setMode(m)}
                 className={cn(
-                  "rounded px-2 py-0.5 font-mono text-[10px] font-semibold tracking-[0.5px] transition-all",
+                  "rounded px-2 py-0.5 font-mono text-10 font-semibold transition-all",
                   mode === m
                     ? "bg-monitor-accent-blue text-white"
                     : "text-monitor-text-dim hover:text-monitor-text-muted",
@@ -144,7 +144,7 @@ export default function AnalyticsPanel({
       {/* 차트 1 — Pick 행동 / 미결제 의심 */}
       <div className="mt-3 min-w-0">
         <div className="flex items-end justify-between mb-1">
-          <p className="text-monitor-text-dim font-mono text-[10px] tracking-[1px] uppercase">
+          <p className="text-monitor-text-dim font-mono text-10 tracking-caps uppercase">
             Pick 행동 · 미결제 의심
           </p>
           <StatRow stats={behaviorStats} />
@@ -155,7 +155,7 @@ export default function AnalyticsPanel({
       {/* 차트 2 — 총 입장 / 결제 완료 */}
       <div className="mt-3 min-w-0">
         <div className="flex items-end justify-between mb-1">
-          <p className="text-monitor-text-dim font-mono text-[10px] tracking-[1px] uppercase">
+          <p className="text-monitor-text-dim font-mono text-10 tracking-caps uppercase">
             총 입장 · 결제 완료
           </p>
           <StatRow stats={paymentStats} />

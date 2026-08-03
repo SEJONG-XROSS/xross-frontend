@@ -14,16 +14,16 @@ function InlineTag({
 }) {
   if (variant === "blue") {
     return (
-      <div className="flex h-[21px] items-center rounded-[4px] border border-[rgba(43,127,255,0.2)] bg-[rgba(43,127,255,0.1)] px-1.5">
-        <span className="text-monitor-accent-blue font-mono text-[10px] leading-[15px]">
+      <div className="border-monitor-accent-blue/20 bg-monitor-accent-blue/10 flex items-center rounded-badge border px-1.5 py-[3px]">
+        <span className="text-monitor-accent-blue font-mono text-10">
           {label}
         </span>
       </div>
     );
   }
   return (
-    <div className="flex h-[19px] items-center rounded-[4px] bg-[#1d293d] px-1.5">
-      <span className="text-monitor-text-muted font-mono text-[10px] leading-[15px]">
+    <div className="bg-monitor-border flex items-center rounded-badge px-1.5 py-[3px]">
+      <span className="text-monitor-text-muted font-mono text-10">
         {label}
       </span>
     </div>
@@ -44,12 +44,12 @@ export default function SystemTab() {
       {/* 탐지 엔진 */}
       <SettingsSection title="탐지 엔진">
         <SettingsRow label="비전 AI 모델" hasBorder>
-          <span className="font-mono text-[14px] leading-5 text-[#cad5e2]">
+          <span className="text-monitor-text font-mono text-14">
             YOLOv8-m + ByteTrack
           </span>
         </SettingsRow>
         <SettingsRow label="추론 레이턴시" hasBorder>
-          <span className="text-monitor-accent-green font-mono text-[14px] leading-5">
+          <span className="text-monitor-accent-green font-mono text-14">
             14ms avg
           </span>
         </SettingsRow>
@@ -78,17 +78,17 @@ export default function SystemTab() {
           <ToggleSwitch checked={autoRecord} onChange={setAutoRecord} />
         </SettingsRow>
         <div className="flex min-h-[62px] items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:h-[68px] lg:py-0">
-          <span className="text-monitor-text text-[14px] leading-5 tracking-[-0.15px]">
+          <span className="text-monitor-text text-14">
             영상 보관 기간
           </span>
-          <div className="border-monitor-border bg-monitor-card-bg flex h-9 w-14 shrink-0 items-center justify-center rounded-[10px] border">
+          <div className="border-monitor-border bg-monitor-bg focus-within:border-brand-primary/50 flex h-9 w-14 shrink-0 items-center justify-center rounded-control border transition-colors">
             <input
               type="number"
               value={retentionDays}
               min={1}
               max={365}
               onChange={(e) => setRetentionDays(Number(e.target.value))}
-              className="w-full bg-transparent text-center text-[14px] leading-5 text-white outline-none"
+              className="text-monitor-text w-full bg-transparent text-center text-14 outline-none"
             />
           </div>
         </div>
@@ -97,17 +97,17 @@ export default function SystemTab() {
       {/* 버전 정보 */}
       <SettingsSection title="버전 정보">
         <SettingsRow label="플랫폼 버전" hasBorder>
-          <span className="font-mono text-[14px] leading-5 text-[#cad5e2]">
+          <span className="text-monitor-text font-mono text-14">
             v2.4.1-rc3
           </span>
         </SettingsRow>
         <SettingsRow label="엣지 펌웨어" hasBorder>
-          <span className="font-mono text-[14px] leading-5 text-[#cad5e2]">
+          <span className="text-monitor-text font-mono text-14">
             fw-2026.03.10
           </span>
         </SettingsRow>
         <SettingsRow label="마지막 업데이트" hasBorder={false}>
-          <span className="text-[14px] leading-5 tracking-[-0.15px] text-[#cad5e2]">
+          <span className="text-monitor-text text-14">
             2026-03-15 02:30 (자동)
           </span>
         </SettingsRow>
@@ -119,16 +119,16 @@ export default function SystemTab() {
           <button
             type="button"
             onClick={handleResetLogs}
-            className="flex h-10 w-full items-center justify-center gap-2 rounded-[10px] border border-[rgba(251,44,54,0.2)] bg-[rgba(251,44,54,0.05)] px-[21px] py-[1px] transition-opacity hover:bg-[rgba(251,44,54,0.1)] sm:w-auto sm:justify-start"
+            className="border-event-critical/20 bg-event-critical/5 text-event-critical hover:bg-event-critical/10 flex h-10 w-full items-center justify-center gap-2 rounded-control border px-5 transition-colors sm:w-auto sm:justify-start"
           >
-            <span className="relative size-4 shrink-0 text-[#fb2c36]">
+            <span className="relative size-4 shrink-0">
               <TrashIcon className="absolute block size-full max-w-none" />
             </span>
-            <span className="text-[14px] leading-5 font-medium tracking-[-0.15px] text-[#fb2c36]">
+            <span className="text-14 font-medium">
               이벤트 로그 전체 초기화
             </span>
           </button>
-          <p className="text-[12px] leading-4 text-[#45556c]">
+          <p className="text-monitor-text-dim text-12">
             모든 탐지 로그와 타임라인이 삭제됩니다. 이 작업은 되돌릴 수
             없습니다.
           </p>

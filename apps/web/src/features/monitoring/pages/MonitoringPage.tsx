@@ -126,7 +126,7 @@ export default function MonitoringPage({
         // ── 모바일/태블릿: 탭 전환 ──────────────── 
         <div className="flex flex-1 flex-col overflow-hidden">
           <div className="border-monitor-border bg-monitor-bg shrink-0 border-b px-3 py-2.5">
-            <div className="flex gap-1 rounded-xl bg-[rgba(255,255,255,0.06)] p-1">
+            <div className="flex gap-1 rounded-control bg-white/5 p-1">
               {MOBILE_TABS.map(({ key, label, Icon }) => {
                 const active = mobileTab === key;
                 return (
@@ -135,25 +135,25 @@ export default function MonitoringPage({
                     type="button"
                     onClick={() => setMobileTab(key)}
                     className={cn(
-                      "flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2 text-[11px] font-semibold tracking-[0.2px] transition-all",
+                      "flex flex-1 items-center justify-center gap-1.5 rounded-control py-2 text-11 font-semibold transition-all",
                       active
                         ? "bg-monitor-card-bg text-monitor-accent-blue"
                         : "text-monitor-text-dim hover:text-monitor-text-muted",
                     )}
                   >
                     <span
-                      className="relative size-3.5 shrink-0"
-                      style={
-                        {
-                          color: active ? "#51a2ff" : "#62748e",
-                        } as React.CSSProperties
-                      }
+                      className={cn(
+                        "relative size-3.5 shrink-0",
+                        active
+                          ? "text-monitor-accent-blue"
+                          : "text-monitor-text-dim",
+                      )}
                     >
                       <Icon className="absolute block size-full max-w-none" />
                     </span>
                     {label}
                     {key === "events" && criticalCount > 0 && (
-                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-event-critical px-1 text-[8px] font-bold leading-none text-white">
+                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-event-critical px-1 text-10 font-bold leading-none text-white">
                         {criticalCount}
                       </span>
                     )}

@@ -75,9 +75,9 @@ export default function EventVerificationList({
   return (
     <div className="border-monitor-border border-b px-4 py-4 sm:px-6 sm:py-6">
       {/* 섹션 헤더 */}
-      <div className="mb-4 flex items-center gap-[8px]">
+      <div className="mb-4 flex items-center gap-2">
         <GitCompareIcon className="text-monitor-text-dim h-4 w-4 shrink-0" />
-        <span className="text-monitor-text-dim text-[12px] font-bold tracking-[1.2px] uppercase">
+        <span className="text-monitor-text-dim font-mono text-11 font-bold tracking-caps uppercase">
           시스템 교차 검증 요약
         </span>
       </div>
@@ -96,7 +96,7 @@ export default function EventVerificationList({
             <div
               key={item.source}
               className={cn(
-                "bg-monitor-card-bg flex items-start gap-3 rounded-[10px] border px-[17px] py-[17px]",
+                "bg-monitor-card-bg flex items-start gap-3 rounded-control border p-4",
                 item.status === "mismatch"
                   ? "border-event-critical/30"
                   : "border-monitor-border",
@@ -105,7 +105,7 @@ export default function EventVerificationList({
               {/* 아이콘 */}
               <div
                 className={cn(
-                  "flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px]",
+                  "flex h-9 w-9 shrink-0 items-center justify-center rounded-control",
                   accent.bg,
                   accent.color,
                 )}
@@ -116,12 +116,12 @@ export default function EventVerificationList({
               {/* 텍스트 */}
               <div className="flex flex-1 flex-col gap-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-monitor-text text-[14px] leading-5 font-bold tracking-[-0.15px]">
+                  <span className="text-monitor-text text-14 font-bold">
                     {item.label}
                   </span>
                   <span
                     className={cn(
-                      "rounded-[4px] px-2 py-[1.5px] font-mono text-[10px] leading-[15px]",
+                      "rounded-badge px-2 py-[1.5px] font-mono text-10",
                       accent.bg,
                       accent.color,
                       STATUS_BADGE_EXTRA[item.status],
@@ -131,7 +131,7 @@ export default function EventVerificationList({
                   </span>
                 </div>
                 {/* detail 텍스트 */}
-                <span className={cn("text-[12px] leading-4", accent.color)}>
+                <span className={cn("text-12", accent.color)}>
                   {item.detail}
                 </span>
               </div>

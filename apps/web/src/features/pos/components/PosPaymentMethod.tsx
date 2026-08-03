@@ -42,8 +42,8 @@ export default function PosPaymentMethod({ method }: PosPaymentMethodProps) {
   const Icon = config.icon;
 
   return (
-    <span className={`inline-flex items-center gap-[6px] ${config.colorClass} text-[13px] leading-4`}>
-      <Icon className="h-[14px] w-[14px] shrink-0" />
+    <span className={`inline-flex items-center gap-1.5 ${config.colorClass} text-13`}>
+      <Icon className="h-3.5 w-3.5 shrink-0" />
       <span className="text-monitor-text">{config.label}</span>
     </span>
   );

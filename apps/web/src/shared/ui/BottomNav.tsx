@@ -19,7 +19,7 @@ const navItems: NavItem[] = [
 
 export default function BottomNav() {
   return (
-    <nav className="border-input-border bg-surface-page flex shrink-0 border-t lg:hidden">
+    <nav className="border-monitor-border bg-monitor-card-bg flex shrink-0 border-t lg:hidden">
       {navItems.map(({ to, icon: Icon, label }) => (
         <NavLink
           key={to}
@@ -28,8 +28,8 @@ export default function BottomNav() {
             cn(
               "flex flex-1 flex-col items-center justify-center gap-1 py-2 transition-colors",
               isActive
-                ? "text-brand-primary"
-                : "text-dashboard-nav-inactive",
+                ? "text-monitor-accent-blue"
+                : "text-monitor-text-dim",
             )
           }
         >
@@ -38,12 +38,12 @@ export default function BottomNav() {
               <div className="relative">
                 <Icon className="h-5 w-5" />
                 {isActive && (
-                  <span className="bg-brand-primary absolute -top-1 -right-1 h-1.5 w-1.5 rounded-full" />
+                  <span className="bg-monitor-accent-blue absolute -top-1 -right-1 h-1.5 w-1.5 rounded-full" />
                 )}
               </div>
               <span
                 className={cn(
-                  "text-[10px] leading-3 tracking-[0.2px]",
+                  "text-10",
                   isActive ? "font-bold" : "font-medium",
                 )}
               >

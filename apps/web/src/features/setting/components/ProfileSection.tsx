@@ -6,15 +6,15 @@ interface FieldInputProps {
 
 function FieldInput({ label, value, onChange }: FieldInputProps) {
   return (
-    <div className="relative h-[70px] w-full shrink-0">
-      <label className="absolute left-0 top-[6.5px] text-[12px] font-medium uppercase leading-4 tracking-[0.6px] text-monitor-text-muted">
+    <div className="flex w-full flex-col gap-1.5">
+      <label className="text-monitor-text-muted tracking-caps font-mono text-11 font-medium uppercase">
         {label}
       </label>
       <input
         type="text"
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
-        className="absolute left-0 top-[30px] h-10 w-full rounded-[10px] border border-monitor-border bg-monitor-card-bg px-3 text-[14px] leading-5 tracking-[-0.15px] text-white outline-none transition-colors focus:border-[rgba(43,127,255,0.5)]"
+        className="border-monitor-border bg-monitor-bg text-monitor-text focus:border-brand-primary/50 h-10 w-full rounded-control border px-3 text-14 outline-none transition-colors"
       />
     </div>
   );
@@ -42,34 +42,28 @@ export default function ProfileSection({
   onPhoneChange,
 }: ProfileSectionProps) {
   return (
-    <section className="flex flex-col gap-4">
-      <h3 className="text-[12px] font-medium uppercase leading-4 tracking-[1.2px] text-monitor-text-dim">
+    <section className="flex flex-col gap-3">
+      <h3 className="text-monitor-text-dim tracking-caps font-mono text-11 font-semibold uppercase">
         프로필
       </h3>
-      <div className="overflow-hidden rounded-[14px] border border-monitor-border bg-monitor-bg">
+      <div className="border-monitor-border bg-monitor-card-bg overflow-hidden rounded-card border">
         {/* 아바타 행 */}
-        <div className="flex min-h-[90px] items-center gap-4 border-b border-monitor-border px-4 py-4 sm:px-5 lg:h-[105px] lg:py-0">
-          <div
-            className="flex size-16 shrink-0 items-center justify-center rounded-full shadow-[0px_0px_20px_0px_rgba(59,130,246,0.2)]"
-            style={{
-              background:
-                "linear-gradient(135deg, rgb(21, 93, 252) 0%, rgb(81, 162, 255) 100%)",
-            }}
-          >
-            <span className="text-[20px] leading-7 text-white">{name.charAt(0)}</span>
+        <div className="border-monitor-border flex items-center gap-4 border-b px-4 py-5 sm:px-5">
+          <div className="from-brand-primary to-monitor-accent-blue shadow-brand flex size-16 shrink-0 items-center justify-center rounded-full bg-linear-to-br">
+            <span className="text-xl text-white">{name.charAt(0)}</span>
           </div>
           <div className="flex flex-col gap-0.5">
-            <span className="text-[16px] leading-6 tracking-[-0.31px] text-monitor-text">
+            <span className="text-monitor-text text-16 font-semibold">
               {name}
             </span>
-            <span className="text-[12px] leading-4 text-monitor-text-dim">
+            <span className="text-monitor-text-dim text-12">
               {role} · {storeCode}
             </span>
           </div>
         </div>
 
         {/* 폼 필드 */}
-        <div className="flex flex-col gap-4 px-4 pb-4 pt-4 sm:px-5 sm:pb-5">
+        <div className="flex flex-col gap-4 p-4 sm:p-5">
           <FieldInput label="이름" value={name} onChange={onNameChange} />
           <FieldInput label="이메일" value={email} onChange={onEmailChange} />
           <FieldInput label="연락처" value={phone} onChange={onPhoneChange} />

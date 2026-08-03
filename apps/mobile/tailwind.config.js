@@ -70,6 +70,26 @@ module.exports = {
   theme: {
     extend: {
       colors: xrossColors,
+      // 웹(apps/web/src/styles/theme.css)과 동일한 타이포 스케일
+      fontSize: {
+        10: ['10px', '14px'],
+        11: ['11px', '15px'],
+        12: ['12px', '16px'],
+        13: ['13px', '18px'],
+        14: ['14px', '20px'],
+        16: ['16px', '22px'],
+        22: ['22px', '28px'],
+      },
+      // uppercase eyebrow/mono 라벨 전용 (웹 tracking-caps = 0.1em ≈ 1px @10px)
+      letterSpacing: {
+        caps: '1px',
+      },
+      // card(패널·카드) / control(버튼·입력) / badge(뱃지·칩)
+      borderRadius: {
+        card: '14px',
+        control: '10px',
+        badge: '6px',
+      },
     },
   },
   plugins: [],

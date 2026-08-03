@@ -26,7 +26,7 @@ export function CalendarGrid({
       {WEEKDAYS.map((w, i) => (
         <div
           key={w}
-          className={`pb-1 text-[10px] font-medium ${
+          className={`pb-1 text-10 font-medium ${
             colorWeekends && i === 0
               ? "text-event-critical/70"
               : colorWeekends && i === 6

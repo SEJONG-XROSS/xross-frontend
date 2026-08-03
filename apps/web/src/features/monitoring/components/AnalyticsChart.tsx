@@ -6,6 +6,7 @@ import {
   Tooltip,
   XAxis,
 } from "recharts";
+import { colors } from "@xross/tokens";
 import type { AnalyticsDataPoint } from "@/features/monitoring/types/monitoring.types";
 
 interface AnalyticsChartProps {
@@ -20,12 +21,12 @@ function formatTick(value: string): string {
 
 const SERIES = {
   behavior: [
-    { dataKey: "picks",      name: "Pick 행동",   color: "#3B82F6", gradientId: "pickGradient" },
-    { dataKey: "suspicions", name: "미결제 의심",  color: "#EF4444", gradientId: "suspicionGradient" },
+    { dataKey: "picks",      name: "Pick 행동",   color: colors.monitor["accent-blue"],  gradientId: "pickGradient" },
+    { dataKey: "suspicions", name: "미결제 의심",  color: colors.event.critical,          gradientId: "suspicionGradient" },
   ],
   payment: [
-    { dataKey: "enters",   name: "총 입장",    color: "#8B5CF6", gradientId: "enterGradient" },
-    { dataKey: "payments", name: "결제 완료",  color: "#10B981", gradientId: "paymentGradient" },
+    { dataKey: "enters",   name: "총 입장",    color: colors.monitor["accent-purple"], gradientId: "enterGradient" },
+    { dataKey: "payments", name: "결제 완료",  color: colors.monitor["accent-green"],  gradientId: "paymentGradient" },
   ],
 } as const;
 
@@ -48,7 +49,7 @@ export default function AnalyticsChart({ data, height, variant = "behavior" }: A
         </defs>
         <CartesianGrid
           strokeDasharray="3 3"
-          stroke="#404040"
+          stroke={colors.monitor.border}
           vertical={false}
         />
         <XAxis
@@ -56,7 +57,7 @@ export default function AnalyticsChart({ data, height, variant = "behavior" }: A
           axisLine={false}
           tickLine={false}
           tick={{
-            fill: "#62748e",
+            fill: colors.monitor["text-dim"],
             fontSize: 10,
             fontFamily: "ui-monospace, Menlo, monospace",
           }}
@@ -67,13 +68,13 @@ export default function AnalyticsChart({ data, height, variant = "behavior" }: A
         />
         <Tooltip
           contentStyle={{
-            backgroundColor: "#020618",
-            border: "1px solid #1d293d",
-            borderRadius: "8px",
+            backgroundColor: colors.monitor["card-bg"],
+            border: `1px solid ${colors.monitor.border}`,
+            borderRadius: "10px",
             fontSize: "11px",
-            color: "#90a1b9",
+            color: colors.monitor["text-muted"],
           }}
-          labelStyle={{ color: "#62748e" }}
+          labelStyle={{ color: colors.monitor["text-dim"] }}
         />
         {series.map(({ dataKey, name, color, gradientId }) => (
           <Area

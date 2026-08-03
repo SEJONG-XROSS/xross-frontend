@@ -15,7 +15,7 @@ export default function BrandLogo({ className, alt = "XROSS" }: BrandLogoProps) 
       height={40}
       decoding="async"
       className={cn(
-        "size-10 shrink-0 rounded-[14px] object-contain shadow-brand",
+        "size-10 shrink-0 rounded-card object-contain shadow-brand",
         className,
       )}
     />

@@ -206,9 +206,9 @@ export default function WebRTCVideoPlayer({
         style={{ backgroundColor: "transparent" }}
       />
       {isLoading && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#020618]">
+        <div className="bg-monitor-card-bg absolute inset-0 z-10 flex items-center justify-center">
           <div className="flex flex-col items-center gap-2">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#2b7fff] border-t-transparent" />
+            <div className="border-monitor-accent-blue h-8 w-8 animate-spin rounded-full border-2 border-t-transparent" />
             <span className="font-mono text-xs text-monitor-text-dim">
               스트림 연결 중...
             </span>
@@ -216,16 +216,16 @@ export default function WebRTCVideoPlayer({
         </div>
       )}
       {error && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#020618]">
+        <div className="bg-monitor-card-bg absolute inset-0 z-10 flex items-center justify-center">
           <div className="flex flex-col items-center gap-3 px-6 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(251,44,54,0.08)] border border-[rgba(251,44,54,0.2)]">
-              <svg className="h-6 w-6 text-[#ff6467]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <div className="bg-event-critical/8 border-event-critical/20 flex h-12 w-12 items-center justify-center rounded-full border">
+              <svg className="text-event-critical h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M12 18.75H4.5a2.25 2.25 0 0 1-2.25-2.25V9m12.841 9.091L16.5 19.5m-1.409-1.409c.407-.407.659-.97.659-1.591v-9a2.25 2.25 0 0 0-2.25-2.25h-9c-.621 0-1.184.252-1.591.659m12.182 12.182L2.909 5.909M1.5 4.5l1.409 1.409" />
               </svg>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-[13px] font-semibold text-[#ff6467]">스트림 연결 실패</span>
-              <span className="text-[11px] text-monitor-text-dim">카메라가 오프라인이거나 스트림을 사용할 수 없습니다</span>
+              <span className="text-event-critical text-13 font-semibold">스트림 연결 실패</span>
+              <span className="text-monitor-text-dim text-11">카메라가 오프라인이거나 스트림을 사용할 수 없습니다</span>
             </div>
           </div>
         </div>

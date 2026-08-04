@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@xross/tokens';
 import { cn } from '@xross/core';
 import { WebRTCView } from './WebRTCView';
 
@@ -26,24 +27,24 @@ export function CameraFeedCard({ camera }: { camera: CameraFeed }) {
           <Ionicons
             name={camera.isOnline ? 'videocam' : 'videocam-off'}
             size={32}
-            color={camera.isOnline ? '#51a2ff' : '#62748e'}
+            color={camera.isOnline ? colors.monitor['accent-blue'] : colors.monitor['text-dim']}
           />
           {!camera.isOnline && (
-            <Text className="text-[11px] text-monitor-text-dim mt-1.5">오프라인</Text>
+            <Text className="text-11 text-monitor-text-dim mt-1.5">오프라인</Text>
           )}
         </View>
       )}
 
       {/* 하단 오버레이 */}
-      <View className="absolute bottom-0 left-0 right-0 p-2 flex-row items-center gap-1.5 bg-[rgba(2,6,24,0.7)]">
+      <View className="absolute bottom-0 left-0 right-0 p-2 flex-row items-center gap-1.5 bg-monitor-card-bg/70">
         <View className={cn('w-[5px] h-[5px] rounded-full', camera.isOnline ? 'bg-monitor-accent-green' : 'bg-monitor-text-dim')} />
-        <Text className="text-[11px] text-monitor-text flex-1" numberOfLines={1}>
+        <Text className="text-11 text-monitor-text flex-1" numberOfLines={1}>
           {camera.name}
         </Text>
         {camera.isRecording && camera.isOnline && (
           <View className="flex-row items-center gap-[3px]">
             <View className="w-[5px] h-[5px] rounded-full bg-event-critical" />
-            <Text className="text-[10px] text-event-critical font-bold">REC</Text>
+            <Text className="text-10 text-event-critical font-bold">REC</Text>
           </View>
         )}
       </View>

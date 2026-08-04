@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Pressable, Text, Switch, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@xross/tokens';
 import { SettingsSection } from '../components/SettingsSection';
 import { SettingsRow } from '../components/SettingsRow';
 
@@ -34,7 +35,7 @@ export function NotificationTab() {
             <Switch
               value={settings.mobilePush}
               onValueChange={() => toggle('mobilePush')}
-              trackColor={{ false: '#314158', true: '#51a2ff' }}
+              trackColor={{ false: colors.monitor['border-strong'], true: colors.brand.primary }}
               thumbColor="#fff"
             />
           </SettingsRow>
@@ -42,7 +43,7 @@ export function NotificationTab() {
             <Switch
               value={settings.sms}
               onValueChange={() => toggle('sms')}
-              trackColor={{ false: '#314158', true: '#51a2ff' }}
+              trackColor={{ false: colors.monitor['border-strong'], true: colors.brand.primary }}
               thumbColor="#fff"
             />
           </SettingsRow>
@@ -50,7 +51,7 @@ export function NotificationTab() {
             <Switch
               value={settings.email}
               onValueChange={() => toggle('email')}
-              trackColor={{ false: '#314158', true: '#51a2ff' }}
+              trackColor={{ false: colors.monitor['border-strong'], true: colors.brand.primary }}
               thumbColor="#fff"
             />
           </SettingsRow>
@@ -61,7 +62,7 @@ export function NotificationTab() {
             <Switch
               value={settings.criticalOnly}
               onValueChange={() => toggle('criticalOnly')}
-              trackColor={{ false: '#314158', true: '#51a2ff' }}
+              trackColor={{ false: colors.monitor['border-strong'], true: colors.brand.primary }}
               thumbColor="#fff"
             />
           </SettingsRow>
@@ -69,7 +70,7 @@ export function NotificationTab() {
             <Switch
               value={settings.storeSound}
               onValueChange={() => toggle('storeSound')}
-              trackColor={{ false: '#314158', true: '#51a2ff' }}
+              trackColor={{ false: colors.monitor['border-strong'], true: colors.brand.primary }}
               thumbColor="#fff"
             />
           </SettingsRow>
@@ -77,7 +78,7 @@ export function NotificationTab() {
             <Switch
               value={settings.nightSilent}
               onValueChange={() => toggle('nightSilent')}
-              trackColor={{ false: '#314158', true: '#51a2ff' }}
+              trackColor={{ false: colors.monitor['border-strong'], true: colors.brand.primary }}
               thumbColor="#fff"
             />
           </SettingsRow>
@@ -86,13 +87,13 @@ export function NotificationTab() {
         <SettingsSection title="알림 테스트">
           <View className="px-4 py-4 gap-2">
             <Pressable
-              className="h-10 flex-row items-center gap-2 rounded-[10px] border border-monitor-border bg-monitor-card-bg px-5 self-start"
+              className="h-10 flex-row items-center gap-2 rounded-control border border-monitor-border bg-monitor-card-bg px-5 self-start"
               style={({ pressed }: { pressed: boolean }) => ({ opacity: pressed ? 0.8 : 1 })}
             >
-              <Ionicons name="notifications-outline" size={14} color="#cad5e2" />
-              <Text className="text-[14px] font-medium text-monitor-text">테스트 알림 발송</Text>
+              <Ionicons name="notifications-outline" size={14} color={colors.monitor.text} />
+              <Text className="text-14 font-medium text-monitor-text">테스트 알림 발송</Text>
             </Pressable>
-            <Text className="text-[12px] text-monitor-text-dim">
+            <Text className="text-12 text-monitor-text-dim">
               설정된 모든 채널로 테스트 알림이 발송됩니다.
             </Text>
           </View>

@@ -15,7 +15,7 @@ const STATUS_CONFIG: Record<TransactionStatus, {
   normal: {
     label: '정상 결제',
     rowBg: 'bg-transparent',
-    expandBg: 'bg-[rgba(255,255,255,0.03)]',
+    expandBg: 'bg-white/5',
     badgeBg: 'bg-[rgba(0,212,146,0.1)]',
     badgeText: 'text-monitor-accent-green',
     badgeBorder: 'border-[rgba(0,212,146,0.3)]',
@@ -74,14 +74,14 @@ function TransactionDetail({ tx }: { tx: PosTransaction }) {
             </Text>
           </View>
         ) : isLoading ? (
-          <ActivityIndicator size="small" color="#51a2ff" />
+          <ActivityIndicator size="small" color={colors.monitor['accent-blue']} />
         ) : items.length === 0 ? (
-          <Text className="text-monitor-text-muted text-[13px]">상품 정보 없음</Text>
+          <Text className="text-monitor-text-muted text-13">상품 정보 없음</Text>
         ) : (
           <>
             {detectedMismatch && (
               <View className="flex-row items-center gap-2 rounded-lg border border-[rgba(254,154,0,0.25)] bg-[rgba(254,154,0,0.08)] px-3 py-2 mb-3">
-                <Ionicons name="warning-outline" size={13} color="#fe9a00" />
+                <Ionicons name="warning-outline" size={13} color={colors.event.warning} />
                 <Text className="text-event-warning text-xs flex-1">
                   장바구니 수량·품목과 결제 내역이 일치하지 않습니다
                 </Text>
@@ -89,30 +89,30 @@ function TransactionDetail({ tx }: { tx: PosTransaction }) {
             )}
 
             <View className="flex-row border-b border-monitor-border pb-1.5 mb-1">
-              <Text className="flex-1 text-[11px] text-monitor-text-dim font-medium">상품명</Text>
-              <Text className="w-8 text-[11px] text-monitor-text-dim font-medium text-right">수량</Text>
-              <Text className="w-[72px] text-[11px] text-monitor-text-dim font-medium text-right">단가</Text>
-              <Text className="w-[72px] text-[11px] text-monitor-text-dim font-medium text-right">소계</Text>
+              <Text className="flex-1 text-11 text-monitor-text-dim font-medium">상품명</Text>
+              <Text className="w-8 text-11 text-monitor-text-dim font-medium text-right">수량</Text>
+              <Text className="w-[72px] text-11 text-monitor-text-dim font-medium text-right">단가</Text>
+              <Text className="w-[72px] text-11 text-monitor-text-dim font-medium text-right">소계</Text>
             </View>
 
             {items.map((item) => (
               <View key={item.id} className="flex-row border-b border-monitor-border py-[4.5px]">
-                <Text className="flex-1 text-[13px] text-monitor-text" numberOfLines={1}>
+                <Text className="flex-1 text-13 text-monitor-text" numberOfLines={1}>
                   {item.product?.name ?? `상품 #${item.productId}`}
                 </Text>
-                <Text className="w-8 text-[13px] text-monitor-text text-right">{item.quantity}</Text>
-                <Text className="w-[72px] text-[13px] text-monitor-text text-right">
+                <Text className="w-8 text-13 text-monitor-text text-right">{item.quantity}</Text>
+                <Text className="w-[72px] text-13 text-monitor-text text-right">
                   {Number(item.unitPrice).toLocaleString('ko-KR')}원
                 </Text>
-                <Text className="w-[72px] text-[13px] text-monitor-text text-right">
+                <Text className="w-[72px] text-13 text-monitor-text text-right">
                   {Number(item.subtotal).toLocaleString('ko-KR')}원
                 </Text>
               </View>
             ))}
 
             <View className="flex-row pt-1.5">
-              <Text className="flex-1 text-[11px] text-monitor-text-dim text-right pr-2">합계</Text>
-              <Text className="w-[72px] text-[13px] text-monitor-text font-semibold text-right">
+              <Text className="flex-1 text-11 text-monitor-text-dim text-right pr-2">합계</Text>
+              <Text className="w-[72px] text-13 text-monitor-text font-semibold text-right">
                 {total.toLocaleString('ko-KR')}원
               </Text>
             </View>
@@ -122,14 +122,14 @@ function TransactionDetail({ tx }: { tx: PosTransaction }) {
 
       {/* 상세 정보 */}
       <View className="gap-2">
-        <Text className="text-monitor-text-dim text-[11px] font-medium uppercase tracking-wider mb-1">
+        <Text className="text-monitor-text-dim text-11 font-medium uppercase tracking-wider mb-1">
           상세 정보
         </Text>
 
         {tx.trackingId && (
           <View className="flex-row justify-between">
-            <Text className="text-[13px] text-monitor-text-dim">비전 AI 추적 ID</Text>
-            <Text className={cn('text-[13px] font-medium font-mono', isUnpaid ? 'text-event-critical' : 'text-monitor-text-muted')}>
+            <Text className="text-13 text-monitor-text-dim">비전 AI 추적 ID</Text>
+            <Text className={cn('text-13 font-medium font-mono', isUnpaid ? 'text-event-critical' : 'text-monitor-text-muted')}>
               {tx.trackingId}
             </Text>
           </View>
@@ -138,15 +138,15 @@ function TransactionDetail({ tx }: { tx: PosTransaction }) {
         {payment && (
           <>
             <View className="flex-row justify-between">
-              <Text className="text-[13px] text-monitor-text-dim">결제 총액</Text>
-              <Text className="text-[13px] text-monitor-text font-semibold">
+              <Text className="text-13 text-monitor-text-dim">결제 총액</Text>
+              <Text className="text-13 text-monitor-text font-semibold">
                 {total.toLocaleString('ko-KR')}원
               </Text>
             </View>
             {payment.externalPaymentId && (
               <View className="flex-row justify-between">
-                <Text className="text-[13px] text-monitor-text-dim">결제 ID</Text>
-                <Text className="text-[11px] text-monitor-text-muted font-mono">
+                <Text className="text-13 text-monitor-text-dim">결제 ID</Text>
+                <Text className="text-11 text-monitor-text-muted font-mono">
                   {payment.externalPaymentId}
                 </Text>
               </View>
@@ -161,7 +161,7 @@ function TransactionDetail({ tx }: { tx: PosTransaction }) {
               ? 'border-[rgba(251,44,54,0.2)] bg-[rgba(251,44,54,0.08)]'
               : 'border-[rgba(254,154,0,0.2)] bg-[rgba(254,154,0,0.07)]',
           )}>
-            <Text className={cn('text-[11px] leading-[17px]', isUnpaid ? 'text-event-critical' : 'text-event-warning')}>
+            <Text className={cn('text-11 leading-[17px]', isUnpaid ? 'text-event-critical' : 'text-event-warning')}>
               {tx.note}
             </Text>
           </View>
@@ -170,10 +170,10 @@ function TransactionDetail({ tx }: { tx: PosTransaction }) {
         {tx.alertId && (
           <Pressable
             onPress={() => navigation.navigate('AlertDetail', { id: tx.alertId! })}
-            className="mt-2 flex-row items-center justify-center gap-2 rounded-lg border border-[rgba(251,44,54,0.3)] bg-[rgba(251,44,54,0.08)] px-3 py-2.5"
+            className="mt-2 flex-row items-center justify-center gap-2 rounded-control border border-[rgba(251,44,54,0.3)] bg-[rgba(251,44,54,0.08)] px-3 py-2.5"
           >
-            <Ionicons name="open-outline" size={12} color="#ff6467" />
-            <Text className="text-[12px] font-medium text-event-critical">알림 상세 검토 →</Text>
+            <Ionicons name="open-outline" size={12} color={colors.event.critical} />
+            <Text className="text-12 font-medium text-event-critical">알림 상세 검토 →</Text>
           </Pressable>
         )}
       </View>
@@ -193,40 +193,40 @@ export function TransactionCard({ transaction: tx }: { transaction: PosTransacti
         className={cn('flex-row items-center px-4 py-3 gap-3', cfg.rowBg)}
       >
         <View className="w-[80px]">
-          <Text className="text-monitor-text font-mono text-[13px] font-semibold leading-4">{tx.id}</Text>
-          <Text className="text-monitor-text-dim text-[11px] leading-[15px]">{tx.time}</Text>
+          <Text className="text-monitor-text font-mono text-13 font-semibold leading-4">{tx.id}</Text>
+          <Text className="text-monitor-text-dim text-11">{tx.time}</Text>
         </View>
 
         {/* 헤더와 정렬을 위해 고정 폭 w-[92px] */}
         <View className="w-[92px]">
-          <View className={cn('rounded-md border px-2 py-1 self-start', cfg.badgeBg, cfg.badgeBorder)}>
-            <Text className={cn('text-[10px] font-bold', cfg.badgeText)} numberOfLines={1}>{cfg.label}</Text>
+          <View className={cn('rounded-badge border px-2 py-1 self-start', cfg.badgeBg, cfg.badgeBorder)}>
+            <Text className={cn('text-10 font-bold', cfg.badgeText)} numberOfLines={1}>{cfg.label}</Text>
           </View>
         </View>
 
         <View className="flex-1 flex-row items-center gap-1">
           {tx.paymentMethod ? (
             <>
-              <Ionicons name={PAYMENT_ICON[tx.paymentMethod]} size={13} color="#90a1b9" />
+              <Ionicons name={PAYMENT_ICON[tx.paymentMethod]} size={13} color={colors.monitor['text-muted']} />
               <Text className="text-monitor-text-muted text-xs">{PAYMENT_LABEL[tx.paymentMethod]}</Text>
             </>
           ) : (
-            <Text className="text-monitor-text-dim text-[13px]">—</Text>
+            <Text className="text-monitor-text-dim text-13">—</Text>
           )}
         </View>
 
         {isUnpaid ? (
-          <Text className="text-[12px] text-event-critical">없음</Text>
+          <Text className="text-12 text-event-critical">없음</Text>
         ) : tx.paymentId ? (
-          <Text className="text-monitor-text-dim font-mono text-[11px]">#{tx.paymentId}</Text>
+          <Text className="text-monitor-text-dim font-mono text-11">#{tx.paymentId}</Text>
         ) : (
-          <Text className="text-monitor-text-dim text-[13px]">—</Text>
+          <Text className="text-monitor-text-dim text-13">—</Text>
         )}
 
         <Ionicons
           name={expanded ? 'chevron-up' : 'chevron-down'}
           size={14}
-          color="#62748e"
+          color={colors.monitor['text-dim']}
         />
       </Pressable>
 

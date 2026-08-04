@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, useWindowDimensions } from 'react-native';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@xross/tokens';
 
 interface Props {
   alertId: number;
@@ -29,7 +30,7 @@ export function CCTVPlaybackView({ alertId, cameraName }: Props) {
   if (hasError) {
     return (
       <View className="bg-black items-center justify-center gap-2" style={{ height: videoHeight }}>
-        <Ionicons name="videocam-off-outline" size={36} color="#62748e" />
+        <Ionicons name="videocam-off-outline" size={36} color={colors.monitor['text-dim']} />
         <Text className="text-monitor-text-dim text-xs font-mono">영상 없음</Text>
       </View>
     );
@@ -52,13 +53,13 @@ export function CCTVPlaybackView({ alertId, cameraName }: Props) {
       >
         <View className="flex-row items-center gap-2">
           <View className="h-2 w-2 rounded-full bg-monitor-accent-blue" />
-          <Text className="text-[13px] font-bold tracking-wide text-white"
+          <Text className="text-13 font-bold tracking-wide text-white"
             style={{ textShadowColor: 'rgba(0,0,0,0.6)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 }}>
             {cameraName}
           </Text>
         </View>
-        <View className="rounded-sm border border-[rgba(43,127,255,0.3)] bg-[rgba(43,127,255,0.2)] px-2 py-0.5">
-          <Text className="text-monitor-accent-blue font-mono text-[10px] tracking-widest">복기</Text>
+        <View className="rounded-sm border border-monitor-accent-blue/30 bg-monitor-accent-blue/20 px-2 py-0.5">
+          <Text className="text-monitor-accent-blue font-mono text-10 tracking-widest">복기</Text>
         </View>
       </View>
     </View>

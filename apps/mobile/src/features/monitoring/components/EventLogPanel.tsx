@@ -37,8 +37,8 @@ export function EventLogPanel({ alerts, connected }: Props) {
           </Text>
         </View>
         {criticalCount > 0 && (
-          <View className="rounded-[4px] px-2 py-[3px] bg-[rgba(251,44,54,0.1)] border border-[rgba(251,44,54,0.2)]">
-            <Text className="text-[10px] font-bold text-event-critical">
+          <View className="rounded-badge px-2 py-[3px] bg-event-critical/10 border border-event-critical/20">
+            <Text className="text-10 font-bold text-event-critical">
               {criticalCount}건 검토 필요
             </Text>
           </View>
@@ -47,7 +47,7 @@ export function EventLogPanel({ alerts, connected }: Props) {
 
       {/* 정렬 토글 */}
       <View className="px-4 py-2 border-b border-monitor-border">
-        <View className="flex-row gap-1 rounded-lg p-1 bg-[rgba(255,255,255,0.06)]">
+        <View className="flex-row gap-1 rounded-control p-1 bg-white/10">
           {SORT_OPTIONS.map(({ key, label }) => {
             const active = sortKey === key;
             return (
@@ -63,7 +63,7 @@ export function EventLogPanel({ alerts, connected }: Props) {
               >
                 <Text
                   className={cn(
-                    'text-[11px] font-semibold tracking-wide',
+                    'text-11 font-semibold tracking-wide',
                     active ? 'text-monitor-accent-blue' : 'text-monitor-text-dim',
                   )}
                 >

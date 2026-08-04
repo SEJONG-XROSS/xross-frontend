@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@xross/tokens';
 import {
   RTCPeerConnection,
   RTCView,
@@ -94,8 +95,8 @@ export function WebRTCView({ streamPath, baseUrl }: Props) {
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center bg-monitor-card-bg gap-2">
-        <ActivityIndicator color="#51a2ff" size="small" />
-        <Text className="text-[11px] text-monitor-text-dim font-mono">
+        <ActivityIndicator color={colors.monitor['accent-blue']} size="small" />
+        <Text className="text-11 text-monitor-text-dim font-mono">
           스트림 연결 중...
         </Text>
       </View>
@@ -106,13 +107,13 @@ export function WebRTCView({ streamPath, baseUrl }: Props) {
     return (
       <View className="flex-1 items-center justify-center bg-monitor-card-bg gap-3 px-6">
         <View
-          className="w-12 h-12 rounded-full items-center justify-center bg-[rgba(251,44,54,0.08)] border border-[rgba(251,44,54,0.2)]"
+          className="w-12 h-12 rounded-full items-center justify-center bg-event-critical/[0.08] border border-event-critical/20"
         >
-          <Ionicons name="videocam-off-outline" size={22} color="#ff6467" />
+          <Ionicons name="videocam-off-outline" size={22} color={colors.event.critical} />
         </View>
         <View className="items-center gap-1">
-          <Text className="text-[13px] font-semibold text-event-critical text-center">스트림 연결 실패</Text>
-          <Text className="text-[11px] text-monitor-text-dim text-center">카메라가 오프라인이거나{'\n'}스트림을 사용할 수 없습니다</Text>
+          <Text className="text-13 font-semibold text-event-critical text-center">스트림 연결 실패</Text>
+          <Text className="text-11 text-monitor-text-dim text-center">카메라가 오프라인이거나{'\n'}스트림을 사용할 수 없습니다</Text>
         </View>
       </View>
     );

@@ -3,6 +3,7 @@ import { View, Text, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { cn } from '@xross/core';
+import { colors } from '@xross/tokens';
 import { AccountTab } from '../tabs/AccountTab';
 import { NotificationTab } from '../tabs/NotificationTab';
 import { StoreTab } from '../tabs/StoreTab';
@@ -28,17 +29,17 @@ export function SettingScreen(_props: SettingScreenProps) {
     <View className="flex-1 bg-monitor-bg">
       {/* 헤더 */}
       <View
-        className="bg-surface-page border-b border-input-border"
+        className="bg-monitor-card-bg border-b border-monitor-border"
         style={{ paddingTop: insets.top, height: 56 + insets.top }}
       >
         <View className="flex-1 items-center justify-center">
-          <Text className="text-heading text-[15px] font-bold">설정</Text>
+          <Text className="text-monitor-text text-14 font-bold">설정</Text>
         </View>
       </View>
 
       {/* 탭바 */}
       <View className="bg-monitor-bg border-b border-monitor-border px-3 py-2.5">
-        <View className="flex-row gap-1 rounded-xl bg-[rgba(255,255,255,0.06)] p-1">
+        <View className="flex-row gap-1 rounded-xl bg-white/10 p-1">
           {TABS.map(({ key, label, icon }) => {
             const active = tab === key;
             return (
@@ -53,11 +54,11 @@ export function SettingScreen(_props: SettingScreenProps) {
                 <Ionicons
                   name={icon}
                   size={14}
-                  color={active ? '#51a2ff' : '#62748e'}
+                  color={active ? colors.monitor['accent-blue'] : colors.monitor['text-dim']}
                 />
                 <Text
                   className={cn(
-                    'text-[11px] font-semibold tracking-wide',
+                    'text-11 font-semibold tracking-wide',
                     active ? 'text-monitor-accent-blue' : 'text-monitor-text-dim',
                   )}
                 >

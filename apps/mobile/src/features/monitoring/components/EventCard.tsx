@@ -18,14 +18,14 @@ const SEVERITY_CONFIG: Record<Severity, {
   titleClass: string;
 }> = {
   critical: {
-    borderClass: 'border-[rgba(251,44,54,0.4)]',
-    iconBgClass: 'bg-[#fb2c36]',
+    borderClass: 'border-event-critical/40',
+    iconBgClass: 'bg-event-critical',
     iconName: 'shield-outline',
     titleClass: 'text-event-critical',
   },
   warning: {
-    borderClass: 'border-[rgba(254,154,0,0.4)]',
-    iconBgClass: 'bg-[#fe9a00]',
+    borderClass: 'border-event-warning/40',
+    iconBgClass: 'bg-event-warning',
     iconName: 'warning-outline',
     titleClass: 'text-event-warning',
   },
@@ -52,7 +52,7 @@ export function EventCard({ alert }: { alert: AlertResponse }) {
     <Pressable
       onPress={() => navigation.navigate('AlertDetail', { id: alert.id })}
       className={cn(
-        'bg-monitor-card-bg rounded-[14px] border p-[14px] mb-[10px]',
+        'bg-monitor-card-bg rounded-card border p-[14px] mb-[10px]',
         cfg.borderClass,
         alert.status === 'ACKNOWLEDGED' && 'opacity-50',
       )}
@@ -65,7 +65,7 @@ export function EventCard({ alert }: { alert: AlertResponse }) {
           <Text className={cn('text-sm font-bold tracking-tight', cfg.titleClass)}>
             {alert.title}
           </Text>
-          <Text className="text-[10px] text-monitor-text-dim font-mono">
+          <Text className="text-10 text-monitor-text-dim font-mono">
             {formatTime(alert.createdAt)} • #{alert.id}
           </Text>
         </View>

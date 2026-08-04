@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Modal, View, Text, Pressable, TextInput, FlatList, Animated, PanResponder } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@xross/tokens';
 import { cn } from '@xross/core';
 import type { EventResponse } from '@xross/core';
 
@@ -60,10 +61,10 @@ const TYPE_SEVERITY: Record<string, Severity> = {
 };
 
 const BADGE_STYLE: Record<Severity, { bg: string; text: string; border: string }> = {
-  critical: { bg: 'rgba(255,100,103,0.12)', text: '#ff6467', border: 'rgba(255,100,103,0.3)' },
-  warning:  { bg: 'rgba(254,154,0,0.12)',   text: '#fe9a00', border: 'rgba(254,154,0,0.3)' },
-  success:  { bg: 'rgba(0,212,146,0.12)',   text: '#00d492', border: 'rgba(0,212,146,0.3)' },
-  info:     { bg: 'rgba(255,255,255,0.06)', text: '#90a1b9', border: '#1d293d' },
+  critical: { bg: 'bg-event-critical/[0.12]',        text: 'text-event-critical',        border: 'border-event-critical/30' },
+  warning:  { bg: 'bg-event-warning/[0.12]',         text: 'text-event-warning',         border: 'border-event-warning/30' },
+  success:  { bg: 'bg-monitor-accent-green/[0.12]',  text: 'text-monitor-accent-green',  border: 'border-monitor-accent-green/30' },
+  info:     { bg: 'bg-white/10',                     text: 'text-monitor-text-muted',    border: 'border-monitor-border' },
 };
 
 function formatTime(iso: string) {
@@ -147,77 +148,78 @@ export function EventLogModal({ visible, events, date, onClose }: Props) {
 
   return (
     <Modal visible={modalVisible} transparent animationType="none" onRequestClose={onClose}>
-      <View style={{ flex: 1 }}>
+      <View className="flex-1">
         {/* 오버레이 */}
         <Animated.View
           style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.6)', opacity: overlayOpacity } as any}
         >
-          <Pressable style={{ flex: 1 }} onPress={onClose} />
+          <Pressable className="flex-1" onPress={onClose} />
         </Animated.View>
 
         {/* 시트 */}
         <Animated.View
           style={{
             position: 'absolute', bottom: 0, left: 0, right: 0,
-            backgroundColor: '#0f172b',
+            backgroundColor: colors.monitor.bg,
             borderTopLeftRadius: 20, borderTopRightRadius: 20,
-            borderWidth: 1, borderColor: '#1d293d',
+            borderWidth: 1, borderColor: colors.monitor.border,
             height: '90%',
             transform: [{ translateY }],
           }}
         >
           {/* 드래그 핸들 */}
-          <View {...panResponder.panHandlers} style={{ alignItems: 'center', paddingVertical: 12 }}>
-            <View style={{ width: 40, height: 4, borderRadius: 2, backgroundColor: '#314158' }} />
+          <View {...panResponder.panHandlers} className="items-center py-3">
+            <View className="w-10 h-1 rounded-sm bg-monitor-border-strong" />
           </View>
 
           {/* 헤더 */}
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: '#1d293d' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-              <Ionicons name="list-outline" size={16} color="#51a2ff" />
-              <Text style={{ fontSize: 15, fontWeight: '700', color: '#e2e8f0', letterSpacing: -0.2 }}>
+          <View className="flex-row items-center justify-between px-4 pb-3 border-b border-monitor-border">
+            <View className="flex-row items-center gap-2">
+              <Ionicons name="list-outline" size={16} color={colors.monitor['accent-blue']} />
+              <Text className="text-14 font-bold text-monitor-text tracking-[-0.2px]">
                 이벤트 로그
               </Text>
-              <View style={{ backgroundColor: '#0d1b2e', borderWidth: 1, borderColor: '#1d293d', borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2 }}>
-                <Text style={{ fontSize: 11, color: '#62748e', fontFamily: 'monospace' }}>
+              <View className="bg-monitor-bg border border-monitor-border rounded-badge px-1.5 py-0.5">
+                <Text className="text-11 text-monitor-text-dim" style={{ fontFamily: 'monospace' }}>
                   {formatDate(date)}
                 </Text>
               </View>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-              <Text style={{ fontSize: 11, color: '#62748e', fontFamily: 'monospace' }}>
+            <View className="flex-row items-center gap-2">
+              <Text className="text-11 text-monitor-text-dim" style={{ fontFamily: 'monospace' }}>
                 {filtered.length !== events.length
                   ? `${filtered.length} / ${events.length}건`
                   : `${events.length}건`}
               </Text>
               <Pressable onPress={onClose} hitSlop={8}
-                style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.06)', alignItems: 'center', justifyContent: 'center' }}
+                className="w-7 h-7 rounded-control bg-white/10 items-center justify-center"
               >
-                <Ionicons name="close" size={14} color="#90a1b9" />
+                <Ionicons name="close" size={14} color={colors.monitor['text-muted']} />
               </Pressable>
             </View>
           </View>
 
           {/* 필터 */}
-          <View style={{ flexDirection: 'row', gap: 4, paddingHorizontal: 16, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#1d293d' }}>
+          <View className="flex-row gap-1 px-4 py-2.5 border-b border-monitor-border">
             {FILTERS.map(({ key, label }) => {
               const active = filter === key;
               return (
                 <Pressable
                   key={key}
                   onPress={() => setFilter(key)}
-                  style={{
-                    flexDirection: 'row', alignItems: 'center', gap: 4,
-                    paddingHorizontal: 10, paddingVertical: 5,
-                    borderRadius: 8,
-                    backgroundColor: active ? '#51a2ff' : 'rgba(255,255,255,0.05)',
-                  }}
+                  className={cn(
+                    'flex-row items-center gap-1 px-2.5 py-[5px] rounded-control',
+                    active ? 'bg-monitor-accent-blue' : 'bg-white/5',
+                  )}
                 >
-                  <Text style={{ fontSize: 11, fontWeight: '600', color: active ? '#fff' : '#62748e' }}>
+                  <Text className={cn('text-11 font-semibold', active ? 'text-white' : 'text-monitor-text-dim')}>
                     {label}
                   </Text>
-                  <View style={{ backgroundColor: active ? 'rgba(255,255,255,0.25)' : '#1d293d', borderRadius: 10, paddingHorizontal: 5, paddingVertical: 1 }}>
-                    <Text style={{ fontSize: 9, fontWeight: '700', color: active ? '#fff' : '#62748e', fontFamily: 'monospace' }}>
+                  <View className={cn('rounded-control px-[5px] py-[1px]', active ? 'bg-white/25' : 'bg-monitor-border')}>
+                    <Text
+                      className={cn('text-10 font-bold', active ? 'text-white' : 'text-monitor-text-dim')}
+                      style={{ fontFamily: 'monospace' }}
+                    >
                       {filterCounts[key]}
                     </Text>
                   </View>
@@ -227,33 +229,34 @@ export function EventLogModal({ visible, events, date, onClose }: Props) {
           </View>
 
           {/* 검색 */}
-          <View style={{ paddingHorizontal: 16, paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#1d293d' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#0d1b2e', borderWidth: 1, borderColor: '#1d293d', borderRadius: 10, paddingHorizontal: 12, height: 36 }}>
-              <Ionicons name="search-outline" size={14} color="#62748e" />
+          <View className="px-4 py-2 border-b border-monitor-border">
+            <View className="flex-row items-center gap-2 bg-monitor-bg border border-monitor-border rounded-control px-3 h-9">
+              <Ionicons name="search-outline" size={14} color={colors.monitor['text-dim']} />
               <TextInput
                 value={search}
                 onChangeText={setSearch}
                 placeholder="유형·소스·추적키 검색"
-                placeholderTextColor="#62748e"
-                style={{ flex: 1, fontSize: 12, color: '#e2e8f0', fontFamily: 'monospace' }}
+                placeholderTextColor={colors.monitor['text-dim']}
+                className="flex-1 text-12 text-monitor-text"
+                style={{ fontFamily: 'monospace' }}
               />
               {search.length > 0 && (
                 <Pressable onPress={() => setSearch('')} hitSlop={8}>
-                  <Ionicons name="close-circle" size={14} color="#62748e" />
+                  <Ionicons name="close-circle" size={14} color={colors.monitor['text-dim']} />
                 </Pressable>
               )}
             </View>
           </View>
 
           {/* 컬럼 헤더 */}
-          <View style={{ paddingHorizontal: 16, paddingVertical: 7, gap: 5, borderBottomWidth: 1, borderBottomColor: '#1d293d', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ fontSize: 9, fontWeight: '700', color: '#62748e', letterSpacing: 1, textTransform: 'uppercase' }}>이벤트 유형</Text>
-              <Text style={{ fontSize: 9, fontWeight: '700', color: '#62748e', letterSpacing: 1, textTransform: 'uppercase' }}>시각</Text>
+          <View className="px-4 py-[7px] gap-[5px] border-b border-monitor-border bg-white/5">
+            <View className="flex-row justify-between">
+              <Text className="text-10 font-bold text-monitor-text-dim tracking-caps uppercase">이벤트 유형</Text>
+              <Text className="text-10 font-bold text-monitor-text-dim tracking-caps uppercase">시각</Text>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ fontSize: 9, fontWeight: '700', color: '#62748e', letterSpacing: 1, textTransform: 'uppercase' }}>소스</Text>
-              <Text style={{ fontSize: 9, fontWeight: '700', color: '#62748e', letterSpacing: 1, textTransform: 'uppercase' }}>추적키</Text>
+            <View className="flex-row justify-between">
+              <Text className="text-10 font-bold text-monitor-text-dim tracking-caps uppercase">소스</Text>
+              <Text className="text-10 font-bold text-monitor-text-dim tracking-caps uppercase">추적키</Text>
             </View>
           </View>
 
@@ -264,9 +267,9 @@ export function EventLogModal({ visible, events, date, onClose }: Props) {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 32 }}
             ListEmptyComponent={
-              <View style={{ paddingTop: 60, alignItems: 'center', gap: 8 }}>
-                <Ionicons name="search-outline" size={32} color="#314158" />
-                <Text style={{ fontSize: 13, color: '#62748e' }}>해당하는 이벤트가 없습니다.</Text>
+              <View className="pt-[60px] items-center gap-2">
+                <Ionicons name="search-outline" size={32} color={colors.monitor['border-strong']} />
+                <Text className="text-13 text-monitor-text-dim">해당하는 이벤트가 없습니다.</Text>
               </View>
             }
             renderItem={({ item: event, index }) => {
@@ -274,32 +277,32 @@ export function EventLogModal({ visible, events, date, onClose }: Props) {
               const badge = BADGE_STYLE[severity];
               const isEven = index % 2 === 0;
               return (
-                <View style={{
-                  paddingHorizontal: 16, paddingVertical: 10,
-                  backgroundColor: isEven ? 'transparent' : 'rgba(255,255,255,0.015)',
-                  borderBottomWidth: 1, borderBottomColor: 'rgba(29,41,61,0.6)',
-                  gap: 5,
-                }}>
+                <View
+                  className={cn(
+                    'px-4 py-2.5 gap-[5px] border-b border-monitor-border/60',
+                    isEven ? 'bg-transparent' : 'bg-white/[0.015]',
+                  )}
+                >
                   {/* 1줄: 유형 뱃지 + 시각 */}
-                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <View style={{ backgroundColor: badge.bg, borderWidth: 1, borderColor: badge.border, borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4 }}>
-                      <Text style={{ fontSize: 12, fontWeight: '600', color: badge.text }}>
+                  <View className="flex-row items-center justify-between">
+                    <View className={cn('rounded-badge border px-2 py-1', badge.bg, badge.border)}>
+                      <Text className={cn('text-12 font-semibold', badge.text)}>
                         {EVENT_TYPE_LABEL[event.type] ?? event.type}
                       </Text>
                     </View>
-                    <Text style={{ fontSize: 11, color: '#62748e', fontFamily: 'monospace' }}>
+                    <Text className="text-11 text-monitor-text-dim" style={{ fontFamily: 'monospace' }}>
                       {formatTime(event.occurredAt)}
                     </Text>
                   </View>
 
                   {/* 2줄: 소스 + 추적키 */}
-                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Text style={{ fontSize: 11, color: '#62748e' }}>
+                  <View className="flex-row items-center justify-between">
+                    <Text className="text-11 text-monitor-text-dim">
                       {SOURCE_LABEL[event.source] ?? event.source}
                     </Text>
                     {event.customer?.trackingKey != null ? (
-                      <View style={{ backgroundColor: '#0d1b2e', borderWidth: 1, borderColor: '#1d293d', borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2 }}>
-                        <Text style={{ fontSize: 10, color: '#62748e', fontFamily: 'monospace' }}>
+                      <View className="bg-monitor-bg border border-monitor-border rounded-badge px-1.5 py-0.5">
+                        <Text className="text-10 text-monitor-text-dim" style={{ fontFamily: 'monospace' }}>
                           #{event.customer.trackingKey}
                         </Text>
                       </View>

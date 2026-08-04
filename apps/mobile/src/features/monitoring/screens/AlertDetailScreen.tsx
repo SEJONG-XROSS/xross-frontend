@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { useQueries } from '@tanstack/react-query';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@xross/tokens';
 import {
   useAlert,
   getAlertSeverity,
@@ -19,15 +20,15 @@ import { CCTVPlaybackView } from '../components/CCTVPlaybackView';
 type Props = NativeStackScreenProps<RootStackParamList, 'AlertDetail'>;
 
 const PRIORITY_CONFIG: Record<AlertPriority, { label: string; bgClass: string; textClass: string; borderClass: string }> = {
-  CRITICAL: { label: '긴급', bgClass: 'bg-[rgba(255,100,103,0.1)]', textClass: 'text-event-critical', borderClass: 'border-[rgba(255,100,103,0.3)]' },
-  WARNING:  { label: '경고', bgClass: 'bg-[rgba(254,154,0,0.1)]',   textClass: 'text-event-warning',  borderClass: 'border-[rgba(254,154,0,0.3)]' },
+  CRITICAL: { label: '긴급', bgClass: 'bg-event-critical/10', textClass: 'text-event-critical', borderClass: 'border-event-critical/30' },
+  WARNING:  { label: '경고', bgClass: 'bg-event-warning/10',  textClass: 'text-event-warning',  borderClass: 'border-event-warning/30' },
 };
 
 const STATUS_CONFIG: Record<AlertStatus, { label: string; bgClass: string; textClass: string; borderClass: string }> = {
-  PENDING:      { label: '미확인',   bgClass: 'bg-[rgba(255,100,103,0.08)]',  textClass: 'text-event-critical',         borderClass: 'border-[rgba(255,100,103,0.3)]' },
+  PENDING:      { label: '미확인',   bgClass: 'bg-event-critical/[0.08]',      textClass: 'text-event-critical',         borderClass: 'border-event-critical/30' },
   SENT:         { label: '전송됨',   bgClass: 'bg-monitor-border/30',          textClass: 'text-monitor-text-muted',     borderClass: 'border-monitor-border' },
-  FAILED:       { label: '전송 실패', bgClass: 'bg-[rgba(254,154,0,0.1)]',    textClass: 'text-event-warning',           borderClass: 'border-[rgba(254,154,0,0.3)]' },
-  ACKNOWLEDGED: { label: '확인 완료', bgClass: 'bg-[rgba(0,212,146,0.1)]',    textClass: 'text-monitor-accent-green',   borderClass: 'border-[rgba(0,212,146,0.3)]' },
+  FAILED:       { label: '전송 실패', bgClass: 'bg-event-warning/10',          textClass: 'text-event-warning',           borderClass: 'border-event-warning/30' },
+  ACKNOWLEDGED: { label: '확인 완료', bgClass: 'bg-monitor-accent-green/10',   textClass: 'text-monitor-accent-green',   borderClass: 'border-monitor-accent-green/30' },
 };
 
 const EVENT_SOURCE_LABEL: Record<string, string> = {
@@ -100,7 +101,7 @@ export function AlertDetailScreen({ route }: Props) {
 
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color="#51a2ff" />
+          <ActivityIndicator color={colors.monitor['accent-blue']} />
         </View>
       ) : !alert ? (
         <View className="flex-1 items-center justify-center">
@@ -117,23 +118,23 @@ export function AlertDetailScreen({ route }: Props) {
               <Ionicons
                 name={severity === 'critical' ? 'shield-outline' : 'warning-outline'}
                 size={20}
-                color={severity === 'critical' ? '#ff6467' : '#fe9a00'}
+                color={severity === 'critical' ? colors.event.critical : colors.event.warning}
                 style={{ marginTop: 2 }}
               />
-              <Text className="flex-1 text-[17px] font-bold leading-[23px] tracking-tight text-monitor-text">
+              <Text className="flex-1 text-16 font-bold tracking-tight text-monitor-text">
                 {alert.title}
               </Text>
               <View className="flex-row gap-1.5">
                 {priorityCfg && (
-                  <View className={cn('rounded-[4px] border px-2 py-[3px]', priorityCfg.bgClass, priorityCfg.borderClass)}>
-                    <Text className={cn('text-[10px] font-bold leading-[14px] tracking-wide', priorityCfg.textClass)}>
+                  <View className={cn('rounded-badge border px-2 py-[3px]', priorityCfg.bgClass, priorityCfg.borderClass)}>
+                    <Text className={cn('text-10 font-bold tracking-wide', priorityCfg.textClass)}>
                       {priorityCfg.label}
                     </Text>
                   </View>
                 )}
                 {statusCfg && (
-                  <View className={cn('rounded-[4px] border px-2 py-[3px]', statusCfg.bgClass, statusCfg.borderClass)}>
-                    <Text className={cn('text-[10px] font-medium leading-[14px]', statusCfg.textClass)}>
+                  <View className={cn('rounded-badge border px-2 py-[3px]', statusCfg.bgClass, statusCfg.borderClass)}>
+                    <Text className={cn('text-10 font-medium', statusCfg.textClass)}>
                       {statusCfg.label}
                     </Text>
                   </View>
@@ -141,7 +142,7 @@ export function AlertDetailScreen({ route }: Props) {
               </View>
             </View>
 
-            <Text className="text-[13px] leading-[21px] text-monitor-text-muted mb-3">
+            <Text className="text-13 leading-[21px] text-monitor-text-muted mb-3">
               {alert.message}
             </Text>
 
@@ -162,18 +163,18 @@ export function AlertDetailScreen({ route }: Props) {
           {/* 관련 이벤트 타임라인 */}
           <View className="px-4 py-4">
             <View className="flex-row items-center gap-2 mb-5">
-              <Ionicons name="list-outline" size={14} color="#62748e" />
-              <Text className="text-[12px] font-bold uppercase tracking-[1.2px] text-monitor-text-dim">
+              <Ionicons name="list-outline" size={14} color={colors.monitor['text-dim']} />
+              <Text className="text-12 font-bold uppercase tracking-caps text-monitor-text-dim">
                 관련 이벤트 타임라인
               </Text>
               {relatedEvents.length > 0 && (
-                <Text className="ml-auto font-mono text-[11px] text-monitor-text-dim">
+                <Text className="ml-auto font-mono text-11 text-monitor-text-dim">
                   {relatedEvents.length}건
                 </Text>
               )}
             </View>
             {relatedEvents.length === 0 ? (
-              <Text className="text-[13px] text-monitor-text-dim">관련 이벤트가 없습니다.</Text>
+              <Text className="text-13 text-monitor-text-dim">관련 이벤트가 없습니다.</Text>
             ) : (
               <EventTimeline entries={logEntries} />
             )}

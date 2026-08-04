@@ -14,7 +14,7 @@ export function SettingsRow({ label, description, hasBorder = true, children }: 
       <View className="flex-1">
         <Text className="text-monitor-text text-sm leading-5 tracking-tight">{label}</Text>
         {description && (
-          <Text className="text-monitor-text-dim text-[11px] leading-4 mt-0.5">{description}</Text>
+          <Text className="text-monitor-text-dim text-11 leading-4 mt-0.5">{description}</Text>
         )}
       </View>
       {children && <View className="flex-shrink-0">{children}</View>}

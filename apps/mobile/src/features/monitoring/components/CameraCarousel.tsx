@@ -92,7 +92,7 @@ export function CameraCarousel({ cameras }: { cameras: CameraFeed[] }) {
             <Text className="text-base text-monitor-text-muted">›</Text>
           </Pressable>
 
-          <Text className="ml-1 font-mono text-[11px] text-monitor-text-dim">
+          <Text className="ml-1 font-mono text-11 text-monitor-text-dim">
             {idx + 1}/{count}
           </Text>
         </View>

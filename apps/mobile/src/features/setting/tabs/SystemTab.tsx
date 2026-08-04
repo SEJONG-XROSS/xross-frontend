@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { View, Text, Switch, Pressable, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@xross/tokens';
 import { SettingsSection } from '../components/SettingsSection';
 import { SettingsRow } from '../components/SettingsRow';
 
 function InlineTag({ label, variant = 'blue' }: { label: string; variant?: 'blue' | 'gray' }) {
   if (variant === 'blue') {
     return (
-      <View className="h-[21px] items-center rounded-[4px] border border-[rgba(43,127,255,0.2)] bg-[rgba(43,127,255,0.1)] px-1.5 justify-center">
-        <Text className="text-monitor-accent-blue font-mono text-[10px]">{label}</Text>
+      <View className="h-[21px] items-center rounded-badge border border-[rgba(43,127,255,0.2)] bg-[rgba(43,127,255,0.1)] px-1.5 justify-center">
+        <Text className="text-monitor-accent-blue font-mono text-10">{label}</Text>
       </View>
     );
   }
   return (
-    <View className="h-[19px] items-center rounded-[4px] bg-monitor-card-bg px-1.5 justify-center">
-      <Text className="text-monitor-text-muted font-mono text-[10px]">{label}</Text>
+    <View className="h-[19px] items-center rounded-badge bg-monitor-card-bg px-1.5 justify-center">
+      <Text className="text-monitor-text-muted font-mono text-10">{label}</Text>
     </View>
   );
 }
@@ -46,7 +47,7 @@ export function SystemTab() {
             <Switch
               value={autoRecord}
               onValueChange={setAutoRecord}
-              trackColor={{ false: '#314158', true: '#51a2ff' }}
+              trackColor={{ false: colors.monitor['border-strong'], true: colors.brand.primary }}
               thumbColor="#fff"
             />
           </SettingsRow>
@@ -58,13 +59,13 @@ export function SystemTab() {
         <SettingsSection title="데이터 관리">
           <View className="px-4 py-4 gap-2">
             <Pressable
-              className="h-10 flex-row items-center gap-2 rounded-[10px] border border-[rgba(251,44,54,0.3)] bg-[rgba(251,44,54,0.08)] px-4 self-start"
+              className="h-10 flex-row items-center gap-2 rounded-control border border-[rgba(251,44,54,0.3)] bg-[rgba(251,44,54,0.08)] px-4 self-start"
               style={({ pressed }: { pressed: boolean }) => ({ opacity: pressed ? 0.8 : 1 })}
             >
-              <Ionicons name="trash-outline" size={13} color="#ff6467" />
-              <Text className="text-[13px] font-medium text-event-critical">이벤트 로그 초기화</Text>
+              <Ionicons name="trash-outline" size={13} color={colors.event.critical} />
+              <Text className="text-13 font-medium text-event-critical">이벤트 로그 초기화</Text>
             </Pressable>
-            <Text className="text-[11px] text-monitor-text-dim">
+            <Text className="text-11 text-monitor-text-dim">
               초기화 후 복구 불가. 신중히 사용하세요.
             </Text>
           </View>

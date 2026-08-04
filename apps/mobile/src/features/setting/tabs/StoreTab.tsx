@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useMe } from '@xross/core';
+import { colors } from '@xross/tokens';
 import { SettingsSection } from '../components/SettingsSection';
 import { SettingsRow } from '../components/SettingsRow';
 
@@ -31,7 +32,7 @@ export function StoreTab() {
             <Text className="text-monitor-text-muted text-sm">24시간 무인 운영</Text>
           </SettingsRow>
           <SettingsRow label="주소" hasBorder={false}>
-            <Ionicons name="chevron-forward" size={16} color="#62748e" />
+            <Ionicons name="chevron-forward" size={16} color={colors.monitor['text-dim']} />
           </SettingsRow>
         </SettingsSection>
 
@@ -42,19 +43,19 @@ export function StoreTab() {
               className={`flex-row items-center justify-between px-4 py-3 gap-3 ${idx < CAMERAS.length - 1 ? 'border-b border-monitor-border' : ''}`}
             >
               <View className="flex-row items-center gap-3 flex-1">
-                <Ionicons name="videocam-outline" size={16} color="#51a2ff" />
+                <Ionicons name="videocam-outline" size={16} color={colors.monitor['accent-blue']} />
                 <View>
                   <Text className="text-monitor-text text-sm leading-5">{cam.name}</Text>
-                  <Text className="text-monitor-text-dim font-mono text-[11px]">
+                  <Text className="text-monitor-text-dim font-mono text-11">
                     {cam.edgeNode} · {cam.camId}
                   </Text>
                 </View>
               </View>
               <View className="flex-row items-center gap-2">
                 {cam.hasSensor && (
-                  <View className="h-[21px] flex-row items-center gap-1 rounded-[4px] border border-[rgba(0,212,146,0.2)] bg-[rgba(0,212,146,0.1)] px-1.5">
-                    <Ionicons name="scale-outline" size={10} color="#00d492" />
-                    <Text className="text-monitor-accent-green font-mono text-[10px]">센서</Text>
+                  <View className="h-[21px] flex-row items-center gap-1 rounded-badge border border-[rgba(0,212,146,0.2)] bg-[rgba(0,212,146,0.1)] px-1.5">
+                    <Ionicons name="scale-outline" size={10} color={colors.monitor['accent-green']} />
+                    <Text className="text-monitor-accent-green font-mono text-10">센서</Text>
                   </View>
                 )}
                 <View className="w-2 h-2 rounded-full bg-monitor-accent-green" />
@@ -65,8 +66,8 @@ export function StoreTab() {
 
         <SettingsSection title="POS 연동">
           <SettingsRow label="POS 시스템" description="KIS 무인 결제 v3.2">
-            <View className="h-[18px] items-center rounded-[4px] border border-[rgba(0,188,125,0.2)] bg-[rgba(0,188,125,0.1)] px-2">
-              <Text className="text-[10px] font-mono text-[#009966]">동기화됨</Text>
+            <View className="h-[18px] items-center rounded-badge border border-[rgba(0,188,125,0.2)] bg-[rgba(0,188,125,0.1)] px-2">
+              <Text className="text-10 font-mono text-monitor-accent-green">동기화됨</Text>
             </View>
           </SettingsRow>
           <SettingsRow label="결제 검증 모드" description="퇴장 시점 자동 교차 검증" hasBorder={false}>

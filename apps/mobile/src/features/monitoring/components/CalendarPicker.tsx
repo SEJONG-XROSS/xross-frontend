@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@xross/tokens';
 import { getTodayStr } from '@xross/core';
 import { cn } from '@xross/core';
 
@@ -51,7 +52,7 @@ export function CalendarPicker({ visible, selected, onSelect, onClose }: Props) 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <Pressable
-        className="flex-1 items-center justify-center bg-[rgba(0,0,0,0.6)]"
+        className="flex-1 items-center justify-center bg-black/60"
         onPress={onClose}
       >
         <Pressable
@@ -62,9 +63,9 @@ export function CalendarPicker({ visible, selected, onSelect, onClose }: Props) 
           {/* 월 내비게이션 */}
           <View className="flex-row items-center justify-between mb-3">
             <Pressable onPress={prevMonth} className="w-7 h-7 items-center justify-center rounded-md">
-              <Ionicons name="chevron-back" size={14} color="#90a1b9" />
+              <Ionicons name="chevron-back" size={14} color={colors.monitor['text-muted']} />
             </Pressable>
-            <Text className="text-[13px] font-semibold text-monitor-text">
+            <Text className="text-13 font-semibold text-monitor-text">
               {year}년 {month + 1}월
             </Text>
             <Pressable
@@ -72,7 +73,7 @@ export function CalendarPicker({ visible, selected, onSelect, onClose }: Props) 
               disabled={isNextDisabled}
               className={cn('w-7 h-7 items-center justify-center rounded-md', isNextDisabled && 'opacity-30')}
             >
-              <Ionicons name="chevron-forward" size={14} color="#90a1b9" />
+              <Ionicons name="chevron-forward" size={14} color={colors.monitor['text-muted']} />
             </Pressable>
           </View>
 
@@ -82,7 +83,7 @@ export function CalendarPicker({ visible, selected, onSelect, onClose }: Props) 
               <Text
                 key={w}
                 className={cn(
-                  'flex-1 text-center text-[11px] font-semibold',
+                  'flex-1 text-center text-11 font-semibold',
                   i === 0 ? 'text-event-critical' : i === 6 ? 'text-monitor-accent-blue' : 'text-monitor-text-dim',
                 )}
               >
@@ -114,16 +115,16 @@ export function CalendarPicker({ visible, selected, onSelect, onClose }: Props) 
                   style={{ width: '14.28%', height: 36 }}
                 >
                   <View className={cn(
-                    'w-[30px] h-[30px] rounded-lg items-center justify-center',
-                    isSelected ? 'bg-monitor-accent-blue' : isToday ? 'bg-[rgba(81,162,255,0.15)]' : 'bg-transparent',
+                    'w-[30px] h-[30px] rounded-control items-center justify-center',
+                    isSelected ? 'bg-monitor-accent-blue' : isToday ? 'bg-monitor-accent-blue/15' : 'bg-transparent',
                   )}>
                     <Text className={cn(
                       'text-xs font-medium',
                       isSelected ? 'text-white' :
                       isToday ? 'text-monitor-accent-blue' :
                       isFuture ? 'text-monitor-border-strong' :
-                      isSun ? 'text-[rgba(255,100,103,0.8)]' :
-                      isSat ? 'text-[rgba(81,162,255,0.8)]' :
+                      isSun ? 'text-event-critical/80' :
+                      isSat ? 'text-monitor-accent-blue/80' :
                       'text-monitor-text',
                     )}>
                       {day}
@@ -140,7 +141,7 @@ export function CalendarPicker({ visible, selected, onSelect, onClose }: Props) 
           {selected !== today && (
             <Pressable
               onPress={() => { onSelect(today); onClose(); }}
-              className="mt-3 rounded-lg py-2 items-center border border-[rgba(81,162,255,0.3)]"
+              className="mt-3 rounded-control py-2 items-center border border-monitor-accent-blue/30"
             >
               <Text className="text-xs font-medium text-monitor-accent-blue">오늘로 이동</Text>
             </Pressable>

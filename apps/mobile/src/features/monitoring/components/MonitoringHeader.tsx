@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@xross/tokens";
 import { useMe } from "@xross/core";
 import { isToday, shiftDay, formatDateLabel } from "@xross/core";
 import LogoSvg from "@/assets/images/logo.svg";
@@ -21,24 +22,15 @@ export function MonitoringHeader({ date, onDateChange }: Props) {
 
   return (
     <View
+      className="bg-monitor-card-bg border-b border-monitor-border"
       style={{
-        backgroundColor: "#f8fafc",
-        borderBottomWidth: 1,
-        borderBottomColor: "#e2e8f0",
         paddingTop: insets.top,
         height: 56 + insets.top,
       }}
     >
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          alignItems: "center",
-          paddingHorizontal: 16,
-        }}
-      >
+      <View className="flex-1 flex-row items-center px-4">
         {/* 좌측: 로고 아이콘만 */}
-        <View style={{ flex: 1 }}>
+        <View className="flex-1">
           <Pressable
             onPress={() => {
               console.log("logout");
@@ -50,53 +42,37 @@ export function MonitoringHeader({ date, onDateChange }: Props) {
         </View>
 
         {/* 중앙: 날짜 내비게이션 */}
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
+        <View className="flex-row items-center gap-0.5">
           <Pressable
             onPress={() => onDateChange(shiftDay(date, -1))}
-            style={{
-              width: 32,
-              height: 32,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 6,
-            }}
+            className="w-8 h-8 items-center justify-center rounded-md"
           >
-            <Ionicons name="chevron-back" size={16} color="#64748b" />
+            <Ionicons
+              name="chevron-back"
+              size={16}
+              color={colors.monitor["text-dim"]}
+            />
           </Pressable>
 
           {/* 날짜 탭 → 캘린더 오픈 */}
           <Pressable
             onPress={() => setCalOpen(true)}
-            style={{
-              alignItems: "center",
-              paddingHorizontal: 6,
-              paddingVertical: 4,
-            }}
+            className="items-center px-1.5 py-1"
           >
             {today && (
-              <View
-                style={{
-                  backgroundColor: "rgba(21,93,252,0.1)",
-                  borderRadius: 8,
-                  paddingHorizontal: 6,
-                  paddingVertical: 1,
-                  marginBottom: 2,
-                }}
-              >
-                <Text
-                  style={{ fontSize: 9, fontWeight: "700", color: "#155dfc" }}
-                >
+              <View className="bg-monitor-accent-blue/10 rounded-lg px-1.5 py-[1px] mb-0.5">
+                <Text className="text-10 font-bold text-monitor-accent-blue">
                   오늘
                 </Text>
               </View>
             )}
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-            >
-              <Ionicons name="calendar-outline" size={12} color="#64748b" />
-              <Text
-                style={{ fontSize: 13, fontWeight: "600", color: "#0f172a" }}
-              >
+            <View className="flex-row items-center gap-1">
+              <Ionicons
+                name="calendar-outline"
+                size={12}
+                color={colors.monitor["text-dim"]}
+              />
+              <Text className="text-13 font-semibold text-monitor-text">
                 {formatDateLabel(date)}
               </Text>
             </View>
@@ -104,17 +80,15 @@ export function MonitoringHeader({ date, onDateChange }: Props) {
 
           <Pressable
             onPress={() => !today && onDateChange(shiftDay(date, 1))}
-            style={{
-              width: 32,
-              height: 32,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 6,
-              opacity: today ? 0.3 : 1,
-            }}
+            className="w-8 h-8 items-center justify-center rounded-md"
+            style={{ opacity: today ? 0.3 : 1 }}
             disabled={today}
           >
-            <Ionicons name="chevron-forward" size={16} color="#64748b" />
+            <Ionicons
+              name="chevron-forward"
+              size={16}
+              color={colors.monitor["text-dim"]}
+            />
           </Pressable>
         </View>
 
@@ -126,16 +100,16 @@ export function MonitoringHeader({ date, onDateChange }: Props) {
         />
 
         {/* 우측: 매장 정보 */}
-        <View style={{ flex: 1, alignItems: "flex-end" }}>
+        <View className="flex-1 items-end">
           {me?.name && (
             <Text
-              style={{ fontSize: 11, fontWeight: "500", color: "#0f172a" }}
+              className="text-11 font-medium text-monitor-text"
               numberOfLines={1}
             >
               {me.name}
             </Text>
           )}
-          <Text style={{ fontSize: 10, color: "#64748b" }} numberOfLines={1}>
+          <Text className="text-10 text-monitor-text-dim" numberOfLines={1}>
             {me?.storeName ?? "—"}
           </Text>
         </View>

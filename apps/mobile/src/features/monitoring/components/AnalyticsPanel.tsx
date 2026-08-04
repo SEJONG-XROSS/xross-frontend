@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { View, Text, Pressable, useWindowDimensions } from "react-native";
 import { LineChart } from "react-native-gifted-charts";
+import { colors } from "@xross/tokens";
 import type { EventResponse } from "@xross/core";
 
 interface Stat {
@@ -24,17 +25,17 @@ interface Props {
 }
 
 const STAT_COLOR = {
-  default: "#e2e8f0",
-  danger: "#ff6467",
-  success: "#00d492",
+  default: colors.monitor.text,
+  danger: colors.event.critical,
+  success: colors.monitor["accent-green"],
 };
 
 type ChartMode = "hourly" | "cumulative";
 type ChartTab = "behavior" | "payment";
 
 const CHART_TABS: { key: ChartTab; label: string; color: string }[] = [
-  { key: "behavior", label: "Pick 행동",  color: "#51a2ff" },
-  { key: "payment",  label: "입장·결제",  color: "#8b5cf6" },
+  { key: "behavior", label: "Pick 행동",  color: colors.monitor["accent-blue"] },
+  { key: "payment",  label: "입장·결제",  color: colors.monitor["accent-purple"] },
 ];
 
 function toCumulative(data: Props["chartData"]): Props["chartData"] {
@@ -57,21 +58,24 @@ function formatDate(dateStr: string): string {
 
 function StatRow({ stats }: { stats: Stat[] }) {
   return (
-    <View style={{ flexDirection: "row", gap: 0 }}>
+    <View className="flex-row">
       {stats.map((stat, i) => (
         <View
           key={stat.label}
+          className="pr-3"
           style={{
             paddingLeft: i > 0 ? 12 : 0,
-            paddingRight: 12,
             borderLeftWidth: i > 0 ? 1 : 0,
-            borderLeftColor: "#314158",
+            borderLeftColor: colors.monitor["border-strong"],
           }}
         >
-          <Text style={{ fontSize: 10, color: "#62748e", fontFamily: "monospace" }}>
+          <Text className="text-10 text-monitor-text-dim" style={{ fontFamily: "monospace" }}>
             {stat.label}
           </Text>
-          <Text style={{ fontSize: 14, fontWeight: "700", color: STAT_COLOR[stat.variant ?? "default"], fontFamily: "monospace" }}>
+          <Text
+            className="text-14 font-bold"
+            style={{ color: STAT_COLOR[stat.variant ?? "default"], fontFamily: "monospace" }}
+          >
             {stat.value}
           </Text>
         </View>
@@ -111,10 +115,10 @@ function ChartSection({
 }) {
   const totalPoints = data1.length;
   return (
-    <View style={{ marginBottom: 4 }}>
+    <View className="mb-1">
       {/* 라벨 + 통계 */}
-      <View style={{ flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 6 }}>
-        <Text style={{ fontSize: 9, fontWeight: "700", color: "#62748e", letterSpacing: 1, textTransform: "uppercase" }}>
+      <View className="flex-row items-end justify-between mb-1.5">
+        <Text className="text-10 font-bold text-monitor-text-dim tracking-caps uppercase">
           {label}
         </Text>
         <StatRow stats={stats} />
@@ -122,7 +126,7 @@ function ChartSection({
 
       {/* 차트 */}
       {data1.length > 0 && (
-        <View style={{ marginLeft: -8 }}>
+        <View className="-ml-2">
           <LineChart
             data={data1}
             data2={data2}
@@ -142,15 +146,15 @@ function ChartSection({
             hideDataPoints
             hideRules
             hideYAxisText
-            xAxisColor="#1d293d"
+            xAxisColor={colors.monitor.border}
             xAxisThickness={1}
             backgroundColor="transparent"
             noOfSections={3}
-            xAxisLabelTextStyle={{ color: "#62748e", fontSize: 8 }}
+            xAxisLabelTextStyle={{ color: colors.monitor["text-dim"], fontSize: 8 }}
             showXAxisIndices={false}
             pointerConfig={{
               pointerStripHeight: 70,
-              pointerStripColor: "#314158",
+              pointerStripColor: colors.monitor["border-strong"],
               pointerStripWidth: 1,
               pointerColor: color1,
               radius: 4,
@@ -162,14 +166,17 @@ function ChartSection({
                 const isRightSide = (hour as number) >= totalPoints * 0.65;
                 const marginLeft = isRightSide ? -60 : 0;
                 return (
-                  <View style={{ marginLeft, backgroundColor: "#020618", borderRadius: 6, borderWidth: 1, borderColor: "#314158", padding: 6, gap: 2, width: 80 }}>
-                    <Text style={{ color: "#62748e", fontSize: 9, marginBottom: 2 }}>
+                  <View
+                    className="bg-monitor-card-bg rounded-badge border border-monitor-border-strong p-1.5 gap-0.5 w-20"
+                    style={{ marginLeft }}
+                  >
+                    <Text className="text-10 text-monitor-text-dim mb-0.5">
                       {mode === "cumulative" ? `~${hour}시 누적` : `${hour}시`}
                     </Text>
-                    <Text style={{ color: color1, fontSize: 10, fontWeight: "700" }}>
+                    <Text className="text-10 font-bold" style={{ color: color1 }}>
                       {tooltipKey1} {items[0]?.value ?? 0}
                     </Text>
-                    <Text style={{ color: color2, fontSize: 10 }}>
+                    <Text className="text-10" style={{ color: color2 }}>
                       {tooltipKey2} {items[1]?.value ?? 0}
                     </Text>
                   </View>
@@ -207,31 +214,31 @@ export function AnalyticsPanel({ behaviorStats, paymentStats, chartData, date, o
   const paymentData2 = displayData.map((d) => ({ value: d.payments }));
 
   return (
-    <View style={{ backgroundColor: "#0f172b", borderTopWidth: 1, borderTopColor: "#1d293d", paddingHorizontal: 16, paddingTop: 12, paddingBottom: 16 }}>
+    <View className="bg-monitor-bg border-t border-monitor-border px-4 pt-3 pb-4">
       {/* 헤더 */}
-      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-        <Text style={{ fontSize: 10, fontWeight: "700", color: "#90a1b9", letterSpacing: 1.2, textTransform: "uppercase" }}>
+      <View className="flex-row items-center justify-between mb-2.5">
+        <Text className="text-10 font-bold text-monitor-text-muted tracking-caps uppercase">
           매장 행동 분석 통계{" "}
-          <Text style={{ color: "#62748e", letterSpacing: 0 }}>({formatDate(date)})</Text>
+          <Text className="text-monitor-text-dim tracking-normal">({formatDate(date)})</Text>
         </Text>
 
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+        <View className="flex-row items-center gap-1.5">
           {onOpenEventLog && (
             <Pressable
               onPress={onOpenEventLog}
-              style={{ borderWidth: 1, borderColor: "#1d293d", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4, backgroundColor: "#0d1b2e" }}
+              className="border border-monitor-border rounded-badge px-2 py-1 bg-monitor-bg"
             >
-              <Text style={{ fontSize: 10, fontWeight: "600", color: "#62748e" }}>이벤트 로그</Text>
+              <Text className="text-10 font-semibold text-monitor-text-dim">이벤트 로그</Text>
             </Pressable>
           )}
-          <View style={{ flexDirection: "row", borderWidth: 1, borderColor: "#1d293d", borderRadius: 6, backgroundColor: "#0d1b2e", padding: 2 }}>
+          <View className="flex-row border border-monitor-border rounded-badge bg-monitor-bg p-0.5">
             {(["hourly", "cumulative"] as const).map((m) => (
               <Pressable
                 key={m}
                 onPress={() => setMode(m)}
-                style={{ paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, backgroundColor: mode === m ? "#51a2ff" : "transparent" }}
+                className={`px-2 py-[3px] rounded ${mode === m ? "bg-monitor-accent-blue" : "bg-transparent"}`}
               >
-                <Text style={{ fontSize: 9, fontWeight: "700", color: mode === m ? "#fff" : "#62748e" }}>
+                <Text className={`text-10 font-bold ${mode === m ? "text-white" : "text-monitor-text-dim"}`}>
                   {m === "hourly" ? "시간대별" : "누적"}
                 </Text>
               </Pressable>
@@ -241,16 +248,19 @@ export function AnalyticsPanel({ behaviorStats, paymentStats, chartData, date, o
       </View>
 
       {/* 차트 탭 */}
-      <View style={{ flexDirection: "row", backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 10, padding: 3, marginBottom: 14 }}>
+      <View className="flex-row bg-white/5 rounded-control p-[3px] mb-3.5">
         {CHART_TABS.map(({ key, label, color }) => {
           const active = chartTab === key;
           return (
             <Pressable
               key={key}
               onPress={() => setChartTab(key)}
-              style={{ flex: 1, alignItems: "center", paddingVertical: 7, borderRadius: 7, backgroundColor: active ? "#0d1b2e" : "transparent" }}
+              className={`flex-1 items-center py-[7px] rounded-[7px] ${active ? "bg-monitor-bg" : "bg-transparent"}`}
             >
-              <Text style={{ fontSize: 11, fontWeight: "700", color: active ? color : "#62748e" }}>
+              <Text
+                className="text-11 font-bold"
+                style={{ color: active ? color : colors.monitor["text-dim"] }}
+              >
                 {label}
               </Text>
             </Pressable>
@@ -265,8 +275,8 @@ export function AnalyticsPanel({ behaviorStats, paymentStats, chartData, date, o
           stats={behaviorStats}
           data1={behaviorData1}
           data2={behaviorData2}
-          color1="#51a2ff"
-          color2="#ff6467"
+          color1={colors.monitor["accent-blue"]}
+          color2={colors.event.critical}
           fill1="rgba(81,162,255,0.2)"
           fill2="rgba(255,100,103,0.15)"
           chartWidth={chartWidth}
@@ -281,9 +291,9 @@ export function AnalyticsPanel({ behaviorStats, paymentStats, chartData, date, o
           stats={paymentStats}
           data1={paymentData1}
           data2={paymentData2}
-          color1="#8b5cf6"
-          color2="#00d492"
-          fill1="rgba(139,92,246,0.2)"
+          color1={colors.monitor["accent-purple"]}
+          color2={colors.monitor["accent-green"]}
+          fill1="rgba(194,122,255,0.2)"
           fill2="rgba(0,212,146,0.15)"
           chartWidth={chartWidth}
           spacing={spacing}

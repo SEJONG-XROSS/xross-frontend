@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { colors } from '@xross/tokens';
 import {
   useEventDetails,
   mapEventToDetectionEvent,
@@ -22,16 +23,16 @@ type Props = NativeStackScreenProps<RootStackParamList, 'EventDetail'>;
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 const SEVERITY_ICON: Record<EventSeverity, { icon: IoniconName; color: string }> = {
-  critical: { icon: 'shield-outline',    color: '#ff6467' },
-  warning:  { icon: 'warning-outline',   color: '#fe9a00' },
-  behavior: { icon: 'person-outline',    color: '#fe9a00' },
-  info:     { icon: 'information-circle-outline', color: '#90a1b9' },
+  critical: { icon: 'shield-outline',    color: colors.event.critical },
+  warning:  { icon: 'warning-outline',   color: colors.event.warning },
+  behavior: { icon: 'person-outline',    color: colors.event.warning },
+  info:     { icon: 'information-circle-outline', color: colors.monitor['text-muted'] },
 };
 
 const CONFIDENCE_CLASS: Record<EventSeverity, string> = {
-  critical: 'bg-[rgba(255,100,103,0.1)] text-event-critical border-[rgba(255,100,103,0.2)]',
-  warning:  'bg-[rgba(254,154,0,0.1)] text-event-warning border-[rgba(254,154,0,0.2)]',
-  behavior: 'bg-[rgba(254,154,0,0.1)] text-event-warning border-[rgba(254,154,0,0.2)]',
+  critical: 'bg-event-critical/10 text-event-critical border-event-critical/20',
+  warning:  'bg-event-warning/10 text-event-warning border-event-warning/20',
+  behavior: 'bg-event-warning/10 text-event-warning border-event-warning/20',
   info:     'bg-monitor-border text-monitor-text-muted border-monitor-border',
 };
 
@@ -64,7 +65,7 @@ export function EventDetailScreen({ route }: Props) {
 
       {isLoading ? (
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator color="#51a2ff" />
+          <ActivityIndicator color={colors.monitor['accent-blue']} />
         </View>
       ) : !details.length ? (
         <View className="flex-1 items-center justify-center">
@@ -74,7 +75,7 @@ export function EventDetailScreen({ route }: Props) {
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           {/* CCTV 플레이스홀더 */}
           <View className="h-[220px] bg-monitor-card-bg border-b border-monitor-border items-center justify-center gap-2">
-            <Ionicons name="videocam-off-outline" size={36} color="#62748e" />
+            <Ionicons name="videocam-off-outline" size={36} color={colors.monitor['text-dim']} />
             <Text className="text-monitor-text-dim text-xs">영상 조회 기능 준비 중</Text>
           </View>
 
@@ -83,17 +84,17 @@ export function EventDetailScreen({ route }: Props) {
             <View className="flex-row items-start justify-between gap-3 mb-2">
               <View className="flex-row items-start gap-2 flex-1">
                 <Ionicons name={icon} size={22} color={color} style={{ marginTop: 2 }} />
-                <Text className="flex-1 text-[16px] font-bold leading-[22px] tracking-tight text-monitor-text">
+                <Text className="flex-1 text-16 font-bold tracking-tight text-monitor-text">
                   {detectionEvent?.title ?? `이벤트 #${id}`}
                 </Text>
               </View>
-              <View className={cn('rounded-[4px] border px-2 py-[5px]', CONFIDENCE_CLASS[severity])}>
+              <View className={cn('rounded-badge border px-2 py-[5px]', CONFIDENCE_CLASS[severity])}>
                 <Text className={cn('text-xs font-bold', CONFIDENCE_CLASS[severity].split(' ')[1])}>
                   신뢰도 {confidence}%
                 </Text>
               </View>
             </View>
-            <Text className="text-[13px] leading-[21px] text-monitor-text-muted">
+            <Text className="text-13 leading-[21px] text-monitor-text-muted">
               {detectionEvent?.description}
             </Text>
           </View>

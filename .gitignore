@@ -48,3 +48,4 @@ apps/mobile/*.orig.*
 apps/mobile/web-build
 apps/mobile/GoogleService-Info.plist
 apps/mobile/google-services.json
+.vercel

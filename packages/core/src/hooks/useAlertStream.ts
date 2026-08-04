@@ -52,6 +52,17 @@ export function useAlertStream({
       return () => { mounted = false; };
     }
 
+    /** REST 재조회 결과를 id 기준으로 병합 — 초기 조회와 구독 시작 사이 공백 보정용 */
+    const upsertMany = (incoming: AlertResponse[]) => {
+      if (incoming.length === 0) return;
+      lastIdRef.current = Math.max(lastIdRef.current ?? 0, ...incoming.map((a) => a.id));
+      setAlerts((prev) => {
+        const known = new Set(prev.map((a) => a.id));
+        const added = incoming.filter((a) => !known.has(a.id));
+        return added.length === 0 ? prev : [...prev, ...added];
+      });
+    };
+
     // 오늘: 초기 REST → SSE
     fetchFn().then((data) => {
       if (!mounted) return;
@@ -59,20 +70,29 @@ export function useAlertStream({
       if (data.length > 0) lastIdRef.current = Math.max(...data.map((a) => a.id));
     }).catch(() => {}).finally(() => {
       if (!mounted) return;
-      const qs = new URLSearchParams({ storeId: String(storeId) });
-      if (lastIdRef.current != null) qs.set('prevId', String(lastIdRef.current));
-      const url = `${getBaseURL()}/alerts/stream?${qs}`;
 
       let retryDelay = 1000;
-      let retrying = true;
 
       const connect = () => {
         if (!mounted) return;
+        // URL은 매 연결마다 새로 구성 — 재연결 시 최신 prevId로 누락분을 이어받는다.
+        const qs = new URLSearchParams({ storeId: String(storeId) });
+        if (lastIdRef.current != null) qs.set('prevId', String(lastIdRef.current));
+
         const adapter = getStreamAdapter();
         cleanupRef.current = adapter.open({
-          url,
+          url: `${getBaseURL()}/alerts/stream?${qs}`,
           headers: { Authorization: `Bearer ${accessToken}` },
-          onOpen: () => { if (mounted) { setConnected(true); retryDelay = 1000; } },
+          onOpen: () => {
+            if (!mounted) return;
+            setConnected(true);
+            retryDelay = 1000;
+            // prevId 없이 구독한 연결: 초기 REST와 구독 시작 사이에 생성된
+            // 알림은 양쪽 어디에도 없으므로 한 번 재조회해 공백을 메운다.
+            if (lastIdRef.current == null) {
+              fetchFn().then((data) => { if (mounted) upsertMany(data); }).catch(() => {});
+            }
+          },
           onMessage: ({ data }: { data: string }) => {
             if (!mounted) return;
             try {
@@ -86,7 +106,7 @@ export function useAlertStream({
             } catch { /* 파싱 실패 무시 */ }
           },
           onError: () => {
-            if (!mounted || !retrying) return;
+            if (!mounted) return;
             setConnected(false);
             cleanupRef.current?.();
             cleanupRef.current = null;
@@ -97,7 +117,6 @@ export function useAlertStream({
       };
 
       connect();
-      return () => { retrying = false; };
     });
 
     return () => {

@@ -30,11 +30,19 @@ const withGoogleUtilitiesModularHeaders = (cfg: ExpoConfig): ExpoConfig =>
     },
   ]);
 
+/**
+ * EAS 프로젝트 ID. 동적 app config라 `eas init`이 자동으로 써넣지 못하므로 고정값으로 둔다.
+ * (환경변수로 덮어쓰면 다른 EAS 프로젝트로 빌드 가능)
+ */
+const EAS_PROJECT_ID =
+  process.env.EAS_PROJECT_ID ?? '11cf28ea-f025-4a21-bce3-951e4dc02d1c';
+
 export default ({ config }: ConfigContext): ExpoConfig =>
   withGoogleUtilitiesModularHeaders({
   ...config,
   name: 'Xross',
   slug: 'xross-mobile',
+  owner: 'yunhyoyeon',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/icon.png',
@@ -48,7 +56,10 @@ export default ({ config }: ConfigContext): ExpoConfig =>
   ios: {
     supportsTablet: false,
     bundleIdentifier: 'com.xross.mobile',
-    googleServicesFile: './GoogleService-Info.plist',
+    // 이 파일은 gitignore 대상이라 EAS 빌드 서버에 올라가지 않는다.
+    // EAS에서는 file 타입 시크릿(GOOGLE_SERVICES_INFO_PLIST)이 내려받아진 경로를 사용.
+    googleServicesFile:
+      process.env.GOOGLE_SERVICES_INFO_PLIST ?? './GoogleService-Info.plist',
     infoPlist: {
       NSCameraUsageDescription: 'CCTV 스트리밍에 필요합니다.',
       NSMicrophoneUsageDescription: 'CCTV 스트리밍에 필요합니다.',
@@ -70,7 +81,7 @@ export default ({ config }: ConfigContext): ExpoConfig =>
     apiBaseUrl: process.env.EXPO_PUBLIC_API_BASE_URL,
     mediamtxBaseUrl: process.env.EXPO_PUBLIC_MEDIAMTX_BASE_URL,
     eas: {
-      projectId: process.env.EAS_PROJECT_ID,
+      projectId: EAS_PROJECT_ID,
     },
   },
   plugins: [

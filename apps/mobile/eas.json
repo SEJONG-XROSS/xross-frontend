@@ -14,6 +14,16 @@
         "EXPO_PUBLIC_MEDIAMTX_BASE_URL": "http://15.164.144.209:8889"
       }
     },
+    "device": {
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m-medium"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_BASE_URL": "http://15.164.144.209:3000",
+        "EXPO_PUBLIC_MEDIAMTX_BASE_URL": "http://15.164.144.209:8889"
+      }
+    },
     "preview": {
       "distribution": "internal",
       "env": {

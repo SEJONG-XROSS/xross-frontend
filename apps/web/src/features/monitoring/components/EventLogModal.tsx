@@ -2,13 +2,12 @@ import { useMemo, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@xross/core";
 import type { EventResponse } from "@/features/monitoring/api/monitoring.types";
+import { useMonitoringUiStore } from "@/features/monitoring/store/monitoringUi.store";
 import LogsIcon from "@/assets/icons/logs.svg?react";
 
 interface EventLogModalProps {
-  open: boolean;
   events: EventResponse[];
   date: string;
-  onClose: () => void;
 }
 
 const EVENT_TYPE_LABEL: Record<string, string> = {
@@ -85,7 +84,9 @@ const TABLE_COLS = "grid-cols-[60px_72px_1fr_130px_88px]";
 
 const COL_HEADERS = ["ID", "시각", "이벤트 유형", "소스", "추적 키"];
 
-export default function EventLogModal({ open, events, date, onClose }: EventLogModalProps) {
+export default function EventLogModal({ events, date }: EventLogModalProps) {
+  const open = useMonitoringUiStore((s) => s.eventLogOpen);
+  const onClose = useMonitoringUiStore((s) => s.closeEventLog);
   const [filter, setFilter] = useState<FilterKey>("all");
   const [search, setSearch] = useState("");
 

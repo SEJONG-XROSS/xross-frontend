@@ -1,12 +1,14 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import PosHeader from "@/features/pos/components/PosHeader";
 import PosSummaryCards from "@/features/pos/components/PosSummaryCards";
-import PosSearchBar, {
-  type PosFilters,
-} from "@/features/pos/components/PosSearchBar";
+import PosSearchBar from "@/features/pos/components/PosSearchBar";
 import PosTransactionTable from "@/features/pos/components/PosTransactionTable";
 import { usePosTransactions } from "@/features/pos/hooks/usePosTransactions";
 import { buildPosSummary } from "@/features/pos/lib/mappers";
+import {
+  usePosFilterStore,
+  type PosFilters,
+} from "@/features/pos/store/posFilter.store";
 import type { PosTransaction } from "@/features/pos/types/pos.types";
 
 function filterTransactions(
@@ -37,12 +39,7 @@ function filterTransactions(
 
 export default function PosPage() {
   const { transactions, isLoading } = usePosTransactions();
-  const [filters, setFilters] = useState<PosFilters>({
-    search: "",
-    dateRange: { from: null, to: null },
-    status: "all",
-    payment: "all",
-  });
+  const filters = usePosFilterStore((s) => s.filters);
 
   const filtered = useMemo(
     () => filterTransactions(transactions, filters),
@@ -58,7 +55,7 @@ export default function PosPage() {
         <div className="mx-auto w-full max-w-6xl px-3 py-4 sm:px-6 sm:py-6">
           <PosSummaryCards stats={summary} />
           <div className="mt-7">
-            <PosSearchBar filters={filters} onChange={setFilters} />
+            <PosSearchBar />
           </div>
           <div className="mt-4">
             <PosTransactionTable

@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { AlertResponse } from "@/features/monitoring/api/monitoring.types";
 import EventCard from "@/features/monitoring/components/EventCard";
+import { useMonitoringUiStore } from "@/features/monitoring/store/monitoringUi.store";
 import LogsIcon from "@/assets/icons/logs.svg?react";
 import { cn, sortAlerts, type AlertSortKey } from "@xross/core";
 
@@ -21,7 +22,8 @@ export default function EventLogPanel({
   connected,
   standalone,
 }: EventLogPanelProps) {
-  const [sortKey, setSortKey] = useState<AlertSortKey>("recent");
+  const sortKey = useMonitoringUiStore((s) => s.alertSortKey);
+  const setSortKey = useMonitoringUiStore((s) => s.setAlertSortKey);
 
   const sortedAlerts = useMemo(
     () => sortAlerts(alerts, sortKey),

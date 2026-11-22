@@ -2,8 +2,8 @@ import { useState } from "react";
 import SearchIcon from "@/assets/icons/search.svg?react";
 import DateRangePicker from "@/features/pos/components/DateRangePicker";
 import FilterDropdown from "@/features/pos/components/FilterDropdown";
+import { usePosFilterStore } from "@/features/pos/store/posFilter.store";
 import type {
-  DateRange,
   StatusFilterOption,
   PaymentFilterOption,
 } from "@/features/pos/types/pos.types";
@@ -23,21 +23,15 @@ const PAYMENT_OPTIONS: { value: PaymentFilterOption; label: string }[] = [
   { value: "qr_code", label: "QR" },
 ];
 
-export interface PosFilters {
-  search: string;
-  dateRange: DateRange;
-  status: StatusFilterOption;
-  payment: PaymentFilterOption;
-}
-
 type OpenDropdownKey = "date" | "status" | "payment";
 
-interface PosSearchBarProps {
-  filters: PosFilters;
-  onChange: (filters: PosFilters) => void;
-}
-
-export default function PosSearchBar({ filters, onChange }: PosSearchBarProps) {
+export default function PosSearchBar() {
+  const filters = usePosFilterStore((s) => s.filters);
+  const setSearch = usePosFilterStore((s) => s.setSearch);
+  const setDateRange = usePosFilterStore((s) => s.setDateRange);
+  const setStatus = usePosFilterStore((s) => s.setStatus);
+  const setPayment = usePosFilterStore((s) => s.setPayment);
+  // 드롭다운 열림 여부는 이 컴포넌트 안에서만 쓰는 일시 상태라 로컬에 둔다.
   const [openDropdown, setOpenDropdown] = useState<OpenDropdownKey | null>(null);
 
   function handleDropdownToggle(key: OpenDropdownKey) {
@@ -55,7 +49,7 @@ export default function PosSearchBar({ filters, onChange }: PosSearchBarProps) {
         <input
           type="text"
           value={filters.search}
-          onChange={(e) => onChange({ ...filters, search: e.target.value })}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="거래 ID, 추적 ID 검색..."
           className="border-monitor-border bg-monitor-card-bg text-monitor-text placeholder:text-monitor-text-dim focus:border-monitor-accent-blue focus:ring-monitor-accent-blue/20 h-10 w-full rounded-lg border py-2 pr-4 pl-10 text-[13px] transition-colors outline-none focus:ring-2"
         />
@@ -64,7 +58,7 @@ export default function PosSearchBar({ filters, onChange }: PosSearchBarProps) {
       <div className="flex flex-wrap items-center gap-2">
         <DateRangePicker
           value={filters.dateRange}
-          onChange={(range) => onChange({ ...filters, dateRange: range })}
+          onChange={setDateRange}
           open={openDropdown === "date"}
           onToggle={() => handleDropdownToggle("date")}
           onClose={handleDropdownClose}
@@ -72,7 +66,7 @@ export default function PosSearchBar({ filters, onChange }: PosSearchBarProps) {
         <FilterDropdown
           value={filters.status}
           options={STATUS_OPTIONS}
-          onChange={(v) => onChange({ ...filters, status: v })}
+          onChange={setStatus}
           open={openDropdown === "status"}
           onToggle={() => handleDropdownToggle("status")}
           onClose={handleDropdownClose}
@@ -80,7 +74,7 @@ export default function PosSearchBar({ filters, onChange }: PosSearchBarProps) {
         <FilterDropdown
           value={filters.payment}
           options={PAYMENT_OPTIONS}
-          onChange={(v) => onChange({ ...filters, payment: v })}
+          onChange={setPayment}
           open={openDropdown === "payment"}
           onToggle={() => handleDropdownToggle("payment")}
           onClose={handleDropdownClose}

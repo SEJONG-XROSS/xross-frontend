@@ -1,7 +1,7 @@
-import { useState } from "react";
 import ChartAnalyticsIcon from "@/assets/icons/chart-analytics.svg?react";
 import LogsIcon from "@/assets/icons/logs.svg?react";
 import AnalyticsChart from "@/features/monitoring/components/AnalyticsChart";
+import { useMonitoringUiStore } from "@/features/monitoring/store/monitoringUi.store";
 import type { AnalyticsDataPoint } from "@/features/monitoring/types/monitoring.types";
 import { cn } from "@xross/core";
 
@@ -17,7 +17,6 @@ interface AnalyticsPanelProps {
   chartData: AnalyticsDataPoint[];
   date: string;
   standalone?: boolean;
-  onOpenEventLog?: () => void;
 }
 
 const STAT_VALUE_COLOR = {
@@ -30,8 +29,6 @@ const CHART_HEIGHT = {
   compact: 110,
   standalone: 180,
 };
-
-type ChartMode = "hourly" | "cumulative";
 
 function toCumulative(data: AnalyticsDataPoint[]): AnalyticsDataPoint[] {
   let picks = 0, suspicions = 0, enters = 0, payments = 0;
@@ -85,9 +82,10 @@ export default function AnalyticsPanel({
   chartData,
   date,
   standalone,
-  onOpenEventLog,
 }: AnalyticsPanelProps) {
-  const [mode, setMode] = useState<ChartMode>("hourly");
+  const mode = useMonitoringUiStore((s) => s.chartMode);
+  const setMode = useMonitoringUiStore((s) => s.setChartMode);
+  const openEventLog = useMonitoringUiStore((s) => s.openEventLog);
   const chartH = standalone ? CHART_HEIGHT.standalone : CHART_HEIGHT.compact;
   const displayData = mode === "cumulative" ? toCumulative(chartData) : chartData;
 
@@ -109,16 +107,14 @@ export default function AnalyticsPanel({
 
         <div className="flex items-center gap-2">
           {/* 이벤트 로그 버튼 */}
-          {onOpenEventLog && (
-            <button
-              type="button"
-              onClick={onOpenEventLog}
-              className="flex items-center gap-1 rounded-md border border-monitor-border bg-monitor-card-bg px-2.5 py-1 text-[10px] font-semibold text-monitor-text-dim transition-colors hover:border-monitor-accent-blue/40 hover:text-monitor-accent-blue"
-            >
-              <LogsIcon className="h-3 w-3 shrink-0" />
-              이벤트 로그
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={openEventLog}
+            className="flex items-center gap-1 rounded-md border border-monitor-border bg-monitor-card-bg px-2.5 py-1 text-[10px] font-semibold text-monitor-text-dim transition-colors hover:border-monitor-accent-blue/40 hover:text-monitor-accent-blue"
+          >
+            <LogsIcon className="h-3 w-3 shrink-0" />
+            이벤트 로그
+          </button>
 
           {/* 시간대별 / 누적 토글 */}
           <div className="flex items-center rounded-md border border-monitor-border bg-monitor-card-bg p-[3px]">

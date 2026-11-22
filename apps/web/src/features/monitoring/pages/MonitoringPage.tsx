@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import MonitoringHeader from "@/features/monitoring/components/MonitoringHeader";
 import CameraGrid from "@/features/monitoring/components/CameraGrid";
 import AnalyticsPanel from "@/features/monitoring/components/AnalyticsPanel";
 import EventLogPanel from "@/features/monitoring/components/EventLogPanel";
 import EventLogModal from "@/features/monitoring/components/EventLogModal";
 import { MOCK_CAMERAS } from "@/features/monitoring/data/monitoring.mock";
+import {
+  useMonitoringUiStore,
+  type MonitoringMobileTab,
+} from "@/features/monitoring/store/monitoringUi.store";
 import { isToday } from "@/shared/lib/date";
 import type { EventResponse } from "@/features/monitoring/api/monitoring.types";
 import type { AnalyticsDataPoint } from "@/features/monitoring/types/monitoring.types";
@@ -14,10 +18,8 @@ import ShieldIcon from "@/assets/icons/shield.svg?react";
 import LogsIcon from "@/assets/icons/logs.svg?react";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 
-type MobileTab = "monitor" | "events";
-
 const MOBILE_TABS: {
-  key: MobileTab;
+  key: MonitoringMobileTab;
   label: string;
   Icon: React.FC<React.SVGProps<SVGSVGElement>>;
 }[] = [
@@ -88,9 +90,14 @@ export default function MonitoringPage({
   selectedDate,
   setSelectedDate,
 }: MonitoringContext) {
-  const [mobileTab, setMobileTab] = useState<MobileTab>("monitor");
-  const [eventLogOpen, setEventLogOpen] = useState(false);
+  const mobileTab = useMonitoringUiStore((s) => s.mobileTab);
+  const setMobileTab = useMonitoringUiStore((s) => s.setMobileTab);
+  const closeEventLog = useMonitoringUiStore((s) => s.closeEventLog);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
+
+  // 탭·정렬·차트 모드는 관제 화면을 떠났다 돌아와도 유지하지만,
+  // 모달은 열린 채로 다시 나타나지 않도록 화면을 벗어날 때 닫는다.
+  useEffect(() => closeEventLog, [closeEventLog]);
 
   const criticalCount = alerts.filter(
     (a) => a.status === "PENDING" || a.status === "SENT",
@@ -104,12 +111,7 @@ export default function MonitoringPage({
         date={selectedDate}
         onDateChange={setSelectedDate}
       />
-      <EventLogModal
-        open={eventLogOpen}
-        events={events}
-        date={selectedDate}
-        onClose={() => setEventLogOpen(false)}
-      />
+      <EventLogModal events={events} date={selectedDate} />
 
       {isDesktop ? (
         // ── 데스크톱: 기존 레이아웃 ─────────────── 
@@ -118,7 +120,7 @@ export default function MonitoringPage({
             <div className="flex-1 overflow-hidden">
               <CameraGrid cameras={MOCK_CAMERAS} isDesktop={true} />
             </div>
-            <AnalyticsPanel behaviorStats={behaviorStats} paymentStats={paymentStats} chartData={chartData} date={selectedDate} onOpenEventLog={() => setEventLogOpen(true)} />
+            <AnalyticsPanel behaviorStats={behaviorStats} paymentStats={paymentStats} chartData={chartData} date={selectedDate} />
           </div>
           <EventLogPanel alerts={alerts} connected={connected} />
         </main>
@@ -169,7 +171,7 @@ export default function MonitoringPage({
                 <div className="min-h-[220px] shrink-0 sm:min-h-[280px]">
                   <CameraGrid cameras={MOCK_CAMERAS} isDesktop={false} />
                 </div>
-                <AnalyticsPanel behaviorStats={behaviorStats} paymentStats={paymentStats} chartData={chartData} date={selectedDate} standalone onOpenEventLog={() => setEventLogOpen(true)} />
+                <AnalyticsPanel behaviorStats={behaviorStats} paymentStats={paymentStats} chartData={chartData} date={selectedDate} standalone />
               </div>
             )}
 
